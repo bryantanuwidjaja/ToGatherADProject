@@ -47,7 +47,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+<<<<<<< HEAD
         <activity android:name=".ProfileScreen"></activity>
+>>>>>>> Joy
+=======
+        <activity android:name=".ProfileScreen" />
+        <activity android:name=".InterestScreen"></activity>
 >>>>>>> Joy
     </application>
 
