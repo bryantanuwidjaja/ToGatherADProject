@@ -48,12 +48,12 @@
         android:layout_marginStart="8dp"
         android:ems="10"
         android:inputType="textEmailAddress"
-        app:layout_constraintBottom_toTopOf="@+id/textView_loginActivity_Email"
+        app:layout_constraintBottom_toTopOf="@+id/textView_loginActivity_Password"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
-        android:id="@+id/editText4"
+        android:id="@+id/editText4_loginActivity_insertPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="24dp"
@@ -66,7 +66,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
-        android:id="@+id/textView5"
+        android:id="@+id/textView5_loginActivity_Email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
@@ -76,13 +76,13 @@
         app:layout_constraintStart_toStartOf="@+id/guideline" />
 
     <TextView
-        android:id="@+id/textView_loginActivity_Email"
+        android:id="@+id/textView_loginActivity_Password"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginStart="8dp"
         android:text="Password"
-        app:layout_constraintBottom_toTopOf="@+id/editText4"
+        app:layout_constraintBottom_toTopOf="@+id/editText4_loginActivity_insertPassword"
         app:layout_constraintStart_toStartOf="@+id/guideline" />
 
     <android.support.constraint.Guideline
