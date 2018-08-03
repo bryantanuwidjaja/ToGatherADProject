@@ -7,31 +7,19 @@
     tools:context=".LoginActivity">
 
     <Button
-<<<<<<< HEAD
         android:id="@+id/button_loginActivity_SignIn"
-=======
-        android:id="@+id/button_RegistrationActivity_Create"
->>>>>>> Devan
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="4dp"
         android:layout_marginEnd="8dp"
         android:text="Sign In"
-<<<<<<< HEAD
         app:layout_constraintBottom_toTopOf="@+id/button2_loginActivity_SignUp"
-=======
-        app:layout_constraintBottom_toTopOf="@+id/button_RegistrationActivity_Create"
->>>>>>> Devan
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.513"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-<<<<<<< HEAD
         android:id="@+id/button2_loginActivity_SignUp"
-=======
-        android:id="@+id/button_RegistrationActivity_Create"
->>>>>>> Devan
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
@@ -44,11 +32,7 @@
         android:id="@+id/imageView_loginActivity_Image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-<<<<<<< HEAD
         app:layout_constraintBottom_toTopOf="@+id/button_loginActivity_SignIn"
-=======
-        app:layout_constraintBottom_toTopOf="@+id/button_RegistrationActivity_Create"
->>>>>>> Devan
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
