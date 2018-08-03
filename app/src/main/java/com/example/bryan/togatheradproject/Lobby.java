@@ -4,6 +4,7 @@ public class Lobby {
 
     private String lobbyID;
     private int capacity;
+    private String location;
     private String lobbyDescriptions;
     private String hostID;
     private String activity;
@@ -15,10 +16,23 @@ public class Lobby {
         this.lobbyDescriptions = lobbyDescriptions;
         this.hostID = hostID;
         this.activity = activity;
+        this.location = location;
     }
 
     public Lobby(){
 
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public String[] getGuestID() {
+        return guestID;
+    }
+
+    public void getLocation(String location) {
+        this.location = location;
     }
 
     public String getLobbyID() {
@@ -59,5 +73,13 @@ public class Lobby {
 
     public void setActivity(String activity) {
         this.activity = activity;
+    }
+
+    public void setGuestID(String[] guestID) {
+        this.guestID = guestID;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
     }
 }
