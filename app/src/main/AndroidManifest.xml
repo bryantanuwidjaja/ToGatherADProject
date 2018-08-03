@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".RegistrationActivity" />
-<<<<<<< HEAD
+
         <activity android:name=".LoginActivity" >
         <intent-filter>
             <action android:name="android.intent.action.MAIN" />
@@ -24,7 +24,6 @@
     </activity>
         <activity android:name=".CreateLobbyActivity" />
         <activity android:name=".HomeActivity"/>
-=======
         <activity android:name=".LoginActivity" />
 
         <uses-library
@@ -39,21 +38,20 @@
             android:value="true" />
 
         <activity
-            android:name=".ProfileScreenActivity"
-            android:label="@string/title_activity_profile_screen">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+        android:name=".ProfileScreenActivity"
+        android:label="@string/title_activity_profile_screen">
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-<<<<<<< HEAD
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
+    </activity>
+
         <activity android:name=".ProfileScreen"></activity>
->>>>>>> Joy
-=======
+
         <activity android:name=".ProfileScreen" />
         <activity android:name=".InterestScreen"></activity>
->>>>>>> Joy
+
     </application>
 
 </manifest>
