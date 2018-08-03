@@ -84,6 +84,16 @@
         app:layout_constraintTop_toBottomOf="@+id/textView10_ProfileScreen_Interest2" />
 
     <TextView
+        android:id="@+id/textView12_ProfileScreen_Interest4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="24dp"
+        android:text="TextView"
+        app:layout_constraintStart_toStartOf="@+id/guideline2"
+        app:layout_constraintTop_toBottomOf="@+id/textView11_ProfileScreen_Interest3" />
+
+    <TextView
         android:id="@+id/textView13_ProfileScreen_Interest5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -111,5 +121,15 @@
         android:text="TextView"
         app:layout_constraintEnd_toStartOf="@+id/guideline3"
         app:layout_constraintTop_toBottomOf="@+id/textView14_ProfileScreen_Interest6" />
+
+    <TextView
+        android:id="@+id/textView16_ProfileScreen_Interest8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="24dp"
+        android:text="TextView"
+        app:layout_constraintEnd_toStartOf="@+id/guideline3"
+        app:layout_constraintTop_toBottomOf="@+id/textView15_ProfileScreen_Interest7" />
 
 </android.support.constraint.ConstraintLayout>
