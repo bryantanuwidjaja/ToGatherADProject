@@ -19,8 +19,8 @@
     </activity>
         <activity android:name=".CreateLobbyActivity" />
         <activity android:name=".HomeActivity"/>
-        <activity android:name=".ProfileScreen"/>
-        <activity android:name=".InterestScreen"></activity>
+        <activity android:name=".ProfileActivity"/>
+        <activity android:name=".InterestActivity"></activity>
     </application>
 
 </manifest>
