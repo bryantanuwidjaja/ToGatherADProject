@@ -67,6 +67,7 @@ public class CreateLobbyActivity extends AppCompatActivity implements AdapterVie
                                 startActivity(intent);
                             }
                         })
+
                         .addOnFailureListener(new OnFailureListener() {
                             @Override
                             public void onFailure(@NonNull Exception e) {

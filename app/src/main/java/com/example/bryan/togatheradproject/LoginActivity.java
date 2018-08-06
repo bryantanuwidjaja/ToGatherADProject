@@ -31,5 +31,22 @@ public class LoginActivity extends AppCompatActivity {
         textView_Email = findViewById(R.id.textView_LoginActivity_email);
         textView_Password = findViewById(R.id.textView_LoginActivity_password);
 
+        button_SignIn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                startActivity(intent);
+
+            }
+        });
+
+        button_SignUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), RegistrationActivity.class);
+                startActivity(intent);
+            }
+        });
+
     }
 }
