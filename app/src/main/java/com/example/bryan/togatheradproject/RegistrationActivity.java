@@ -26,6 +26,7 @@ public class RegistrationActivity extends AppCompatActivity {
         editTextPassword = (EditText) findViewById(R.id.editText_RegistrationActivity_Password);
         editTextRePassword = (EditText) findViewById(R.id.editText_RegistrationActivity_RePassword);
 
+
         //take information from edittext
         String regisEmail = editTextEmail.getText().toString();
         String regisName = editTextUsername.getText().toString();
@@ -34,6 +35,5 @@ public class RegistrationActivity extends AppCompatActivity {
 
         if (regisPassword==regisRePassword){}
         else{}
-
     }
 }
