@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "340606916950",
+    "firebase_url": "https://togather-d13b2.firebaseio.com",
+    "project_id": "togather-d13b2",
+    "storage_bucket": "togather-d13b2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:340606916950:android:a0a6c396c05db8f9",
+        "android_client_info": {
+          "package_name": "com.example.bryan.togatheradproject"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "340606916950-smlkq89n9phg9lk8injbp5epbs4dcflc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.bryan.togatheradproject",
+            "certificate_hash": "56cc9b796b450299d672dfbbfc0ce8de9dfcd01f"
+          }
+        },
+        {
+          "client_id": "340606916950-jiu2r6tkft1ulct9i1tn3b42kam9hblc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyACcP5H6C8nc57ogIOmvT0_2kuDH0eo2tI"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "340606916950-jiu2r6tkft1ulct9i1tn3b42kam9hblc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
