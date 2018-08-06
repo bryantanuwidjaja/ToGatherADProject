@@ -24,9 +24,13 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
         Log.d(TAG, "onCreate: in");
 
-        listView_LobbyList = (ListView) findViewById(R.id.listView_HomeActivity_lobbylist);
-        textView_Nearbylobby = (TextView) findViewById(R.id.textView_HomeActivity_nearbylobby);
-        button_Createlobby = (Button) findViewById(R.id.button_HomeActivity_createlobby);
+
+        listView_LobbyList = findViewById(R.id.listView_HomeActivity_lobbyList);
+        textView_Nearbylobby = findViewById(R.id.textView_HomeActivity_nearbyLobby);
+        button_Createlobby = findViewById(R.id.button_HomeActivity_createLobby);
+
         Log.d(TAG, "onCreate: out");
+
+
     }
 }
