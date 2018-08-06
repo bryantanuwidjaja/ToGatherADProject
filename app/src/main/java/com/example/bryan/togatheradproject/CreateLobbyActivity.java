@@ -64,6 +64,7 @@ public class CreateLobbyActivity extends AppCompatActivity {
                                 startActivity(intent);
                             }
                         })
+
                         .addOnFailureListener(new OnFailureListener() {
                             @Override
                             public void onFailure(@NonNull Exception e) {
