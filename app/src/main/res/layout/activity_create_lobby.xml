@@ -7,7 +7,7 @@
     tools:context=".CreateLobbyActivity">
 
     <Spinner
-        android:id="@+id/spinner_CreateLobbyActivity_activityDropDown"
+        android:id="@+id/spinnerActivities"
         android:layout_width="0dp"
         android:layout_height="30dp"
         android:layout_marginTop="8dp"
@@ -34,7 +34,7 @@
         android:text="Capacity"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="@+id/guideline2"
-        app:layout_constraintTop_toBottomOf="@+id/spinner_CreateLobbyActivity_activityDropDown" />
+        app:layout_constraintTop_toBottomOf="@+id/spinnerActivities" />
 
     <EditText
         android:id="@+id/editText_CreateLobbyActivity_capacity"
