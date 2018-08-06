@@ -1,7 +1,9 @@
 package com.example.bryan.togatheradproject;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -30,6 +32,22 @@ public class LoginActivity extends AppCompatActivity {
         editText_InsertPassword = findViewById(R.id.editText_LoginActivity_insertPassword);
         textView_Email = findViewById(R.id.textView_LoginActivity_email);
         textView_Password = findViewById(R.id.textView_LoginActivity_password);
+
+        button_SignIn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        button_SignUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), RegistrationActivity.class);
+                startActivity(intent);
+            }
+        });
 
     }
 }
