@@ -65,6 +65,7 @@ public class CreateLobbyActivity extends AppCompatActivity implements AdapterVie
                             public void onSuccess(Object o) {
                                 Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
                                 startActivity(intent);
+                                
                             }
                         })
 
