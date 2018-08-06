@@ -2,7 +2,7 @@ package com.example.bryan.togatheradproject;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -17,13 +17,20 @@ public class HomeActivity extends AppCompatActivity {
     TextView textView_Nearbylobby;
     Button button_Createlobby;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        Log.d(TAG, "onCreate: in");
 
-        listView_LobbyList = (ListView) findViewById(R.id.listView_HomeActivity_lobbylist);
-        textView_Nearbylobby = (TextView) findViewById(R.id.textView_HomeActivity_nearbylobby);
-        button_Createlobby = (Button) findViewById(R.id.button_HomeActivity_createlobby);
+
+        listView_LobbyList = findViewById(R.id.listView_HomeActivity_lobbyList);
+        textView_Nearbylobby = findViewById(R.id.textView_HomeActivity_nearbyLobby);
+        button_Createlobby = findViewById(R.id.button_HomeActivity_createLobby);
+
+        Log.d(TAG, "onCreate: out");
+
+
     }
 }

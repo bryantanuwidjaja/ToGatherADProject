@@ -7,7 +7,7 @@
     android:layout_height="match_parent">
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/addInterest1"
+        android:id="@+id/floatingActionButton_InterestActivity_addInterest1"
         android:layout_width="51dp"
         android:layout_height="49dp"
         android:layout_marginStart="72dp"
@@ -20,69 +20,69 @@
         app:srcCompat="@android:drawable/ic_input_add" />
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/addInterest2"
+        android:id="@+id/floatingActionButton_InterestActivity_addInterest2"
         android:layout_width="51dp"
         android:layout_height="49dp"
         android:layout_marginEnd="72dp"
         android:clickable="true"
         android:tint="@android:color/background_light"
         app:backgroundTint="@android:color/darker_gray"
-        app:layout_constraintBottom_toBottomOf="@+id/addInterest1"
+        app:layout_constraintBottom_toBottomOf="@+id/floatingActionButton_InterestActivity_addInterest1"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/addInterest1"
+        app:layout_constraintTop_toTopOf="@+id/floatingActionButton_InterestActivity_addInterest1"
         app:layout_constraintVertical_bias="1.0"
         app:srcCompat="@android:drawable/ic_input_add" />
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/addInterest3"
+        android:id="@+id/floatingActionButton_InterestActivity_addInterest3"
         android:layout_width="51dp"
         android:layout_height="49dp"
         android:layout_marginTop="36dp"
         android:clickable="true"
         android:tint="@android:color/background_light"
         app:backgroundTint="@android:color/darker_gray"
-        app:layout_constraintStart_toStartOf="@+id/addInterest1"
-        app:layout_constraintTop_toBottomOf="@+id/addInterest1"
+        app:layout_constraintStart_toStartOf="@+id/floatingActionButton_InterestActivity_addInterest1"
+        app:layout_constraintTop_toBottomOf="@+id/floatingActionButton_InterestActivity_addInterest1"
         app:srcCompat="@android:drawable/ic_input_add" />
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/addInterest4"
+        android:id="@+id/floatingActionButton_InterestActivity_addInterest4"
         android:layout_width="51dp"
         android:layout_height="49dp"
         android:clickable="true"
         android:tint="@android:color/background_light"
         app:backgroundTint="@android:color/darker_gray"
-        app:layout_constraintBottom_toBottomOf="@+id/addInterest3"
-        app:layout_constraintEnd_toEndOf="@+id/addInterest2"
-        app:layout_constraintTop_toTopOf="@+id/addInterest3"
+        app:layout_constraintBottom_toBottomOf="@+id/floatingActionButton_InterestActivity_addInterest3"
+        app:layout_constraintEnd_toEndOf="@+id/floatingActionButton_InterestActivity_addInterest2"
+        app:layout_constraintTop_toTopOf="@+id/floatingActionButton_InterestActivity_addInterest3"
         app:srcCompat="@android:drawable/ic_input_add" />
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/addInterest5"
+        android:id="@+id/floatingActionButton_InterestActivity_addInterest5"
         android:layout_width="51dp"
         android:layout_height="49dp"
         android:layout_marginTop="36dp"
         android:clickable="true"
         android:tint="@android:color/background_light"
         app:backgroundTint="@android:color/darker_gray"
-        app:layout_constraintStart_toStartOf="@+id/addInterest3"
-        app:layout_constraintTop_toBottomOf="@+id/addInterest3"
+        app:layout_constraintStart_toStartOf="@+id/floatingActionButton_InterestActivity_addInterest3"
+        app:layout_constraintTop_toBottomOf="@+id/floatingActionButton_InterestActivity_addInterest3"
         app:srcCompat="@android:drawable/ic_input_add" />
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/addInterest6"
+        android:id="@+id/floatingActionButton_InterestActivity_addInterest6"
         android:layout_width="51dp"
         android:layout_height="49dp"
         android:clickable="true"
         android:tint="@android:color/background_light"
         app:backgroundTint="@android:color/darker_gray"
-        app:layout_constraintBottom_toBottomOf="@+id/addInterest5"
-        app:layout_constraintEnd_toEndOf="@+id/addInterest4"
-        app:layout_constraintTop_toTopOf="@+id/addInterest5"
+        app:layout_constraintBottom_toBottomOf="@+id/floatingActionButton_InterestActivity_addInterest5"
+        app:layout_constraintEnd_toEndOf="@+id/floatingActionButton_InterestActivity_addInterest4"
+        app:layout_constraintTop_toTopOf="@+id/floatingActionButton_InterestActivity_addInterest5"
         app:srcCompat="@android:drawable/ic_input_add" />
 
     <EditText
-        android:id="@+id/userDescription"
+        android:id="@+id/editText_InterestActivity_userDescription"
         android:layout_width="346dp"
         android:layout_height="133dp"
         android:layout_marginBottom="12dp"
@@ -94,13 +94,13 @@
         android:padding="12dp"
         android:scrollbars="vertical"
         android:text="My very photogenic mother died in an accident when I was three, and, save for a pocket of warmth in the darkest past, nothing of her subsists within the hollows and dells of memory, over which, if you can still stand my style (I am writing under observation), the sun of my infancy had set: surely, you all know those redolent remnants of day suspended, with the midges, about some hedge in bloom or suddenly entered and traversed by the rambler, at the bottom of a hill, in the summer dusk; a furry warmth, golden midges."
-        app:layout_constraintBottom_toTopOf="@+id/saveButton"
+        app:layout_constraintBottom_toTopOf="@+id/button_InterestActivity_saveButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.512"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/saveButton"
+        android:id="@+id/button_InterestActivity_saveButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="24dp"

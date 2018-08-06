@@ -8,7 +8,7 @@ public class User {
     //private userProfilepic;
     private String[]userInterests;
 
-    public User(){};
+    public User(){}
 
     public User(String userID, String userName, String userEmail, String[] userInterests) {
         this.userID = userID;
