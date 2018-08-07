@@ -18,6 +18,7 @@ public class HomeActivity extends AppCompatActivity {
     ListView listView_LobbyList;
     TextView textView_Nearbylobby;
     Button button_Createlobby;
+    Button button_Viewprofile;
 
 
     @Override
@@ -30,6 +31,7 @@ public class HomeActivity extends AppCompatActivity {
         listView_LobbyList = findViewById(R.id.listView_HomeActivity_lobbyList);
         textView_Nearbylobby = findViewById(R.id.textView_HomeActivity_nearbyLobby);
         button_Createlobby = findViewById(R.id.button_HomeActivity_createLobby);
+        button_Viewprofile = findViewById(R.id.button_HomeActivity_viewProfile);
 
         button_Createlobby.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -39,7 +41,23 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
-
         Log.d(TAG, "onCreate: out");
+
+        button_Createlobby.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), CreateLobbyActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        button_Viewprofile.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                Intent intent = new Intent (getApplicationContext(), ProfileActivity.class);
+                startActivity(intent);
+            }
+        });
+
     }
 }

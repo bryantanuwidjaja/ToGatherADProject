@@ -1,7 +1,9 @@
 package com.example.bryan.togatheradproject;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -36,5 +38,12 @@ public class ProfileActivity extends AppCompatActivity {
         textView_Interest7 = findViewById(R.id.textView_ProfileScreen_interest7);
         textView_Interest8 = findViewById(R.id.textView_ProfileScreen_interest8);
 
+        textView_Interest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), InterestActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 }
