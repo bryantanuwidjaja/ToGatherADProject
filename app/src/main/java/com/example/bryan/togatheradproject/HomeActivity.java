@@ -1,8 +1,10 @@
 package com.example.bryan.togatheradproject;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -29,8 +31,15 @@ public class HomeActivity extends AppCompatActivity {
         textView_Nearbylobby = findViewById(R.id.textView_HomeActivity_nearbyLobby);
         button_Createlobby = findViewById(R.id.button_HomeActivity_createLobby);
 
+        button_Createlobby.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), CreateLobbyActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
         Log.d(TAG, "onCreate: out");
-
-
     }
 }
