@@ -10,11 +10,12 @@
         android:id="@+id/textView_RegistrationActivity_email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="32dp"
         android:text="Email"
         android:textSize="14sp"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="46dp" />
+        app:layout_constraintStart_toStartOf="@+id/guideline1"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/editText_RegistrationActivity_email"
