@@ -37,6 +37,7 @@ public class RegistrationActivity extends AppCompatActivity {
     private TextView textView_Password;
     private TextView textView_RePassword;
     private Button button_Create;
+
     private char[] emailChar = {'@', '.'};
     private FirebaseAuth mAuth;
     private FirebaseAuthInvalidCredentialsException firebaseAuthInvalidCredentialsException;
@@ -104,6 +105,9 @@ public class RegistrationActivity extends AppCompatActivity {
 //        updateUI(currentUser);
 //   }
 
+    private Button button_Cancel;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -121,6 +125,8 @@ public class RegistrationActivity extends AppCompatActivity {
         textView_Password = findViewById(R.id.textView_RegistrationActivity_password);
         textView_RePassword = findViewById(R.id.textView_RegistrationActivity_rePassword);
         button_Create = findViewById(R.id.button_RegistrationActivity_create);
+        button_Cancel = findViewById(R.id.button_RegistrationActivity_cancel);
+
 
         button_Create.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -178,6 +184,13 @@ public class RegistrationActivity extends AppCompatActivity {
                 }
 
                 Log.d(TAG, "onClick: create button - out");
+            }
+        });
+        button_Cancel.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                Intent intent = new Intent (getApplicationContext(), LoginActivity.class);
+                startActivity(intent);
             }
         });
         Log.d(TAG, "onCreate: out " + TAG);
