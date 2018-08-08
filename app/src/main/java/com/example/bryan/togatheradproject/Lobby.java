@@ -3,20 +3,19 @@ package com.example.bryan.togatheradproject;
 public class Lobby {
 
     private String lobbyID;
+    private String hostID;
     private int capacity;
     private String location;
     private String lobbyDescriptions;
-    private String hostID;
     private String activity;
     private String guestID[];
 
-    public Lobby(String lobbyID, int capacity, String lobbyDescriptions, String hostID, String activity) {
-        this.lobbyID = lobbyID;
+    public Lobby(String[] guestID, int capacity, String lobbyDescriptions, String activity, String location) {
         this.capacity = capacity;
         this.lobbyDescriptions = lobbyDescriptions;
-        this.hostID = hostID;
         this.activity = activity;
         this.location = location;
+        this.guestID = guestID;
     }
 
     public Lobby(){
