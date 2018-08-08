@@ -31,35 +31,22 @@
         app:layout_constraintTop_toBottomOf="@+id/imageView_ProfileScreen_image" />
 
     <TextView
-        android:id="@+id/textView_ProfileScreen_interest"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="Interest: "
-        app:layout_constraintBottom_toTopOf="@+id/textView_ProfileScreen_interest5"
-        app:layout_constraintStart_toStartOf="@+id/guideline"
-        app:layout_constraintTop_toBottomOf="@+id/textView_ProfileScreen_username" />
-
-    <TextView
         android:id="@+id/textView_ProfileScreen_interest1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
-        android:layout_marginBottom="24dp"
-        android:layout_marginEnd="8dp"
-        android:text="TextView"
-        app:layout_constraintBottom_toTopOf="@+id/textView_ProfileScreen_interest2"
-        app:layout_constraintEnd_toStartOf="@+id/guideline2" />
+        android:layout_marginBottom="32dp"
+        android:layout_marginStart="8dp"
+        android:text="Interest: "
+        app:layout_constraintBottom_toTopOf="@+id/textView_ProfileScreen_interest5"
+        app:layout_constraintStart_toStartOf="@+id/guideline" />
 
 
     <TextView
         android:id="@+id/textView_ProfileScreen_interest2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="24dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="32dp"
+        android:layout_marginEnd="16dp"
         android:text="TextView"
         app:layout_constraintBottom_toTopOf="@+id/textView_ProfileScreen_interest3"
         app:layout_constraintEnd_toStartOf="@+id/guideline2" />
@@ -69,8 +56,8 @@
         android:id="@+id/textView_ProfileScreen_interest3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="24dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="32dp"
+        android:layout_marginEnd="16dp"
         android:text="TextView"
         app:layout_constraintBottom_toTopOf="@+id/textView_ProfileScreen_interest4"
         app:layout_constraintEnd_toStartOf="@+id/guideline2" />
@@ -80,10 +67,10 @@
         android:id="@+id/textView_ProfileScreen_interest4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
+        android:layout_marginEnd="16dp"
 
         android:text="TextView"
-        app:layout_constraintBaseline_toBaselineOf="@+id/textView_ProfileScreen_interest8"
+        app:layout_constraintBaseline_toBaselineOf="@+id/textView_ProfileScreen_interest7"
         app:layout_constraintEnd_toStartOf="@+id/guideline2" />
 
 
@@ -92,8 +79,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
-        android:layout_marginBottom="24dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginBottom="32dp"
+        android:layout_marginStart="16dp"
         android:text="TextView"
         app:layout_constraintBottom_toTopOf="@+id/textView_ProfileScreen_interest6"
         app:layout_constraintStart_toStartOf="@+id/guideline" />
@@ -104,31 +91,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
-        android:layout_marginBottom="24dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginBottom="32dp"
+        android:layout_marginStart="16dp"
         android:text="TextView"
         app:layout_constraintBottom_toTopOf="@+id/textView_ProfileScreen_interest7"
         app:layout_constraintStart_toStartOf="@+id/guideline" />
-
 
     <TextView
         android:id="@+id/textView_ProfileScreen_interest7"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
-        android:layout_marginBottom="24dp"
-        android:layout_marginStart="8dp"
-        android:text="TextView"
-        app:layout_constraintBottom_toTopOf="@+id/textView_ProfileScreen_interest8"
-        app:layout_constraintStart_toStartOf="@+id/guideline" />
-
-    <TextView
-        android:id="@+id/textView_ProfileScreen_interest8"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-
-        android:layout_marginBottom="24dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginBottom="64dp"
+        android:layout_marginStart="16dp"
         android:text="TextView"
         app:layout_constraintBottom_toTopOf="@+id/guideline3"
         app:layout_constraintStart_toStartOf="@+id/guideline" />
@@ -139,20 +114,40 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_begin="79dp" />
+        app:layout_constraintGuide_percent="0.1" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_end="80dp" />
+        app:layout_constraintGuide_percent="0.9" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.7592955" />
+        app:layout_constraintGuide_percent="0.75" />
+
+    <Button
+        android:id="@+id/button_ProfileScreen_saveButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="24dp"
+        android:text="Save"
+        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintTop_toTopOf="@+id/guideline3" />
+
+    <Button
+        android:id="@+id/button_ProfileScreen_cancelButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
+        android:layout_marginTop="24dp"
+        android:text="Cancel"
+        app:layout_constraintEnd_toStartOf="@+id/guideline2"
+        app:layout_constraintTop_toTopOf="@+id/guideline3" />
 
 </android.support.constraint.ConstraintLayout>
