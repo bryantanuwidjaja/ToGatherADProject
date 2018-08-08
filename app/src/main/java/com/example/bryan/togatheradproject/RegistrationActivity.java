@@ -13,8 +13,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -31,12 +36,49 @@ public class RegistrationActivity extends AppCompatActivity {
     private TextView textView_Password;
     private TextView textView_RePassword;
     private Button button_Create;
+    private FirebaseAuth mAuth;
+
+    private void updateUI(FirebaseUser user) {
+        if (user != null) {
+            Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+            startActivity(intent);
+        }
+    }
+
+    private void createUser(String regisEmail, String regisPassword) {
+        Log.d(TAG, "regisEmail :" + regisEmail);
+        Log.d(TAG, "regisPassword: " + regisPassword);
+        mAuth.createUserWithEmailAndPassword(regisEmail, regisPassword)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            Log.d(TAG, "createUserWithEmail: success");
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            updateUI(user);
+                        } else {
+                            Log.w(TAG, "createUserWithEmail; failure", task.getException());
+                            Toast.makeText(RegistrationActivity.this, "Authentication failed",
+                                    Toast.LENGTH_SHORT).show();
+                            updateUI(null);
+                        }
+                    }
+                });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        updateUI(currentUser);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
         Log.d(TAG, "onCreate: in " + TAG);
+        mAuth = FirebaseAuth.getInstance();
 
         editText_Email = findViewById(R.id.editText_RegistrationActivity_email);
         editText_Username = findViewById(R.id.editText_RegistrationActivity_username);
@@ -57,10 +99,10 @@ public class RegistrationActivity extends AppCompatActivity {
                 String regisPassword = editText_Password.getText().toString();
                 String regisRePassword = editText_RePassword.getText().toString();
 
-
                 if (regisPassword.equals(regisRePassword)) {
                     Log.d(TAG, "onClick: IF - in ");
                     User user = new User(regisPassword, regisName, regisEmail, 0, null);
+                    createUser(regisEmail, regisPassword);
                     FirebaseFirestore.getInstance().collection("user")
                             .add(user)
                             .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
