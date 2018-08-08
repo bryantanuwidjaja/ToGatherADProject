@@ -1,28 +1,33 @@
 package com.example.bryan.togatheradproject;
 
 public class User {
-    private String userID;
+    private String password;
     private String userName;
     private String userEmail;
     private int userRating=0;
     //private userProfilepic;
     private String[]userInterests;
 
-    public User(){};
+    public User(){}
 
-    public User(String userID, String userName, String userEmail, String[] userInterests) {
-        this.userID = userID;
+    public User(String password, String userName, String userEmail, int userRating, String[] userInterests) {
+        this.password = password;
         this.userName = userName;
         this.userEmail = userEmail;
+        this.userRating = userRating;
         this.userInterests = userInterests;
     }
 
-    public String getUserID() {
-        return userID;
+    public String getPassword() {
+        return password;
     }
 
-    public void setUserID(String userID) {
-        this.userID = userID;
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setUserRating(int userRating) {
+        this.userRating = userRating;
     }
 
     public String getUserName() {
