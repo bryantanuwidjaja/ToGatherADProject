@@ -51,10 +51,10 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
-        button_Viewprofile.setOnClickListener(new View.OnClickListener(){
+        button_Viewprofile.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){
-                Intent intent = new Intent (getApplicationContext(), ProfileActivity.class);
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
                 startActivity(intent);
             }
         });

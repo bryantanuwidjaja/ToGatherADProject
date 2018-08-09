@@ -8,7 +8,8 @@ public class User {
     //private userProfilepic;
     private String[]userInterests;
 
-    public User(){}
+    public User() {
+    }
 
     public User(String password, String userName, String userEmail, int userRating, String[] userInterests) {
         this.password = password;

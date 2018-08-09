@@ -7,7 +7,8 @@ public class Promotion {
     private String detail;
     private Date date;
 
-    public Promotion(){}
+    public Promotion() {
+    }
 
     public Promotion(String location, String detail, Date date) {
         this.location = location;

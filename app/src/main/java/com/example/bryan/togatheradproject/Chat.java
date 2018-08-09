@@ -13,7 +13,8 @@ public class Chat {
         this.time = time;
     }
 
-    public Chat(){}
+    public Chat() {
+    }
 
     public String getUsername() {
         return username;
