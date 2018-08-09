@@ -12,17 +12,26 @@ import android.widget.TextView;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import java.util.HashMap;
-import java.util.Map;
+import com.google.protobuf.Any;
+
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-
-
 public class CreateLobbyActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
 
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        String text = parent.getItemAtPosition(position).toString();
+        Toast.makeText(parent.getContext(), text, Toast.LENGTH_SHORT).show();
+        ;
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
+    }
 
     private static final String TAG = "CreateLobbyActivity";
     TextView textView_Activity;
@@ -46,14 +55,23 @@ public class CreateLobbyActivity extends AppCompatActivity implements AdapterVie
         button_Create = findViewById(R.id.button_CreateLobbyActivity_create);
         button_Cancel = findViewById(R.id.button_CreateLobbyActivity_cancel);
 
+        final Spinner spinner = findViewById(R.id.spinnerActivities);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.activities, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+        spinner.setOnItemSelectedListener(this);
+
+
         button_Create.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String description = editText_Description.getText().toString();
                 String temp_Capacity = editText_Capacity.getText().toString();
                 int capacity = (Integer.parseInt(temp_Capacity));
+                String activity = spinner.getSelectedItem().toString();
 
-                Lobby lobby = new Lobby(null, capacity, description, "dummy activity", "dummy location");
+
+                Lobby lobby = new Lobby(null, capacity, description, activity, "dummy location");
 
                 FirebaseFirestore.getInstance().collection("lobby")
                         .add(lobby)
@@ -81,22 +99,6 @@ public class CreateLobbyActivity extends AppCompatActivity implements AdapterVie
                 startActivity(intent);
             }
         });
-        Spinner spinner = findViewById(R.id.spinnerActivities);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.activities, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item );
-        spinner.setAdapter(adapter);
-        spinner.setOnItemSelectedListener(this);
-
-    }
-
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        String text = parent.getItemAtPosition(position).toString();
-        Toast.makeText(parent.getContext(), text, Toast.LENGTH_SHORT).show();;
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {
 
     }
 }

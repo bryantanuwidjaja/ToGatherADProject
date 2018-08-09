@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -44,12 +45,14 @@ public class LoginActivity extends AppCompatActivity {
                     public void onSuccess(AuthResult authResult) {
                         Log.d(TAG, "onSuccess: in");
                         Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                        Toast.makeText(getApplicationContext(), "Login successful", Toast.LENGTH_SHORT).show();
                         startActivity(intent);
                     }
                 }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
                 Log.e(TAG, "onFailure: Could not sign in user" + e);
+                Toast.makeText(getApplicationContext(), "Login failed", Toast.LENGTH_SHORT).show();
             }
         });
         Log.d(TAG, "Login: out");
