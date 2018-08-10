@@ -9,7 +9,9 @@ public class Activity {
         this.activityID = activityID;
         this.activityName = activityName;
     }
-    public Activity(){}
+
+    public Activity() {
+    }
 
     public String getActivityID() {
         return activityID;
