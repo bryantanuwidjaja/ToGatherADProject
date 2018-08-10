@@ -33,6 +33,7 @@ public class CreateLobbyActivity extends AppCompatActivity implements AdapterVie
     EditText editText_Capacity;
     EditText editText_Description;
     Button button_Create;
+    Button button_Cancel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +46,7 @@ public class CreateLobbyActivity extends AppCompatActivity implements AdapterVie
         editText_Capacity = findViewById(R.id.editText_CreateLobbyActivity_capacity);
         editText_Description = findViewById(R.id.editText_CreateLobbyActivity_description);
         button_Create = findViewById(R.id.button_CreateLobbyActivity_create);
+        button_Cancel = findViewById(R.id.button_CreateLobbyActivity_cancel);
 
         button_Create.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -53,17 +55,10 @@ public class CreateLobbyActivity extends AppCompatActivity implements AdapterVie
                 String temp_Capacity = editText_Capacity.getText().toString();
                 int capacity = (Integer.parseInt(temp_Capacity));
 
-                Map data = new HashMap();
-                data.put("capacity", capacity);
-                data.put("hostID", "dummyID");
-                data.put("guestID array", "guest IDs");
-                data.put("description", description);
-                data.put("activity", "dummy activity");
-                data.put("location", "dummy location");
-
+                Lobby lobby = new Lobby(null, capacity, description, "dummy activity", "dummy location");
 
                 FirebaseFirestore.getInstance().collection("lobby")
-                        .add(data)
+                        .add(lobby)
                         .addOnSuccessListener(new OnSuccessListener() {
                             @Override
                             public void onSuccess(Object o) {
@@ -79,6 +74,13 @@ public class CreateLobbyActivity extends AppCompatActivity implements AdapterVie
                             }
                         });
 
+            }
+        });
+        button_Cancel.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                Intent intent = new Intent (getApplicationContext(), HomeActivity.class);
+                startActivity(intent);
             }
         });
         Spinner spinner = findViewById(R.id.spinnerActivities);

@@ -13,8 +13,14 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -32,11 +38,83 @@ public class RegistrationActivity extends AppCompatActivity {
     private TextView textView_RePassword;
     private Button button_Create;
 
+    private char[] emailChar = {'@', '.'};
+    private FirebaseAuth mAuth;
+    private FirebaseAuthInvalidCredentialsException firebaseAuthInvalidCredentialsException;
+
+    private String checkEmail(String email, char[] emailChar) {
+        while (true) {
+            for (int i = 0; i < emailChar.length; i++) {
+                String currentChar = Character.toString(emailChar[i]);
+                if (!email.contains(currentChar)) {
+                    clearEditText();
+                    Toast.makeText(RegistrationActivity.this, "Invalid Email Address",
+                            Toast.LENGTH_SHORT).show();
+                    email = "";
+                    return email;
+                } else {
+                    return email;
+                }
+            }
+        }
+    }
+
+    private void updateUI(FirebaseUser user) {
+        if (user != null) {
+            Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+            startActivity(intent);
+        } else {
+            clearEditText();
+        }
+    }
+
+    private void clearEditText() {
+        editText_Email.setText("");
+        editText_Password.setText("");
+        editText_RePassword.setText("");
+        editText_Username.setText("");
+    }
+
+    private void createUser(String regisEmail, String regisPassword) {
+        Log.d(TAG, "regisEmail :" + regisEmail);
+        Log.d(TAG, "regisPassword: " + regisPassword);
+        mAuth.createUserWithEmailAndPassword(regisEmail, regisPassword)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                if (task.isSuccessful()) {
+                                    Log.d(TAG, "createUserWithEmail: success");
+                                    FirebaseUser user = mAuth.getCurrentUser();
+                                    updateUI(user);
+                                } else {
+                                    Log.w(TAG, "createUserWithEmail: failure", task.getException());
+                                    Toast.makeText(RegistrationActivity.this, "Account creation failed",
+                                            Toast.LENGTH_SHORT).show();
+                                    updateUI(null);
+                                }
+                            }
+                        }
+                );
+    }
+
+
+//    @Override
+//    protected void onStart() {
+//        super.onStart();
+//        FirebaseUser currentUser = mAuth.getCurrentUser();
+//        updateUI(currentUser);
+//   }
+
+    private Button button_Cancel;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
         Log.d(TAG, "onCreate: in " + TAG);
+
+        mAuth = FirebaseAuth.getInstance();
 
         editText_Email = findViewById(R.id.editText_RegistrationActivity_email);
         editText_Username = findViewById(R.id.editText_RegistrationActivity_username);
@@ -47,6 +125,8 @@ public class RegistrationActivity extends AppCompatActivity {
         textView_Password = findViewById(R.id.textView_RegistrationActivity_password);
         textView_RePassword = findViewById(R.id.textView_RegistrationActivity_rePassword);
         button_Create = findViewById(R.id.button_RegistrationActivity_create);
+        button_Cancel = findViewById(R.id.button_RegistrationActivity_cancel);
+
 
         button_Create.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,18 +137,30 @@ public class RegistrationActivity extends AppCompatActivity {
                 String regisPassword = editText_Password.getText().toString();
                 String regisRePassword = editText_RePassword.getText().toString();
 
+                regisEmail = checkEmail(regisEmail, emailChar);
 
-                if (regisPassword.equals(regisRePassword)) {
+                Log.d(TAG, "regisEmail: " + regisEmail);
+                Log.d(TAG, "regisName: " + regisName);
+                Log.d(TAG, "regisPassword: " + regisPassword);
+                Log.d(TAG, "regisRePassword: " + regisRePassword);
+
+                if (regisPassword.equals(regisRePassword) && regisPassword.length() >= 6 && !regisEmail.equals("")) {
                     Log.d(TAG, "onClick: IF - in ");
                     User user = new User(regisPassword, regisName, regisEmail, 0, null);
+                    //createUser(regisEmail, regisPassword);
+
                     FirebaseFirestore.getInstance().collection("user")
                             .add(user)
                             .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                                 @Override
                                 public void onSuccess(DocumentReference documentReference) {
+                                    String regisEmail = editText_Email.getText().toString();
+                                    String regisPassword = editText_Password.getText().toString();
+                                    createUser(regisEmail, regisPassword);
                                     Intent intent = new Intent(getApplication(), LoginActivity.class);
-                                    startActivity(intent);
                                     Log.d(TAG, "onSuccess: creation success");
+                                    Toast.makeText(getApplicationContext(), "Account creation successful", Toast.LENGTH_SHORT).show();
+                                    startActivity(intent);
                                 }
                             })
                             .addOnFailureListener(new OnFailureListener() {
@@ -77,9 +169,28 @@ public class RegistrationActivity extends AppCompatActivity {
                                     Log.e(TAG, "onFailure: Account creation failed, please retry again" + e);
                                 }
                             });
-                    Toast.makeText(getApplicationContext(), "Account creation successful", Toast.LENGTH_SHORT).show();
+                } else if (regisPassword.length() < 6) {
+                    clearEditText();
+                    Toast.makeText(getApplicationContext(), "Password needs to be more than 6 characters", Toast.LENGTH_SHORT).show();
+                } else if (!regisPassword.equals(regisRePassword)) {
+                    clearEditText();
+                    Toast.makeText(getApplicationContext(), "Passwords are not the same", Toast.LENGTH_SHORT).show();
+                } else if (regisName.length() <= 4) {
+                    clearEditText();
+                    Toast.makeText(getApplicationContext(), "Username must be longer than 3 characters", Toast.LENGTH_SHORT).show();
+                } else if (regisEmail.equals("") && regisName.equals("") && regisPassword.equals("") && regisRePassword.equals("")) {
+                    clearEditText();
+                    Toast.makeText(getApplicationContext(), "Please fill all of the fields", Toast.LENGTH_SHORT).show();
                 }
+
                 Log.d(TAG, "onClick: create button - out");
+            }
+        });
+        button_Cancel.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                Intent intent = new Intent (getApplicationContext(), LoginActivity.class);
+                startActivity(intent);
             }
         });
         Log.d(TAG, "onCreate: out " + TAG);
