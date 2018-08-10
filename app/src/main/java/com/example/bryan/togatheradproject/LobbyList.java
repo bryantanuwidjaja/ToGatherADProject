@@ -27,10 +27,17 @@ public class LobbyList extends ArrayAdapter<Lobby> {
         LayoutInflater inflater = context.getLayoutInflater();
 
         View listViewItem = inflater.inflate(R.layout.lobby_list_layout, null, true);
-        TextView textView_HostID = listViewItem.findViewById(R.id.textView_LobbyListLayout_hostID);
+        TextView textView_Capacity = listViewItem.findViewById(R.id.textView_LobbyListLayout_capacity);
         TextView textView_Location = listViewItem.findViewById(R.id.textView_LobbyListLayout_location);
         TextView textView_Activity = listViewItem.findViewById(R.id.textView_LobbyListLayout_activity);
+        TextView textView_Descriptions = listViewItem.findViewById(R.id.textView_LobbyListLayout_descriptions);
+
         Lobby lobby = lobbyList.get(position);
+        textView_Capacity.setText(String.valueOf(lobby.getCapacity()));
+        textView_Location.setText(lobby.getLocation());
+        textView_Activity.setText(lobby.getActivity());
+        textView_Descriptions.setText(lobby.getLobbyDescriptions());
+
 
         return listViewItem;
     }

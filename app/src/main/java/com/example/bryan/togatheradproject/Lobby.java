@@ -8,14 +8,20 @@ public class Lobby {
     private String location;
     private String lobbyDescriptions;
     private String activity;
-    private String guestID[];
 
     public Lobby(String[] guestID, int capacity, String lobbyDescriptions, String activity, String location) {
         this.capacity = capacity;
         this.lobbyDescriptions = lobbyDescriptions;
         this.activity = activity;
         this.location = location;
-        this.guestID = guestID;
+    }
+
+    //temporary constructor
+    public Lobby(int capacity, String location, String activity, String lobbyDescriptions) {
+        this.capacity = capacity;
+        this.location = location;
+        this.activity = activity;
+        this.lobbyDescriptions = lobbyDescriptions;
     }
 
     public Lobby(){
@@ -24,10 +30,6 @@ public class Lobby {
 
     public String getLocation() {
         return location;
-    }
-
-    public String[] getGuestID() {
-        return guestID;
     }
 
     public void getLocation(String location) {
@@ -72,10 +74,6 @@ public class Lobby {
 
     public void setActivity(String activity) {
         this.activity = activity;
-    }
-
-    public void setGuestID(String[] guestID) {
-        this.guestID = guestID;
     }
 
     public void setLocation(String location) {

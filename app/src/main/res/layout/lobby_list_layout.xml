@@ -13,20 +13,28 @@
         android:text="Location" />
 
     <TextView
-        android:id="@+id/textView_LobbyListLayout_hostID"
+        android:id="@+id/textView_LobbyListLayout_capacity"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/textView_LobbyListLayout_location"
         android:maxLength="20"
-        android:text="Host ID" />
+        android:text="Capacity" />
 
     <TextView
         android:id="@+id/textView_LobbyListLayout_activity"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/textView_LobbyListLayout_hostID"
+        android:layout_below="@+id/textView_LobbyListLayout_capacity"
         android:maxLength="15"
         android:text="Activity" />
+
+    <TextView
+        android:id="@+id/textView_LobbyListLayout_descriptions"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/textView_LobbyListLayout_activity"
+        android:text="Descriptions" />
 </RelativeLayout>
