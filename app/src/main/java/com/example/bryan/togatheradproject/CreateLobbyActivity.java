@@ -19,7 +19,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-public class CreateLobbyActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
+public class CreateLobbyActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -92,10 +92,10 @@ public class CreateLobbyActivity extends AppCompatActivity implements AdapterVie
 
             }
         });
-        button_Cancel.setOnClickListener(new View.OnClickListener(){
+        button_Cancel.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){
-                Intent intent = new Intent (getApplicationContext(), HomeActivity.class);
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
                 startActivity(intent);
             }
         });
