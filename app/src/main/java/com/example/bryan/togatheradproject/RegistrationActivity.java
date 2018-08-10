@@ -186,10 +186,10 @@ public class RegistrationActivity extends AppCompatActivity {
                 Log.d(TAG, "onClick: create button - out");
             }
         });
-        button_Cancel.setOnClickListener(new View.OnClickListener(){
+        button_Cancel.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){
-                Intent intent = new Intent (getApplicationContext(), LoginActivity.class);
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                 startActivity(intent);
             }
         });
