@@ -30,7 +30,7 @@
         android:id="@+id/textView_CreateLobbyActivity_capacity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="16dp"
         android:text="Capacity"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="@+id/guideline2"
@@ -54,7 +54,7 @@
         android:id="@+id/textView_CreateLobbyActivity_description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="16dp"
         android:text="Description"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="@+id/guideline2"
@@ -79,13 +79,13 @@
         android:id="@+id/button_CreateLobbyActivity_create"
         android:layout_width="292dp"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:text="Create"
+        app:layout_constraintBottom_toTopOf="@+id/button_CreateLobbyActivity_cancel"
         app:layout_constraintEnd_toStartOf="@+id/guideline4"
-        app:layout_constraintStart_toStartOf="@+id/guideline2"
-        app:layout_constraintTop_toBottomOf="@+id/editText_CreateLobbyActivity_description" />
+        app:layout_constraintStart_toStartOf="@+id/guideline2" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline2"
@@ -112,11 +112,31 @@
         android:id="@+id/button_CreateLobbyActivity_cancel"
         android:layout_width="292dp"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:text="Cancel"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline4"
-        app:layout_constraintStart_toEndOf="@+id/guideline2"
-        app:layout_constraintTop_toBottomOf="@+id/button_CreateLobbyActivity_create" />
+        app:layout_constraintStart_toEndOf="@+id/guideline2" />
+
+    <Button
+        android:id="@+id/button_CreateLobbyActivity_fetch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:onClick="fetchAddressButtonHandler"
+        android:text="Fetch Address"
+        app:layout_constraintStart_toStartOf="@+id/guideline2"
+        app:layout_constraintTop_toBottomOf="@+id/editText_CreateLobbyActivity_description" />
+
+    <TextView
+        android:id="@+id/textView_CreateLobbyActivity_address"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toEndOf="@+id/button_CreateLobbyActivity_fetch"
+        app:layout_constraintTop_toBottomOf="@+id/editText_CreateLobbyActivity_description" />
 </android.support.constraint.ConstraintLayout>
