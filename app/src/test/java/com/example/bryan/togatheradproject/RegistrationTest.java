@@ -7,7 +7,7 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 
-public class CheckNewUserIsInDatabase {
+public class RegistrationTest {
     private String expectedEmail = "dummy1@dummy.com";
     private String expectedUsername = "dummy1";
     private String expectedPassword = "nopassword";
@@ -24,15 +24,13 @@ public class CheckNewUserIsInDatabase {
     @Test
     public void registerWithWrongPassword(){
         RegistrationActivity checkPassword = new RegistrationActivity();
-        //Assert.assertEquals(checkPassword.checkIfPasswordSame(expectedPassword, wrongPassword), false);
+        Assert.assertEquals(checkPassword.checkIfPasswordSame(expectedPassword, wrongPassword), false);
     }
 
     @Test
     public void registerWithCorrectPassword(){
         RegistrationActivity checkPassword = new RegistrationActivity();
-        //Assert.assertEquals(checkPassword.checkIfPasswordSame(expectedPassword, expectedPassword), true);
+        Assert.assertEquals(checkPassword.checkIfPasswordSame(expectedPassword, expectedPassword), true);
     }
-
-
 
 }

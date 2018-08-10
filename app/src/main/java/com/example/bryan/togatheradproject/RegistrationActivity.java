@@ -107,6 +107,10 @@ public class RegistrationActivity extends AppCompatActivity {
 
     private Button button_Cancel;
 
+    public boolean checkIfPasswordSame(String password1, String password2){
+        return password1.equals(password2) && password1.length() >= 6;
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -144,7 +148,7 @@ public class RegistrationActivity extends AppCompatActivity {
                 Log.d(TAG, "regisPassword: " + regisPassword);
                 Log.d(TAG, "regisRePassword: " + regisRePassword);
 
-                if (regisPassword.equals(regisRePassword) && regisPassword.length() >= 6 && !regisEmail.equals("")) {
+                if (checkIfPasswordSame(regisPassword, regisRePassword)&& !regisEmail.equals("")) {
                     Log.d(TAG, "onClick: IF - in ");
                     User user = new User(regisPassword, regisName, regisEmail, 0, null);
                     //createUser(regisEmail, regisPassword);
