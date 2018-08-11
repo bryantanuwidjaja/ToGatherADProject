@@ -6,114 +6,144 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/floatingActionButton_InterestActivity_addInterest1"
-        android:layout_width="51dp"
+    <Button
+        android:id="@+id/button_InterestActivity_saveButton"
+        android:layout_width="131dp"
         android:layout_height="49dp"
-        android:layout_marginStart="72dp"
-        android:layout_marginTop="36dp"
-        android:clickable="true"
-        android:tint="@android:color/background_light"
-        app:backgroundTint="@android:color/darker_gray"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@android:drawable/ic_input_add" />
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/floatingActionButton_InterestActivity_addInterest2"
-        android:layout_width="51dp"
-        android:layout_height="49dp"
-        android:layout_marginEnd="72dp"
-        android:clickable="true"
-        android:tint="@android:color/background_light"
-        app:backgroundTint="@android:color/darker_gray"
-        app:layout_constraintBottom_toBottomOf="@+id/floatingActionButton_InterestActivity_addInterest1"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Save"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/floatingActionButton_InterestActivity_addInterest1"
-        app:layout_constraintVertical_bias="1.0"
-        app:srcCompat="@android:drawable/ic_input_add" />
+        app:layout_constraintStart_toStartOf="@+id/guideline7"
+        app:layout_constraintTop_toTopOf="@+id/guideline10" />
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/floatingActionButton_InterestActivity_addInterest3"
-        android:layout_width="51dp"
-        android:layout_height="49dp"
-        android:layout_marginTop="36dp"
-        android:clickable="true"
-        android:tint="@android:color/background_light"
-        app:backgroundTint="@android:color/darker_gray"
-        app:layout_constraintStart_toStartOf="@+id/floatingActionButton_InterestActivity_addInterest1"
-        app:layout_constraintTop_toBottomOf="@+id/floatingActionButton_InterestActivity_addInterest1"
-        app:srcCompat="@android:drawable/ic_input_add" />
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/floatingActionButton_InterestActivity_addInterest4"
-        android:layout_width="51dp"
-        android:layout_height="49dp"
-        android:clickable="true"
-        android:tint="@android:color/background_light"
-        app:backgroundTint="@android:color/darker_gray"
-        app:layout_constraintBottom_toBottomOf="@+id/floatingActionButton_InterestActivity_addInterest3"
-        app:layout_constraintEnd_toEndOf="@+id/floatingActionButton_InterestActivity_addInterest2"
-        app:layout_constraintTop_toTopOf="@+id/floatingActionButton_InterestActivity_addInterest3"
-        app:srcCompat="@android:drawable/ic_input_add" />
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/floatingActionButton_InterestActivity_addInterest5"
-        android:layout_width="51dp"
-        android:layout_height="49dp"
-        android:layout_marginTop="36dp"
-        android:clickable="true"
-        android:tint="@android:color/background_light"
-        app:backgroundTint="@android:color/darker_gray"
-        app:layout_constraintStart_toStartOf="@+id/floatingActionButton_InterestActivity_addInterest3"
-        app:layout_constraintTop_toBottomOf="@+id/floatingActionButton_InterestActivity_addInterest3"
-        app:srcCompat="@android:drawable/ic_input_add" />
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/floatingActionButton_InterestActivity_addInterest6"
-        android:layout_width="51dp"
-        android:layout_height="49dp"
-        android:clickable="true"
-        android:tint="@android:color/background_light"
-        app:backgroundTint="@android:color/darker_gray"
-        app:layout_constraintBottom_toBottomOf="@+id/floatingActionButton_InterestActivity_addInterest5"
-        app:layout_constraintEnd_toEndOf="@+id/floatingActionButton_InterestActivity_addInterest4"
-        app:layout_constraintTop_toTopOf="@+id/floatingActionButton_InterestActivity_addInterest5"
-        app:srcCompat="@android:drawable/ic_input_add" />
-
-    <EditText
-        android:id="@+id/editText_InterestActivity_userDescription"
-        android:layout_width="0dp"
+    <TextView
+        android:id="@+id/textView_InterestActivity_interest1"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="32dp"
-        android:background="@android:drawable/editbox_background"
-        android:ems="10"
-
-        android:hint="Enter your interest"
-
-        android:inputType="textMultiLine"
-        android:maxLength="25"
-        android:padding="12dp"
-        android:scrollbars="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/button_InterestActivity_saveButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        android:layout_marginTop="8dp"
+        android:text="TextView"
+        app:layout_constraintBottom_toTopOf="@+id/guideline8"
+        app:layout_constraintEnd_toStartOf="@+id/guideline7"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/floatingActionButton_InterestActivity_addInterest6" />
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/button_InterestActivity_saveButton"
+    <TextView
+        android:id="@+id/textView3_InterestActivity_interest3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
+        android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:text="Save"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="8dp"
+        android:text="TextView"
+        app:layout_constraintBottom_toTopOf="@+id/guideline10"
+        app:layout_constraintEnd_toStartOf="@+id/guideline7"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline9" />
+
+    <TextView
+        android:id="@+id/textView2_InterestActivity_interest2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="TextView"
+        app:layout_constraintBottom_toTopOf="@+id/guideline9"
+        app:layout_constraintEnd_toStartOf="@+id/guideline7"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline8" />
+
+    <TextView
+        android:id="@+id/textView4_InterestActivity_interest4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="TextView"
+        app:layout_constraintBottom_toTopOf="@+id/guideline8"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="@+id/guideline7"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView5_InterestActivity_interest5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="TextView"
+        app:layout_constraintBottom_toTopOf="@+id/guideline9"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline7"
+        app:layout_constraintTop_toTopOf="@+id/guideline8" />
+
+    <TextView
+        android:id="@+id/textView6_InterestActivity_interest6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="TextView"
+        app:layout_constraintBottom_toTopOf="@+id/guideline10"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline7"
+        app:layout_constraintTop_toTopOf="@+id/guideline9" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.484375" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.25" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.5" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.75" />
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="111dp"
+        android:layout_height="50dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="ADD"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline7"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline10" />
 
 </android.support.constraint.ConstraintLayout>

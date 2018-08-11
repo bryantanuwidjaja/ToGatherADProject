@@ -27,6 +27,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 public class RegistrationActivity extends AppCompatActivity {
 
     private static final String TAG = "RegistrationActivity";
+    public static final String USER_ID = "userID";
 
     private EditText editText_Email;
     private EditText editText_Username;
@@ -37,6 +38,7 @@ public class RegistrationActivity extends AppCompatActivity {
     private TextView textView_Password;
     private TextView textView_RePassword;
     private Button button_Create;
+    private Button button_Cancel;
 
     private char[] emailChar = {'@', '.'};
     private FirebaseAuth mAuth;
@@ -75,6 +77,49 @@ public class RegistrationActivity extends AppCompatActivity {
         editText_Username.setText("");
     }
 
+    private void updateUserDatabase(String regisPassword, String regisRePassword, String regisEmail, String regisName ){
+        if (regisPassword.equals(regisRePassword) && regisPassword.length() >= 6 && !regisEmail.equals("")) {
+            Log.d(TAG, "onClick: IF - in ");
+            final User user = new User(regisPassword, regisName, regisEmail, 0, null);
+            //createUser(regisEmail, regisPassword);
+            FirebaseFirestore.getInstance().collection("user")
+                    .add(user)
+                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                        @Override
+                        public void onSuccess(DocumentReference documentReference) {
+                            String regisEmail = editText_Email.getText().toString();
+                            String regisPassword = editText_Password.getText().toString();
+                            String userID = documentReference.getId();
+                            createUser(regisEmail, regisPassword);
+                            Intent intent = new Intent(getApplication(), InterestActivity.class);
+                            Log.d(TAG, "onSuccess: creation success");
+                            Toast.makeText(getApplicationContext(), "Account creation successful", Toast.LENGTH_SHORT).show();
+                            intent.putExtra(USER_ID, userID);
+                            startActivity(intent);
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            clearEditText();
+                            Log.e(TAG, "onFailure: Account creation failed, please retry again" + e);
+                        }
+                    });
+        } else if (regisPassword.length() < 6) {
+            clearEditText();
+            Toast.makeText(getApplicationContext(), "Password needs to be more than 6 characters", Toast.LENGTH_SHORT).show();
+        } else if (!regisPassword.equals(regisRePassword)) {
+            clearEditText();
+            Toast.makeText(getApplicationContext(), "Passwords are not the same", Toast.LENGTH_SHORT).show();
+        } else if (regisName.length() <= 4) {
+            clearEditText();
+            Toast.makeText(getApplicationContext(), "Username must be longer than 3 characters", Toast.LENGTH_SHORT).show();
+        } else if (regisEmail.equals("") && regisName.equals("") && regisPassword.equals("") && regisRePassword.equals("")) {
+            clearEditText();
+            Toast.makeText(getApplicationContext(), "Please fill all of the fields", Toast.LENGTH_SHORT).show();
+        }
+    }
+
     private void createUser(String regisEmail, String regisPassword) {
         Log.d(TAG, "regisEmail :" + regisEmail);
         Log.d(TAG, "regisPassword: " + regisPassword);
@@ -105,12 +150,11 @@ public class RegistrationActivity extends AppCompatActivity {
 //        updateUI(currentUser);
 //   }
 
-    private Button button_Cancel;
+    //private Button button_Cancel;
 
     public boolean checkIfPasswordSame(String password1, String password2){
         return password1.equals(password2) && password1.length() >= 6;
     }
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -142,6 +186,7 @@ public class RegistrationActivity extends AppCompatActivity {
                 String regisRePassword = editText_RePassword.getText().toString();
 
                 regisEmail = checkEmail(regisEmail, emailChar);
+
 
                 Log.d(TAG, "regisEmail: " + regisEmail);
                 Log.d(TAG, "regisName: " + regisName);
@@ -187,13 +232,64 @@ public class RegistrationActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Please fill all of the fields", Toast.LENGTH_SHORT).show();
                 }
 
+//                Log.d(TAG, "regisEmail: " + regisEmail);
+//                Log.d(TAG, "regisName: " + regisName);
+//                Log.d(TAG, "regisPassword: " + regisPassword);
+//                Log.d(TAG, "regisRePassword: " + regisRePassword);
+
+                updateUserDatabase(regisPassword,regisRePassword,regisEmail,regisName);
+
+//                if (regisPassword.equals(regisRePassword) && regisPassword.length() >= 6 && !regisEmail.equals("")) {
+//                    Log.d(TAG, "onClick: IF - in ");
+//                    User user = new User(regisPassword, regisName, regisEmail, 0, null);
+//                    //createUser(regisEmail, regisPassword);
+//
+//                    FirebaseFirestore.getInstance().collection("user")
+//                            .add(user)
+//                            .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+//                                @Override
+//                                public void onSuccess(DocumentReference documentReference) {
+//                                    String regisEmail = editText_Email.getText().toString();
+//                                    String regisPassword = editText_Password.getText().toString();
+//                                    String userID = documentReference.getId();
+//                                    createUser(regisEmail, regisPassword);
+//                                    Intent intent = new Intent(getApplication(), LoginActivity.class);
+//                                    Log.d(TAG, "onSuccess: creation success");
+//                                    Toast.makeText(getApplicationContext(), "Account creation successful", Toast.LENGTH_SHORT).show();
+//                                    startActivity(intent);
+//                                }
+//                            })
+//                            .addOnFailureListener(new OnFailureListener() {
+//                                @Override
+//                                public void onFailure(@NonNull Exception e) {
+//                                    Log.e(TAG, "onFailure: Account creation failed, please retry again" + e);
+//                                }
+//                            });
+//                } else if (regisPassword.length() < 6) {
+//                    clearEditText();
+//                    Toast.makeText(getApplicationContext(), "Password needs to be more than 6 characters", Toast.LENGTH_SHORT).show();
+//                } else if (!regisPassword.equals(regisRePassword)) {
+//                    clearEditText();
+//                    Toast.makeText(getApplicationContext(), "Passwords are not the same", Toast.LENGTH_SHORT).show();
+//                } else if (regisName.length() <= 4) {
+//                    clearEditText();
+//                    Toast.makeText(getApplicationContext(), "Username must be longer than 3 characters", Toast.LENGTH_SHORT).show();
+//                } else if (regisEmail.equals("") && regisName.equals("") && regisPassword.equals("") && regisRePassword.equals("")) {
+//                    clearEditText();
+//                    Toast.makeText(getApplicationContext(), "Please fill all of the fields", Toast.LENGTH_SHORT).show();
+//                }
+
+
                 Log.d(TAG, "onClick: create button - out");
             }
         });
         button_Cancel.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+
+            public void onClick(View v){
+                Toast.makeText(getApplicationContext(), "Registration cancelled", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent (getApplicationContext(), LoginActivity.class);
+
                 startActivity(intent);
             }
         });
