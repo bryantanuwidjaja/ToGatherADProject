@@ -40,6 +40,7 @@ public class RegistrationActivity extends AppCompatActivity {
     private Button button_Create;
     private Button button_Cancel;
 
+
     private char[] emailChar = {'@', '.'};
     private FirebaseAuth mAuth;
     private FirebaseAuthInvalidCredentialsException firebaseAuthInvalidCredentialsException;
@@ -150,11 +151,13 @@ public class RegistrationActivity extends AppCompatActivity {
 //        updateUI(currentUser);
 //   }
 
+
     //private Button button_Cancel;
 
     public boolean checkIfPasswordSame(String password1, String password2){
         return password1.equals(password2) && password1.length() >= 6;
     }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -184,6 +187,7 @@ public class RegistrationActivity extends AppCompatActivity {
                 String regisName = editText_Username.getText().toString();
                 String regisPassword = editText_Password.getText().toString();
                 String regisRePassword = editText_RePassword.getText().toString();
+                String userID = null;
 
                 regisEmail = checkEmail(regisEmail, emailChar);
 
@@ -198,13 +202,14 @@ public class RegistrationActivity extends AppCompatActivity {
                     User user = new User(regisPassword, regisName, regisEmail, 0, null);
                     //createUser(regisEmail, regisPassword);
 
-                    FirebaseFirestore.getInstance().collection("user")
+                    FirebaseFirestore.getInstance().collection(Constants.USER)
                             .add(user)
                             .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                                 @Override
                                 public void onSuccess(DocumentReference documentReference) {
                                     String regisEmail = editText_Email.getText().toString();
                                     String regisPassword = editText_Password.getText().toString();
+                                    String userID = null;
                                     createUser(regisEmail, regisPassword);
                                     Intent intent = new Intent(getApplication(), LoginActivity.class);
                                     Log.d(TAG, "onSuccess: creation success");
