@@ -16,17 +16,9 @@ import java.util.List;
 import java.util.Locale;
 
 public class FetchAddressIntentService extends IntentService {
-    private static final String TAG = "FetchAddressIS";
+    private static final String TAG = "FetchAddressIS_TG";
 
-    /**
-     * The receiver where results are forwarded from this service.
-     */
     private ResultReceiver mReceiver;
-
-    /**
-     * This constructor is required, and calls the super IntentService(String)
-     * constructor with the name for a worker thread.
-     */
     public FetchAddressIntentService() {
         // Use the TAG to name the worker thread.
         super(TAG);
@@ -45,7 +37,7 @@ public class FetchAddressIntentService extends IntentService {
     protected void onHandleIntent(Intent intent) {
         String errorMessage = "";
 
-        mReceiver = intent.getParcelableExtra("com.example.bryan.togatheradproject.RECEIVER");
+        mReceiver = intent.getParcelableExtra(Constants.RECEIVER);
 
         // Check if receiver was properly registered.
         if (mReceiver == null) {
@@ -54,14 +46,14 @@ public class FetchAddressIntentService extends IntentService {
         }
 
         // Get the location passed to this service through an extra.
-        Location location = intent.getParcelableExtra("com.example.bryan.togatheradproject..LOCATION_DATA_EXTRA");
+        Location location = intent.getParcelableExtra(Constants.LOCATION_DATA_EXTRA);
 
         // Make sure that the location data was really sent over through an extra. If it wasn't,
         // send an error error message and return.
         if (location == null) {
             errorMessage = getString(R.string.no_location_data_provided);
             Log.wtf(TAG, errorMessage);
-            deliverResultToReceiver(1, errorMessage);
+            deliverResultToReceiver(Constants.FAILURE_RESULT, errorMessage);
             return;
         }
 
@@ -107,7 +99,7 @@ public class FetchAddressIntentService extends IntentService {
                 errorMessage = getString(R.string.no_address_found);
                 Log.e(TAG, errorMessage);
             }
-            deliverResultToReceiver(1, errorMessage);
+            deliverResultToReceiver(Constants.FAILURE_RESULT, errorMessage);
         } else {
             Address address = addresses.get(0);
             ArrayList<String> addressFragments = new ArrayList<>();
@@ -125,7 +117,7 @@ public class FetchAddressIntentService extends IntentService {
                 addressFragments.add(address.getAddressLine(i));
             }
             Log.i(TAG, getString(R.string.address_found));
-            deliverResultToReceiver(0,
+            deliverResultToReceiver(Constants.SUCCESS_RESULT,
                     TextUtils.join(System.getProperty("line.separator"), addressFragments));
         }
     }
@@ -135,7 +127,7 @@ public class FetchAddressIntentService extends IntentService {
      */
     private void deliverResultToReceiver(int resultCode, String message) {
         Bundle bundle = new Bundle();
-        bundle.putString("com.example.bryan.togatheradproject.RESULT_DATA_KEY", message);
+        bundle.putString(Constants.RESULT_DATA_KEY, message);
         mReceiver.send(resultCode, bundle);
     }
 }

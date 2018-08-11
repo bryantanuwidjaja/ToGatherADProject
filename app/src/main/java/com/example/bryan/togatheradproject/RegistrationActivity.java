@@ -24,6 +24,9 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class RegistrationActivity extends AppCompatActivity {
 
     private static final String TAG = "RegistrationActivity";
@@ -38,26 +41,8 @@ public class RegistrationActivity extends AppCompatActivity {
     private TextView textView_RePassword;
     private Button button_Create;
 
-    private char[] emailChar = {'@', '.'};
     private FirebaseAuth mAuth;
     private FirebaseAuthInvalidCredentialsException firebaseAuthInvalidCredentialsException;
-
-    private String checkEmail(String email, char[] emailChar) {
-        while (true) {
-            for (int i = 0; i < emailChar.length; i++) {
-                String currentChar = Character.toString(emailChar[i]);
-                if (!email.contains(currentChar)) {
-                    clearEditText();
-                    Toast.makeText(RegistrationActivity.this, "Invalid Email Address",
-                            Toast.LENGTH_SHORT).show();
-                    email = "";
-                    return email;
-                } else {
-                    return email;
-                }
-            }
-        }
-    }
 
     private void updateUI(FirebaseUser user) {
         if (user != null) {
@@ -75,7 +60,7 @@ public class RegistrationActivity extends AppCompatActivity {
         editText_Username.setText("");
     }
 
-    private void createUser(String regisEmail, String regisPassword) {
+    protected void createUser(String regisEmail, String regisPassword) {
         Log.d(TAG, "regisEmail :" + regisEmail);
         Log.d(TAG, "regisPassword: " + regisPassword);
         mAuth.createUserWithEmailAndPassword(regisEmail, regisPassword)
@@ -106,9 +91,67 @@ public class RegistrationActivity extends AppCompatActivity {
 //   }
 
     private Button button_Cancel;
-
+    private String whyError = "";
     public boolean checkIfPasswordSame(String password1, String password2){
-        return password1.equals(password2) && password1.length() >= 6;
+        boolean result = true;
+        if (!password1.equals(password2)){
+            whyError = "Passwords are not the same";
+            Toast.makeText(getApplicationContext(), whyError, Toast.LENGTH_SHORT).show();
+            result = false;
+            clearEditText();
+        }
+        return result;
+    }
+
+    public boolean checkIfPasswordValid(String password) {
+        boolean result = true;
+        if (password.length() < 6) {
+            whyError = "Password needs to be more than 6 characters";
+            Toast.makeText(getApplicationContext(), whyError, Toast.LENGTH_SHORT).show();
+            result = false;
+            clearEditText();
+        }
+        return result;
+    }
+
+    public boolean checkUserValidity(String username){
+        boolean result = true;
+        if (username.length()<4){
+            whyError = "Username must be 4 or more characters";
+            Toast.makeText(getApplicationContext(), whyError, Toast.LENGTH_SHORT).show();
+            result = false;
+            clearEditText();
+        }
+        return result;
+    }
+
+    public boolean checkEmailValidity(String email) {
+        boolean isValid = false;
+
+        String expression = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
+        CharSequence inputStr = email;
+
+        Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(inputStr);
+        if (matcher.matches()) {
+            isValid = true;
+        }
+        else {
+            clearEditText();
+            whyError = "invalid email";
+            Toast.makeText(getApplicationContext(), whyError, Toast.LENGTH_SHORT).show();
+        }
+        return isValid;
+    }
+
+    public boolean checkIfDataNotBlank (String email, String name, String password, String rePassword){
+        boolean result = true;
+        if (email.equals("") || name.equals("") || password.equals("") || rePassword.equals("")) {
+            whyError = "Please fill all of the fields";
+            Toast.makeText(getApplicationContext(), whyError, Toast.LENGTH_SHORT).show();
+            result = false;
+        }
+        return result;
     }
 
 
@@ -141,14 +184,16 @@ public class RegistrationActivity extends AppCompatActivity {
                 String regisPassword = editText_Password.getText().toString();
                 String regisRePassword = editText_RePassword.getText().toString();
 
-                regisEmail = checkEmail(regisEmail, emailChar);
-
                 Log.d(TAG, "regisEmail: " + regisEmail);
                 Log.d(TAG, "regisName: " + regisName);
                 Log.d(TAG, "regisPassword: " + regisPassword);
                 Log.d(TAG, "regisRePassword: " + regisRePassword);
 
-                if (checkIfPasswordSame(regisPassword, regisRePassword)&& !regisEmail.equals("")) {
+                if (checkEmailValidity(regisEmail)
+                        && checkIfDataNotBlank(regisEmail,regisName,regisPassword,regisRePassword)
+                        && checkIfPasswordSame(regisPassword, regisRePassword)
+                        && checkIfPasswordValid(regisPassword)
+                        && checkUserValidity(regisName)){
                     Log.d(TAG, "onClick: IF - in ");
                     User user = new User(regisPassword, regisName, regisEmail, 0, null);
                     //createUser(regisEmail, regisPassword);
@@ -173,18 +218,6 @@ public class RegistrationActivity extends AppCompatActivity {
                                     Log.e(TAG, "onFailure: Account creation failed, please retry again" + e);
                                 }
                             });
-                } else if (regisPassword.length() < 6) {
-                    clearEditText();
-                    Toast.makeText(getApplicationContext(), "Password needs to be more than 6 characters", Toast.LENGTH_SHORT).show();
-                } else if (!regisPassword.equals(regisRePassword)) {
-                    clearEditText();
-                    Toast.makeText(getApplicationContext(), "Passwords are not the same", Toast.LENGTH_SHORT).show();
-                } else if (regisName.length() <= 4) {
-                    clearEditText();
-                    Toast.makeText(getApplicationContext(), "Username must be longer than 3 characters", Toast.LENGTH_SHORT).show();
-                } else if (regisEmail.equals("") && regisName.equals("") && regisPassword.equals("") && regisRePassword.equals("")) {
-                    clearEditText();
-                    Toast.makeText(getApplicationContext(), "Please fill all of the fields", Toast.LENGTH_SHORT).show();
                 }
 
                 Log.d(TAG, "onClick: create button - out");
