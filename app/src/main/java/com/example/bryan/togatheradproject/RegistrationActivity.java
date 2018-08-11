@@ -38,6 +38,7 @@ public class RegistrationActivity extends AppCompatActivity {
     private TextView textView_RePassword;
     private Button button_Create;
 
+
     private char[] emailChar = {'@', '.'};
     private FirebaseAuth mAuth;
     private FirebaseAuthInvalidCredentialsException firebaseAuthInvalidCredentialsException;
@@ -106,8 +107,6 @@ public class RegistrationActivity extends AppCompatActivity {
 //   }
 
     private Button button_Cancel;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -136,6 +135,7 @@ public class RegistrationActivity extends AppCompatActivity {
                 String regisName = editText_Username.getText().toString();
                 String regisPassword = editText_Password.getText().toString();
                 String regisRePassword = editText_RePassword.getText().toString();
+                String userID = null;
 
                 regisEmail = checkEmail(regisEmail, emailChar);
 
@@ -149,13 +149,14 @@ public class RegistrationActivity extends AppCompatActivity {
                     User user = new User(regisPassword, regisName, regisEmail, 0, null);
                     //createUser(regisEmail, regisPassword);
 
-                    FirebaseFirestore.getInstance().collection("user")
+                    FirebaseFirestore.getInstance().collection(Constants.USER)
                             .add(user)
                             .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                                 @Override
                                 public void onSuccess(DocumentReference documentReference) {
                                     String regisEmail = editText_Email.getText().toString();
                                     String regisPassword = editText_Password.getText().toString();
+                                    String userID = null;
                                     createUser(regisEmail, regisPassword);
                                     Intent intent = new Intent(getApplication(), LoginActivity.class);
                                     Log.d(TAG, "onSuccess: creation success");

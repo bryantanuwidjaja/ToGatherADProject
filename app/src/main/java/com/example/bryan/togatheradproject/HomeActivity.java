@@ -36,7 +36,7 @@ public class HomeActivity extends AppCompatActivity {
 
 
     private void retreiveLobby() {
-        FirebaseFirestore.getInstance().collection("lobby")
+        FirebaseFirestore.getInstance().collection(Constants.LOBBY)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -90,8 +90,6 @@ public class HomeActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         retreiveLobby();
-
-
     }
 
     @Override

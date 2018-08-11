@@ -24,7 +24,6 @@ public class CreateLobbyActivity extends AppCompatActivity implements AdapterVie
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         String text = parent.getItemAtPosition(position).toString();
-        Toast.makeText(parent.getContext(), text, Toast.LENGTH_SHORT).show();
         ;
     }
 
@@ -73,7 +72,7 @@ public class CreateLobbyActivity extends AppCompatActivity implements AdapterVie
 
                 Lobby lobby = new Lobby(null, capacity, description, activity, "dummy location");
 
-                FirebaseFirestore.getInstance().collection("lobby")
+                FirebaseFirestore.getInstance().collection(Constants.LOBBY)
                         .add(lobby)
                         .addOnSuccessListener(new OnSuccessListener() {
                             @Override
