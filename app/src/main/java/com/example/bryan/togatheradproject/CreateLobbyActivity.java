@@ -115,7 +115,7 @@ public class CreateLobbyActivity extends AppCompatActivity implements AdapterVie
             }
         });
 
-        //2nd part to install fetch address button
+        //2nd
         mResultReceiver = new AddressResultReceiver(new Handler());
 
         mLocationAddressTextView = (TextView) findViewById(R.id.textView_CreateLobbyActivity_address);
@@ -127,23 +127,241 @@ public class CreateLobbyActivity extends AppCompatActivity implements AdapterVie
         updateValuesFromBundle(savedInstanceState);
 
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+
         updateUIWidgets();
 
     }
+
 
     private static final int REQUEST_PERMISSIONS_REQUEST_CODE = 34;
 
     private static final String ADDRESS_REQUESTED_KEY = "address-request-pending";
     private static final String LOCATION_ADDRESS_KEY = "location-address";
-
     private FusedLocationProviderClient mFusedLocationClient;
     private Location mLastLocation;
+
+    /**
+     * Tracks whether the user has requested an address. Becomes true when the user requests an
+     * address and false when the address (or an error message) is delivered.
+     */
     private boolean mAddressRequested;
+
+    /**
+     * The formatted location address.
+     */
     private String mAddressOutput;
+
+    /**
+     * Receiver registered with this activity to get the response from FetchAddressIntentService.
+     */
     private AddressResultReceiver mResultReceiver;
+    /**
+     * Displays the location address.
+     */
     private TextView mLocationAddressTextView;
+    /**
+     * Kicks off the request to fetch an address when pressed.
+     */
     private Button mFetchAddressButton;
 
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        if (!checkPermissions()) {
+            requestPermissions();
+        } else {
+            getAddress();
+        }
+    }
+
+    /**
+     * Updates fields based on data stored in the bundle.
+     */
+    private void updateValuesFromBundle(Bundle savedInstanceState) {
+        if (savedInstanceState != null) {
+            // Check savedInstanceState to see if the address was previously requested.
+            if (savedInstanceState.keySet().contains(ADDRESS_REQUESTED_KEY)) {
+                mAddressRequested = savedInstanceState.getBoolean(ADDRESS_REQUESTED_KEY);
+            }
+            // Check savedInstanceState to see if the location address string was previously found
+            // and stored in the Bundle. If it was found, display the address string in the UI.
+            if (savedInstanceState.keySet().contains(LOCATION_ADDRESS_KEY)) {
+                mAddressOutput = savedInstanceState.getString(LOCATION_ADDRESS_KEY);
+                displayAddressOutput();
+            }
+        }
+    }
+
+    /**
+     * Runs when user clicks the Fetch Address button.
+     */
+    @SuppressWarnings("unused")
+    public void fetchAddressButtonHandler(View view) {
+        if (mLastLocation != null) {
+            startIntentService();
+            return;
+        }
+
+        // If we have not yet retrieved the user location, we process the user's request by setting
+        // mAddressRequested to true. As far as the user is concerned, pressing the Fetch Address button
+        // immediately kicks off the process of getting the address.
+        mAddressRequested = true;
+        updateUIWidgets();
+    }
+
+    /**
+     * Creates an intent, adds location data to it as an extra, and starts the intent service for
+     * fetching an address.
+     */
+    private void startIntentService() {
+        // Create an intent for passing to the intent service responsible for fetching the address.
+        Intent intent = new Intent(this, FetchAddressIntentService.class);
+
+        // Pass the result receiver as an extra to the service.
+        intent.putExtra(Constants.RECEIVER, mResultReceiver);
+
+        // Pass the location data as an extra to the service.
+        intent.putExtra(Constants.LOCATION_DATA_EXTRA, mLastLocation);
+
+        // Start the service. If the service isn't already running, it is instantiated and started
+        // (creating a process for it if needed); if it is running then it remains running. The
+        // service kills itself automatically once all intents are processed.
+        startService(intent);
+    }
+
+    /**
+     * Gets the address for the last known location.
+     */
+    @SuppressWarnings("MissingPermission")
+    private void getAddress() {
+        mFusedLocationClient.getLastLocation()
+                .addOnSuccessListener(this, new OnSuccessListener<Location>() {
+                    @Override
+                    public void onSuccess(Location location) {
+                        if (location == null) {
+                            Log.w(TAG, "onSuccess:null");
+                            return;
+                        }
+
+                        mLastLocation = location;
+
+                        // Determine whether a Geocoder is available.
+                        if (!Geocoder.isPresent()) {
+                            showSnackbar(getString(R.string.no_geocoder_available));
+                            return;
+                        }
+
+                        // If the user pressed the fetch address button before we had the location,
+                        // this will be set to true indicating that we should kick off the intent
+                        // service after fetching the location.
+                        if (mAddressRequested) {
+                            startIntentService();
+                        }
+                    }
+                })
+                .addOnFailureListener(this, new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "getLastLocation:onFailure", e);
+                    }
+                });
+    }
+
+    /**
+     * Updates the address in the UI.
+     */
+    private void displayAddressOutput() {
+        mLocationAddressTextView.setText(mAddressOutput);
+    }
+
+    /**
+     * Toggles the visibility of the progress bar. Enables or disables the Fetch Address button.
+     */
+    private void updateUIWidgets() {
+        if (mAddressRequested) {
+            mFetchAddressButton.setEnabled(false);
+        } else {
+            mFetchAddressButton.setEnabled(true);
+        }
+    }
+
+    /**
+     * Shows a toast with the given text.
+     */
+    private void showToast(String text) {
+        Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        // Save whether the address has been requested.
+        savedInstanceState.putBoolean(ADDRESS_REQUESTED_KEY, mAddressRequested);
+
+        // Save the address string.
+        savedInstanceState.putString(LOCATION_ADDRESS_KEY, mAddressOutput);
+        super.onSaveInstanceState(savedInstanceState);
+    }
+
+    /**
+     * Receiver for data sent from FetchAddressIntentService.
+     */
+    private class AddressResultReceiver extends ResultReceiver {
+        AddressResultReceiver(Handler handler) {
+            super(handler);
+        }
+
+        /**
+         *  Receives data sent from FetchAddressIntentService and updates the UI in MainActivity.
+         */
+        @Override
+        protected void onReceiveResult(int resultCode, Bundle resultData) {
+
+            // Display the address string or an error message sent from the intent service.
+            mAddressOutput = resultData.getString(Constants.RESULT_DATA_KEY);
+            displayAddressOutput();
+
+            // Show a toast message if an address was found.
+            if (resultCode == Constants.SUCCESS_RESULT) {
+                showToast(getString(R.string.address_found));
+            }
+
+            // Reset. Enable the Fetch Address button and stop showing the progress bar.
+            mAddressRequested = false;
+            updateUIWidgets();
+        }
+    }
+
+    /**
+     * Shows a {@link Snackbar} using {@code text}.
+     *
+     * @param text The Snackbar text.
+     */
+    private void showSnackbar(final String text) {
+        View container = findViewById(android.R.id.content);
+        if (container != null) {
+            Snackbar.make(container, text, Snackbar.LENGTH_LONG).show();
+        }
+    }
+
+    /**
+     * Shows a {@link Snackbar}.
+     *
+     * @param mainTextStringId The id for the string resource for the Snackbar text.
+     * @param actionStringId   The text of the action item.
+     * @param listener         The listener associated with the Snackbar action.
+     */
+    private void showSnackbar(final int mainTextStringId, final int actionStringId,
+                              View.OnClickListener listener) {
+        Snackbar.make(findViewById(android.R.id.content),
+                getString(mainTextStringId),
+                Snackbar.LENGTH_INDEFINITE)
+                .setAction(getString(actionStringId), listener).show();
+    }
+
+    /**
+     * Return the current state of the permissions needed.
+     */
     private boolean checkPermissions() {
         int permissionState = ActivityCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION);
@@ -181,6 +399,10 @@ public class CreateLobbyActivity extends AppCompatActivity implements AdapterVie
                     REQUEST_PERMISSIONS_REQUEST_CODE);
         }
     }
+
+    /**
+     * Callback received when a permissions request has been completed.
+     */
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
@@ -223,165 +445,4 @@ public class CreateLobbyActivity extends AppCompatActivity implements AdapterVie
             }
         }
     }
-
-
-    private void showSnackbar(final String text) {
-        View container = findViewById(android.R.id.content);
-        if (container != null) {
-            Snackbar.make(container, text, Snackbar.LENGTH_LONG).show();
-        }
-    }
-
-    private void showSnackbar(final int mainTextStringId, final int actionStringId,
-                              View.OnClickListener listener) {
-        Snackbar.make(findViewById(android.R.id.content),
-                getString(mainTextStringId),
-                Snackbar.LENGTH_INDEFINITE)
-                .setAction(getString(actionStringId), listener).show();
-    }
-
-    private void updateValuesFromBundle(Bundle savedInstanceState) {
-        if (savedInstanceState != null) {
-            // Check savedInstanceState to see if the address was previously requested.
-            if (savedInstanceState.keySet().contains(ADDRESS_REQUESTED_KEY)) {
-                mAddressRequested = savedInstanceState.getBoolean(ADDRESS_REQUESTED_KEY);
-            }
-            // Check savedInstanceState to see if the location address string was previously found
-            // and stored in the Bundle. If it was found, display the address string in the UI.
-            if (savedInstanceState.keySet().contains(LOCATION_ADDRESS_KEY)) {
-                mAddressOutput = savedInstanceState.getString(LOCATION_ADDRESS_KEY);
-                displayAddressOutput();
-            }
-        }
-    }
-
-    private void updateUIWidgets() {
-        if (mAddressRequested) {
-            mFetchAddressButton.setEnabled(false);
-        } else {
-            mFetchAddressButton.setEnabled(true);
-        }
-    }
-    public void fetchAddressButtonHandler(View view) {
-        Log.d(TAG, "fetchAddressButtonHandler: startbutton");
-        if (mLastLocation != null) {
-            Log.d(TAG, "fetchAddressButtonHandler: its in if");
-            startIntentService();
-            Log.d(TAG, "fetchAddressButtonHandler: finish intent");
-            return;
-        }
-        Log.d(TAG, "fetchAddressButtonHandler: if done");
-        // If we have not yet retrieved the user location, we process the user's request by setting
-        // mAddressRequested to true. As far as the user is concerned, pressing the Fetch Address button
-        // immediately kicks off the process of getting the address.
-        mAddressRequested = true;
-        Log.d(TAG, "fetchAddressButtonHandler: abs");
-        updateUIWidgets();
-        Log.d(TAG, "fetchAddressButtonHandler: last");
-    }
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        if (!checkPermissions()) {
-            requestPermissions();
-        } else {
-            getAddress();
-        }
-    }
-
-    @SuppressWarnings("MissingPermission")
-    private void getAddress() {
-        mFusedLocationClient.getLastLocation()
-                .addOnSuccessListener(this, new OnSuccessListener<Location>() {
-                    @Override
-                    public void onSuccess(Location location) {
-                        if (location == null) {
-                            Log.w(TAG, "onSuccess:null");
-                            return;
-                        }
-
-                        mLastLocation = location;
-
-                        // Determine whether a Geocoder is available.
-                        if (!Geocoder.isPresent()) {
-                            showSnackbar(getString(R.string.no_geocoder_available));
-                            return;
-                        }
-
-                        // If the user pressed the fetch address button before we had the location,
-                        // this will be set to true indicating that we should kick off the intent
-                        // service after fetching the location.
-                        if (mAddressRequested) {
-                            startIntentService();
-                        }
-                    }
-                })
-                .addOnFailureListener(this, new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG, "getLastLocation:onFailure", e);
-                    }
-                });
-    }
-    private void startIntentService() {
-        // Create an intent for passing to the intent service responsible for fetching the address.
-        Log.d(TAG, "startIntentService: fetchcreateintent");
-        Intent intent = new Intent(this, FetchAddressIntentService.class);
-
-        // Pass the result receiver as an extra to the service.
-        intent.putExtra("com.example.bryan.togatheradproject.RECEIVER", mResultReceiver);
-
-        // Pass the location data as an extra to the service.
-        intent.putExtra("com.example.bryan.togatheradproject.LOCATION_DATA_EXTRA", mLastLocation);
-        Log.d(TAG, "startIntentService: fetchbeforeintent");
-        // Start the service. If the service isn't already running, it is instantiated and started
-        // (creating a process for it if needed); if it is running then it remains running. The
-        // service kills itself automatically once all intents are processed.
-        startService(intent);
-    }
-
-    private void displayAddressOutput() {
-        mLocationAddressTextView.setText(mAddressOutput);
-    }
-    private void showToast(String text) {
-        Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle savedInstanceState) {
-        // Save whether the address has been requested.
-        savedInstanceState.putBoolean(ADDRESS_REQUESTED_KEY, mAddressRequested);
-
-        // Save the address string.
-        savedInstanceState.putString(LOCATION_ADDRESS_KEY, mAddressOutput);
-        super.onSaveInstanceState(savedInstanceState);
-    }
-
-    private class AddressResultReceiver extends ResultReceiver {
-        AddressResultReceiver(Handler handler) {
-            super(handler);
-        }
-
-        /**
-         *  Receives data sent from FetchAddressIntentService and updates the UI in MainActivity.
-         */
-        @Override
-        protected void onReceiveResult(int resultCode, Bundle resultData) {
-
-            // Display the address string or an error message sent from the intent service.
-            mAddressOutput = resultData.getString("com.example.bryan.togatheradproject.RECEIVER");
-            displayAddressOutput();
-
-            // Show a toast message if an address was found.
-            if (resultCode == 0) {
-                showToast("Address Found");
-            }
-
-            // Reset. Enable the Fetch Address button and stop showing the progress bar.
-            mAddressRequested = false;
-            updateUIWidgets();
-        }
-    }
-
 }
