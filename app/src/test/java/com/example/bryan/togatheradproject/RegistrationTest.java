@@ -23,30 +23,64 @@ import org.junit.Test;
 public class RegistrationTest {
     private static final String TAG = "RegistrationTest";
     private String expectedEmail = "dummy1@dummy.com";
+    private String invalidEmail = "dummy@@a..com";
     private String expectedUsername = "dummy1";
+    private String invalidUsername = "dum";
     private String expectedPassword = "nopassword";
     private String wrongPassword = "password";
+    private String shortPassword = "pass";
+
+
+    RegistrationActivity check = new RegistrationActivity();
 
     private FirebaseAuth mAuth;
     private FirebaseAuthInvalidCredentialsException firebaseAuthInvalidCredentialsException;
 
-    @Test
-    public void isUserRegistered(){
-        User user = new User(expectedPassword, expectedUsername, expectedEmail, 0, null);
-        RegistrationActivity isUserRegistered = new RegistrationActivity();
-        isUserRegistered.createUser(expectedEmail, expectedPassword);
-    }
+//    @Test
+//    public void isUserRegistered(){
+//        User user = new User(expectedPassword, expectedUsername, expectedEmail, 0, null);
+//        RegistrationActivity isUserRegistered = new RegistrationActivity();
+//        isUserRegistered.createUser(expectedEmail, expectedPassword);
+//    }
 
     @Test
     public void registerWithWrongPassword(){
-        RegistrationActivity checkPassword = new RegistrationActivity();
-        Assert.assertEquals(checkPassword.checkIfPasswordSame(expectedPassword, wrongPassword), false);
+        Assert.assertEquals(check.checkIfPasswordSame(expectedPassword, wrongPassword), false);
     }
 
     @Test
     public void registerWithCorrectPassword(){
-        RegistrationActivity checkPassword = new RegistrationActivity();
-        Assert.assertEquals(checkPassword.checkIfPasswordSame(expectedPassword, expectedPassword), true);
+        Assert.assertEquals(check.checkIfPasswordSame(expectedPassword, expectedPassword), true);
     }
 
+    @Test
+    public void registerWithInvalidPassword(){
+        Assert.assertEquals(check.checkIfPasswordValid(shortPassword), false);
+
+    }
+
+    @Test
+    public void registerWithValidPassword(){
+        Assert.assertEquals(check.checkIfPasswordValid(expectedPassword), true);
+    }
+
+    @Test
+    public void registerWithInvalidEmail(){
+        Assert.assertEquals(check.checkEmailValidity(invalidEmail), false);
+    }
+
+    @Test
+    public void registerWithValidEmail(){
+        Assert.assertEquals(check.checkEmailValidity(expectedEmail), true);
+    }
+
+    @Test
+    public void registerWithInvalidUsername(){
+        Assert.assertEquals(check.checkUserValidity(invalidUsername), false);
+    }
+
+    @Test
+    public void registerWithValidUsername(){
+        Assert.assertEquals(check.checkUserValidity(expectedUsername), true);
+    }
 }
