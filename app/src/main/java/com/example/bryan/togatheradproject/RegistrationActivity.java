@@ -42,7 +42,6 @@ public class RegistrationActivity extends AppCompatActivity {
     private Button button_Create;
 
     private FirebaseAuth mAuth;
-    private FirebaseAuthInvalidCredentialsException firebaseAuthInvalidCredentialsException;
 
     private void updateUI(FirebaseUser user) {
         if (user != null) {
@@ -92,13 +91,12 @@ public class RegistrationActivity extends AppCompatActivity {
 
     private Button button_Cancel;
     private String whyError = "";
+
     public boolean checkIfPasswordSame(String password1, String password2){
         boolean result = true;
         if (!password1.equals(password2)){
-            whyError = "Passwords are not the same";
-            Toast.makeText(getApplicationContext(), whyError, Toast.LENGTH_SHORT).show();
+            whyError += "Passwords are not the same ";
             result = false;
-            clearEditText();
         }
         return result;
     }
@@ -106,10 +104,8 @@ public class RegistrationActivity extends AppCompatActivity {
     public boolean checkIfPasswordValid(String password) {
         boolean result = true;
         if (password.length() < 6) {
-            whyError = "Password needs to be more than 6 characters";
-            Toast.makeText(getApplicationContext(), whyError, Toast.LENGTH_SHORT).show();
+            whyError = "Password needs to be more than 6 characters ";
             result = false;
-            clearEditText();
         }
         return result;
     }
@@ -117,10 +113,8 @@ public class RegistrationActivity extends AppCompatActivity {
     public boolean checkUserValidity(String username){
         boolean result = true;
         if (username.length()<4){
-            whyError = "Username must be 4 or more characters";
-            Toast.makeText(getApplicationContext(), whyError, Toast.LENGTH_SHORT).show();
+            whyError = "Username must be 4 or more characters ";
             result = false;
-            clearEditText();
         }
         return result;
     }
@@ -137,9 +131,7 @@ public class RegistrationActivity extends AppCompatActivity {
             isValid = true;
         }
         else {
-            clearEditText();
-            whyError = "invalid email";
-            Toast.makeText(getApplicationContext(), whyError, Toast.LENGTH_SHORT).show();
+            whyError = "invalid email ";
         }
         return isValid;
     }
@@ -147,8 +139,7 @@ public class RegistrationActivity extends AppCompatActivity {
     public boolean checkIfDataNotBlank (String email, String name, String password, String rePassword){
         boolean result = true;
         if (email.equals("") || name.equals("") || password.equals("") || rePassword.equals("")) {
-            whyError = "Please fill all of the fields";
-            Toast.makeText(getApplicationContext(), whyError, Toast.LENGTH_SHORT).show();
+            whyError = "Please fill all of the fields properly ";
             result = false;
         }
         return result;
@@ -189,8 +180,8 @@ public class RegistrationActivity extends AppCompatActivity {
                 Log.d(TAG, "regisPassword: " + regisPassword);
                 Log.d(TAG, "regisRePassword: " + regisRePassword);
 
-                if (checkEmailValidity(regisEmail)
-                        && checkIfDataNotBlank(regisEmail,regisName,regisPassword,regisRePassword)
+                if ( checkIfDataNotBlank(regisEmail,regisName,regisPassword,regisRePassword)
+                        && checkEmailValidity(regisEmail)
                         && checkIfPasswordSame(regisPassword, regisRePassword)
                         && checkIfPasswordValid(regisPassword)
                         && checkUserValidity(regisName)){
@@ -218,6 +209,10 @@ public class RegistrationActivity extends AppCompatActivity {
                                     Log.e(TAG, "onFailure: Account creation failed, please retry again" + e);
                                 }
                             });
+                }else {
+                    clearEditText();
+                    Toast.makeText(getApplicationContext(), whyError, Toast.LENGTH_SHORT).show();
+                    whyError = "";
                 }
 
                 Log.d(TAG, "onClick: create button - out");
