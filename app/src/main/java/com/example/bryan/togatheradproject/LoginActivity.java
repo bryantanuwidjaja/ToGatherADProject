@@ -101,5 +101,12 @@ public class LoginActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         FirebaseUser currentUser = mAuth.getCurrentUser();
-    }
+        if(currentUser!=null){
+            mAuth.signOut();
+            Log.d(TAG, "onStart: signed out");
+        }
+        else {
+            Log.d(TAG, "onStart: current user = " + currentUser);
+        }
+        }
 }
