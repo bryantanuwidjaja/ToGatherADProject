@@ -39,7 +39,8 @@ public class LoginActivity extends AppCompatActivity {
 
     private void Login(String email, String password) {
         Log.d(TAG, "Login: in");
-        mAuth.signInWithEmailAndPassword(email, password)
+        try{
+            mAuth.signInWithEmailAndPassword(email, password)
                 .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                     @Override
                     public void onSuccess(AuthResult authResult) {
@@ -54,7 +55,11 @@ public class LoginActivity extends AppCompatActivity {
                 Log.e(TAG, "onFailure: Could not sign in user" + e);
                 Toast.makeText(getApplicationContext(), "Login failed", Toast.LENGTH_SHORT).show();
             }
-        });
+        });}
+        catch (Exception e){
+            Log.d(TAG, "Login: error sign in");
+            Toast.makeText(getApplicationContext(),"error empty field", Toast.LENGTH_SHORT).show();
+        }
         Log.d(TAG, "Login: out");
     }
 
