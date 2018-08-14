@@ -43,11 +43,12 @@ public class HomeActivity extends AppCompatActivity {
     CollectionReference lobbyCollection = firebaseFirestore.collection("lobby");
 
     private void retreiveLobby() {
-        FirebaseFirestore.getInstance().collection("lobby")
+        FirebaseFirestore.getInstance().collection(Constants.LOBBY)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
                         Map<String, Object> lobbyMap = new HashMap<String, Object>();
                         lobbyMap.put("activity", null);
                         lobbyMap.put("capacity", null);

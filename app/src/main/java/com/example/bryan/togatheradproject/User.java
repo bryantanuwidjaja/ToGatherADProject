@@ -12,7 +12,8 @@ public class User {
     private ArrayList<String> userInterests;
     private String userID;
 
-    public User(){}
+    public User() {
+    }
 
     public User(String password, String userName, String userEmail, int userRating, ArrayList<String> userInterests, String userID) {
         this.password = password;

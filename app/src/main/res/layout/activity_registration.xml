@@ -22,12 +22,13 @@
 
     <EditText
         android:id="@+id/editText_RegistrationActivity_email"
-        android:layout_width="292dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:ems="10"
+        android:hint="example@example.com"
         android:inputType="textPersonName"
         android:textSize="14sp"
         app:layout_constraintEnd_toStartOf="@+id/guideline2"
@@ -52,6 +53,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:ems="10"
+        android:hint="must be more than 3 characters"
         android:inputType="textPersonName"
         android:maxLength="20"
         android:textSize="14sp"
@@ -77,6 +79,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:ems="10"
+        android:hint="must be more than 6 characters"
         android:inputType="textPassword"
         android:maxLength="20"
         android:textSize="14sp"
@@ -102,6 +105,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:ems="10"
+        android:hint="re-enter your password"
         android:inputType="textPassword"
         android:maxLength="20"
         android:textSize="14sp"
@@ -111,7 +115,7 @@
 
     <Button
         android:id="@+id/button_RegistrationActivity_create"
-        android:layout_width="285dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
@@ -138,7 +142,7 @@
 
     <Button
         android:id="@+id/button_RegistrationActivity_cancel"
-        android:layout_width="283dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"

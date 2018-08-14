@@ -24,6 +24,9 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class RegistrationActivity extends AppCompatActivity {
 
     private static final String TAG = "RegistrationActivity";
@@ -40,25 +43,8 @@ public class RegistrationActivity extends AppCompatActivity {
     private Button button_Create;
     private Button button_Cancel;
 
-    private char[] emailChar = {'@', '.'};
-    private FirebaseAuth mAuth;
 
-    private String checkEmail(String email, char[] emailChar) {
-        while (true) {
-            for (int i = 0; i < emailChar.length; i++) {
-                String currentChar = Character.toString(emailChar[i]);
-                if (!email.contains(currentChar)) {
-                    clearEditText();
-                    Toast.makeText(RegistrationActivity.this, "Invalid Email Address",
-                            Toast.LENGTH_SHORT).show();
-                    email = "";
-                    return email;
-                } else {
-                    return email;
-                }
-            }
-        }
-    }
+    private FirebaseAuth mAuth;
 
     private void updateUI(FirebaseUser user) {
         if (user != null) {
@@ -118,7 +104,9 @@ public class RegistrationActivity extends AppCompatActivity {
         }
     }
 
-    private void createUser(String regisEmail, String regisPassword) {
+
+    protected void createUser(String regisEmail, String regisPassword) {
+
         Log.d(TAG, "regisEmail :" + regisEmail);
         Log.d(TAG, "regisPassword: " + regisPassword);
         mAuth.createUserWithEmailAndPassword(regisEmail, regisPassword)
@@ -146,6 +134,64 @@ public class RegistrationActivity extends AppCompatActivity {
         FirebaseUser currentUser = mAuth.getCurrentUser();
         updateUI(currentUser);
     }
+
+    //private Button button_Cancel;
+
+    private String whyError = "";
+
+    public boolean checkIfPasswordSame(String password1, String password2){
+        boolean result = true;
+        if (!password1.equals(password2)){
+            whyError += "Passwords are not the same ";
+            result = false;
+        }
+        return result;
+    }
+
+    public boolean checkIfPasswordValid(String password) {
+        boolean result = true;
+        if (password.length() < 6) {
+            whyError = "Password needs to be more than 6 characters ";
+            result = false;
+        }
+        return result;
+    }
+
+    public boolean checkUserValidity(String username){
+        boolean result = true;
+        if (username.length()<4){
+            whyError = "Username must be 4 or more characters ";
+            result = false;
+        }
+        return result;
+    }
+
+    public boolean checkEmailValidity(String email) {
+        boolean isValid = false;
+
+        String expression = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
+        CharSequence inputStr = email;
+
+        Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(inputStr);
+        if (matcher.matches()) {
+            isValid = true;
+        }
+        else {
+            whyError = "invalid email ";
+        }
+        return isValid;
+    }
+
+    public boolean checkIfDataNotBlank (String email, String name, String password, String rePassword){
+        boolean result = true;
+        if (email.equals("") || name.equals("") || password.equals("") || rePassword.equals("")) {
+            whyError = "Please fill all of the fields properly ";
+            result = false;
+        }
+        return result;
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -175,16 +221,68 @@ public class RegistrationActivity extends AppCompatActivity {
                 String regisName = editText_Username.getText().toString();
                 String regisPassword = editText_Password.getText().toString();
                 String regisRePassword = editText_RePassword.getText().toString();
-                regisEmail = checkEmail(regisEmail, emailChar);
+                String userID = null;
+
+
+                //regisEmail = checkEmail(regisEmail, emailChar);
+
+                Log.d(TAG, "regisEmail: " + regisEmail);
+                Log.d(TAG, "regisName: " + regisName);
+                Log.d(TAG, "regisPassword: " + regisPassword);
+                Log.d(TAG, "regisRePassword: " + regisRePassword);
+
+                if ( checkIfDataNotBlank(regisEmail,regisName,regisPassword,regisRePassword)
+                        && checkEmailValidity(regisEmail)
+                        && checkIfPasswordSame(regisPassword, regisRePassword)
+                        && checkIfPasswordValid(regisPassword)
+                        && checkUserValidity(regisName)){
+                    Log.d(TAG, "onClick: IF - in ");
+                    User user = new User(regisPassword, regisName, regisEmail, 0, null);
+                    //createUser(regisEmail, regisPassword);
+
+                    FirebaseFirestore.getInstance().collection(Constants.USER)
+                            .add(user)
+                            .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                @Override
+                                public void onSuccess(DocumentReference documentReference) {
+                                    String regisEmail = editText_Email.getText().toString();
+                                    String regisPassword = editText_Password.getText().toString();
+                                    String userID = null;
+                                    createUser(regisEmail, regisPassword);
+                                    Intent intent = new Intent(getApplication(), LoginActivity.class);
+                                    Log.d(TAG, "onSuccess: creation success");
+                                    Toast.makeText(getApplicationContext(), "Account creation successful", Toast.LENGTH_SHORT).show();
+                                    startActivity(intent);
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Log.e(TAG, "onFailure: Account creation failed, please retry again" + e);
+                                }
+                            });
+                }else {
+                    clearEditText();
+                    Toast.makeText(getApplicationContext(), whyError, Toast.LENGTH_SHORT).show();
+                    whyError = "";
+                }
+
+//                Log.d(TAG, "regisEmail: " + regisEmail);
+//                Log.d(TAG, "regisName: " + regisName);
+//                Log.d(TAG, "regisPassword: " + regisPassword);
+//                Log.d(TAG, "regisRePassword: " + regisRePassword);
+
                 updateUserDatabase(regisPassword,regisRePassword,regisEmail,regisName);
                 Log.d(TAG, "onClick: create button - out");
             }
         });
-        button_Cancel.setOnClickListener(new View.OnClickListener(){
+        button_Cancel.setOnClickListener(new View.OnClickListener() {
             @Override
+
             public void onClick(View v){
                 Toast.makeText(getApplicationContext(), "Registration cancelled", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent (getApplicationContext(), LoginActivity.class);
+
                 startActivity(intent);
             }
         });
