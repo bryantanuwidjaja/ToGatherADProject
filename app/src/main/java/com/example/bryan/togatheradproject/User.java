@@ -21,7 +21,7 @@ public class User {
         this.userEmail = userEmail;
         this.userRating = userRating;
         this.userInterests = userInterests;
-        this.userID = null;
+        this.userID = userID;
     }
 
     public String getUserID() {

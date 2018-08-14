@@ -18,10 +18,6 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.FirebaseFirestore;
-
-import com.google.firebase.auth.FirebaseAuthException;
-
 
 
 public class LoginActivity extends AppCompatActivity {
@@ -65,6 +61,7 @@ public class LoginActivity extends AppCompatActivity {
         Log.d(TAG, "onCreate: in");
 
         mAuth = FirebaseAuth.getInstance();
+        Log.d(TAG, "onCreate: login" );
         button_SignIn = findViewById(R.id.button_LoginActivity_signIn);
         button_SignUp = findViewById(R.id.button_LoginActivity_signUp);
         imageView_Image = findViewById(R.id.imageView_LoginActivity_image);
@@ -82,6 +79,9 @@ public class LoginActivity extends AppCompatActivity {
                 String password = editText_InsertPassword.getText().toString();
                 Log.d(TAG, "onClick: sign in - before login");
                 Login(email, password);
+                Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                Toast.makeText(getApplicationContext(), "Login successful", Toast.LENGTH_SHORT).show();
+                startActivity(intent);
             }
         });
 
@@ -101,12 +101,11 @@ public class LoginActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        if(currentUser!=null){
+        if (currentUser != null) {
             mAuth.signOut();
             Log.d(TAG, "onStart: signed out");
-        }
-        else {
+        } else {
             Log.d(TAG, "onStart: current user = " + currentUser);
         }
-        }
+    }
 }

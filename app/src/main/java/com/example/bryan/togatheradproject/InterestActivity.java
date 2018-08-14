@@ -20,7 +20,6 @@ import java.util.List;
 public class InterestActivity extends AppCompatActivity implements EditProfileDialog.OnInputListener {
 
     private static final String TAG = "InterestActivity";
-    public static final String USER_ID = "userID";
     public static final String EMPTY_INTEREST = "Enter your interest";
     private List<String> inputContainer = new ArrayList<>();
 
@@ -57,8 +56,6 @@ public class InterestActivity extends AppCompatActivity implements EditProfileDi
     protected void onStart() {
         super.onStart();
         Log.d(TAG, "onStart: in");
-
-
 
         Log.d(TAG, "onStart: out");
     }
@@ -100,7 +97,7 @@ public class InterestActivity extends AppCompatActivity implements EditProfileDi
                 Log.d(TAG, "onClick: opening dialog");
                 EditProfileDialog dialog = new EditProfileDialog();
                 Bundle bundle = new Bundle();
-                bundle.putString(USER_ID, userID);
+                bundle.putString(Constants.USER_ID, userID);
                 dialog.setArguments(bundle);
                 dialog.show(getFragmentManager(), "EditProfileDialog");
                 Log.d(TAG, "onClick: out");
