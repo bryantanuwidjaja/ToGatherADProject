@@ -48,8 +48,8 @@ public class RegistrationActivity extends AppCompatActivity {
 
     private void updateUI(FirebaseUser user) {
         if (user != null) {
-            Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-            startActivity(intent);
+//            Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+//            startActivity(intent);
         } else {
             clearEditText();
         }
@@ -62,24 +62,23 @@ public class RegistrationActivity extends AppCompatActivity {
         editText_Username.setText("");
     }
 
-    private void updateUserDatabase(String regisPassword, String regisRePassword, String regisEmail, String regisName ){
+    private void updateUserDatabase(String regisPassword, String regisRePassword, String regisEmail, String regisName){
         if (regisPassword.equals(regisRePassword) && regisPassword.length() >= 6 && !regisEmail.equals("")) {
             Log.d(TAG, "onClick: IF - in ");
-            final User user = new User(regisPassword, regisName, regisEmail, 0, null);
-            //createUser(regisEmail, regisPassword);
+            String uid = mAuth.getUid();
+            final User user = new User(regisPassword, regisName, regisEmail, 0,null, uid);
             FirebaseFirestore.getInstance().collection("user")
                     .add(user)
                     .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                         @Override
                         public void onSuccess(DocumentReference documentReference) {
+                            Log.d(TAG, "onSuccess: in");
                             String regisEmail = editText_Email.getText().toString();
                             String regisPassword = editText_Password.getText().toString();
-                            String userID = documentReference.getId();
                             createUser(regisEmail, regisPassword);
                             Intent intent = new Intent(getApplication(), InterestActivity.class);
                             Log.d(TAG, "onSuccess: creation success");
                             Toast.makeText(getApplicationContext(), "Account creation successful", Toast.LENGTH_SHORT).show();
-                            intent.putExtra(USER_ID, userID);
                             startActivity(intent);
                         }
                     })
@@ -129,13 +128,12 @@ public class RegistrationActivity extends AppCompatActivity {
                 );
     }
 
-
-//    @Override
-//    protected void onStart() {
-//        super.onStart();
-//        FirebaseUser currentUser = mAuth.getCurrentUser();
-//        updateUI(currentUser);
-//   }
+    @Override
+    protected void onStart() {
+        super.onStart();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        updateUI(currentUser);
+    }
 
     //private Button button_Cancel;
 
@@ -275,48 +273,6 @@ public class RegistrationActivity extends AppCompatActivity {
 //                Log.d(TAG, "regisRePassword: " + regisRePassword);
 
                 updateUserDatabase(regisPassword,regisRePassword,regisEmail,regisName);
-
-//                if (regisPassword.equals(regisRePassword) && regisPassword.length() >= 6 && !regisEmail.equals("")) {
-//                    Log.d(TAG, "onClick: IF - in ");
-//                    User user = new User(regisPassword, regisName, regisEmail, 0, null);
-//                    //createUser(regisEmail, regisPassword);
-//
-//                    FirebaseFirestore.getInstance().collection("user")
-//                            .add(user)
-//                            .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-//                                @Override
-//                                public void onSuccess(DocumentReference documentReference) {
-//                                    String regisEmail = editText_Email.getText().toString();
-//                                    String regisPassword = editText_Password.getText().toString();
-//                                    String userID = documentReference.getId();
-//                                    createUser(regisEmail, regisPassword);
-//                                    Intent intent = new Intent(getApplication(), LoginActivity.class);
-//                                    Log.d(TAG, "onSuccess: creation success");
-//                                    Toast.makeText(getApplicationContext(), "Account creation successful", Toast.LENGTH_SHORT).show();
-//                                    startActivity(intent);
-//                                }
-//                            })
-//                            .addOnFailureListener(new OnFailureListener() {
-//                                @Override
-//                                public void onFailure(@NonNull Exception e) {
-//                                    Log.e(TAG, "onFailure: Account creation failed, please retry again" + e);
-//                                }
-//                            });
-//                } else if (regisPassword.length() < 6) {
-//                    clearEditText();
-//                    Toast.makeText(getApplicationContext(), "Password needs to be more than 6 characters", Toast.LENGTH_SHORT).show();
-//                } else if (!regisPassword.equals(regisRePassword)) {
-//                    clearEditText();
-//                    Toast.makeText(getApplicationContext(), "Passwords are not the same", Toast.LENGTH_SHORT).show();
-//                } else if (regisName.length() <= 4) {
-//                    clearEditText();
-//                    Toast.makeText(getApplicationContext(), "Username must be longer than 3 characters", Toast.LENGTH_SHORT).show();
-//                } else if (regisEmail.equals("") && regisName.equals("") && regisPassword.equals("") && regisRePassword.equals("")) {
-//                    clearEditText();
-//                    Toast.makeText(getApplicationContext(), "Please fill all of the fields", Toast.LENGTH_SHORT).show();
-//                }
-
-
                 Log.d(TAG, "onClick: create button - out");
             }
         });

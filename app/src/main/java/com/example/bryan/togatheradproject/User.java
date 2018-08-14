@@ -1,22 +1,35 @@
 package com.example.bryan.togatheradproject;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 public class User {
     private String password;
     private String userName;
     private String userEmail;
     private int userRating=0;
     //private userProfilepic;
-    private String[]userInterests;
+    private ArrayList<String> userInterests;
+    private String userID;
 
     public User() {
     }
 
-    public User(String password, String userName, String userEmail, int userRating, String[] userInterests) {
+    public User(String password, String userName, String userEmail, int userRating, ArrayList<String> userInterests, String userID) {
         this.password = password;
         this.userName = userName;
         this.userEmail = userEmail;
         this.userRating = userRating;
         this.userInterests = userInterests;
+        this.userID = null;
+    }
+
+    public String getUserID() {
+        return userID;
+    }
+
+    public void setUserID(String userID) {
+        this.userID = userID;
     }
 
     public String getPassword() {
@@ -55,11 +68,11 @@ public class User {
         this.userRating++;
     }
 
-    public String[] getUserInterests() {
+    public ArrayList<String> getUserInterests() {
         return userInterests;
     }
 
-    public void setUserInterests(String[] userInterests) {
+    public void setUserInterests(ArrayList<String> userInterests) {
         this.userInterests = userInterests;
     }
 }

@@ -13,8 +13,12 @@ import android.widget.TextView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.protobuf.Any;
@@ -24,6 +28,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Nullable;
+
 public class HomeActivity extends AppCompatActivity {
 
     public static final String TAG = "ToGather";
@@ -32,8 +38,9 @@ public class HomeActivity extends AppCompatActivity {
     TextView textView_Nearbylobby;
     Button button_Createlobby;
     Button button_Viewprofile;
+    FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
     ListenerRegistration listenerRegistration;
-
+    CollectionReference lobbyCollection = firebaseFirestore.collection("lobby");
 
     private void retreiveLobby() {
         FirebaseFirestore.getInstance().collection(Constants.LOBBY)
@@ -93,6 +100,12 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        setListenerRegistration();
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
@@ -130,5 +143,24 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
+    }
+    public void setListenerRegistration() {
+        lobbyCollection.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                if( e != null ){
+                    Log.w(TAG, "onEvent: listen failed",e );
+                    return;
+                }
+                if (queryDocumentSnapshots != null && !queryDocumentSnapshots.isEmpty() ){
+                    Log.d(TAG, "onEvent: current metadata " + queryDocumentSnapshots.getMetadata());
+                    Log.d(TAG, "onEvent: current query " + queryDocumentSnapshots.getQuery());
+                    Log.d(TAG, "onEvent: current documents " +  queryDocumentSnapshots.getDocuments());
+                }
+                else{
+                    Log.d(TAG, "onEvent: current data null " );
+                }
+            }
+        });
     }
 }
