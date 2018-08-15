@@ -111,6 +111,10 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
         Log.d(TAG, "onCreate: in");
 
+        Intent intent = getIntent();
+        final String userID = intent.getStringExtra(Constants.USER_ID);
+        Log.d(TAG, "Logged user : " + userID);
+
         lobbyList = new ArrayList<>();
         listView_LobbyList = findViewById(R.id.listView_HomeActivity_lobbyList);
         textView_Nearbylobby = findViewById(R.id.textView_HomeActivity_nearbyLobby);
@@ -121,6 +125,7 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), CreateLobbyActivity.class);
+                intent.putExtra(Constants.USER_ID, userID);
                 startActivity(intent);
             }
         });
