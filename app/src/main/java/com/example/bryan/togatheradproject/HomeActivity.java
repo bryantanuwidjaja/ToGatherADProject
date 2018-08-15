@@ -13,6 +13,8 @@ import android.widget.TextView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -40,9 +42,11 @@ public class HomeActivity extends AppCompatActivity {
     Button button_Viewprofile;
     FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
     ListenerRegistration listenerRegistration;
-    CollectionReference lobbyCollection = firebaseFirestore.collection("lobby");
+    CollectionReference lobbyCollection = firebaseFirestore.collection(Constants.LOBBY);
 
-    private void retreiveLobby() {
+    String loggedID;
+
+    private void retreivedLobby() {
         FirebaseFirestore.getInstance().collection(Constants.LOBBY)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -96,7 +100,7 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        retreiveLobby();
+        retreivedLobby();
     }
 
     @Override
@@ -111,6 +115,10 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
         Log.d(TAG, "onCreate: in");
 
+        Intent intent = getIntent();
+        loggedID = intent.getStringExtra(Constants.USER_ID);
+        Log.d(TAG, "HomeActivity : Logged user : " + loggedID);
+
         lobbyList = new ArrayList<>();
         listView_LobbyList = findViewById(R.id.listView_HomeActivity_lobbyList);
         textView_Nearbylobby = findViewById(R.id.textView_HomeActivity_nearbyLobby);
@@ -121,16 +129,7 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), CreateLobbyActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        Log.d(TAG, "onCreate: out");
-
-        button_Createlobby.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), CreateLobbyActivity.class);
+                intent.putExtra(Constants.USER_ID, loggedID);
                 startActivity(intent);
             }
         });
@@ -142,6 +141,7 @@ public class HomeActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        Log.d(TAG, "onCreate: out");
 
     }
     public void setListenerRegistration() {
