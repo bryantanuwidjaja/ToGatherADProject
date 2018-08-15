@@ -21,6 +21,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 
@@ -38,22 +39,31 @@ public class LoginActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     private FirebaseFirestore firebaseFirestore;
-    private CollectionReference userRef = firebaseFirestore.collection(Constants.USER);
 
     private void getUserID(String email, String password){
-        userRef
+        FirebaseFirestore.getInstance().collection(Constants.USER)
                 .whereEqualTo(Constants.USER_EMAIL , email)
                 .whereEqualTo(Constants.PASSWORD, password)
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                        User loggedUser =
+
+                        for(QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots){
+                            User user = documentSnapshot.toObject(User.class);
+                            String userID = user.getUserID();
+                            Log.d(TAG, "userID - login : " + userID);
+                            textView_Container.setText(userID);
+                            Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                            intent.putExtra(Constants.USER_ID, userID );
+                            Toast.makeText(getApplicationContext(), "Login successful", Toast.LENGTH_SHORT).show();
+                            startActivity(intent);
+                        }
                     }
                 });
     }
 
-    private void Login(String email, String password) {
+    private void Login(final String email, final String password) {
         Log.d(TAG, "Login: in");
         try{
             mAuth.signInWithEmailAndPassword(email, password)
@@ -61,6 +71,9 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(AuthResult authResult) {
                         Log.d(TAG, "onSuccess: login successful");
+                        getUserID(email, password);
+                        String userID = textView_Container.getText().toString();
+                        Log.d(TAG,"logged user id : " + userID);
                         //Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
                         //Toast.makeText(getApplicationContext(), "Login successful", Toast.LENGTH_SHORT).show();
                         //startActivity(intent);
@@ -86,7 +99,6 @@ public class LoginActivity extends AppCompatActivity {
         Log.d(TAG, "onCreate: in");
 
         mAuth = FirebaseAuth.getInstance();
-        Log.d(TAG, "onCreate: login" );
         button_SignIn = findViewById(R.id.button_LoginActivity_signIn);
         button_SignUp = findViewById(R.id.button_LoginActivity_signUp);
         imageView_Image = findViewById(R.id.imageView_LoginActivity_image);
@@ -102,12 +114,8 @@ public class LoginActivity extends AppCompatActivity {
                 Log.d(TAG, "onClick: sign in - in ");
                 String email = editText_InsertEmail.getText().toString();
                 String password = editText_InsertPassword.getText().toString();
-                Query query = userRef.whereEqualTo(Constants.USER_EMAIL, email).whereEqualTo(Constants.PASSWORD, password);
                 Log.d(TAG, "onClick: sign in - before login");
                 Login(email, password);
-                Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
-                Toast.makeText(getApplicationContext(), "Login successful", Toast.LENGTH_SHORT).show();
-                startActivity(intent);
             }
         });
 
