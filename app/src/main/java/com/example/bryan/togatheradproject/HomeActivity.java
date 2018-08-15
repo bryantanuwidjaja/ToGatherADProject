@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -139,6 +140,16 @@ public class HomeActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
                 startActivity(intent);
+            }
+        });
+
+        listView_LobbyList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Lobby lobby = lobbyList.get(position);
+
+                Intent intent = new Intent(getApplicationContext(), LobbyActivity.class);
+                intent.putExtra(Constants.USER_ID, loggedID);
             }
         });
         Log.d(TAG, "onCreate: out");

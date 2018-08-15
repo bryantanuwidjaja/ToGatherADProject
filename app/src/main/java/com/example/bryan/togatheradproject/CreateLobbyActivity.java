@@ -94,7 +94,7 @@ public class CreateLobbyActivity extends AppCompatActivity implements AdapterVie
                         .addOnSuccessListener(new OnSuccessListener() {
                             @Override
                             public void onSuccess(Object o) {
-                                Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                                Intent intent = new Intent(getApplicationContext(), LobbyActivity.class);
                                 intent.putExtra(Constants.USER_ID, userID);
                                 startActivity(intent);
                             }
@@ -113,6 +113,7 @@ public class CreateLobbyActivity extends AppCompatActivity implements AdapterVie
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                intent.putExtra(Constants.USER_ID, userID);
                 startActivity(intent);
             }
         });
