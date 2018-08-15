@@ -79,6 +79,7 @@ public class CreateLobbyActivity extends AppCompatActivity implements AdapterVie
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(this);
 
+
         button_Create.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
