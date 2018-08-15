@@ -208,15 +208,7 @@ public class RegistrationActivity extends AppCompatActivity {
         return result;
     }
 
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_registration);
-        Log.d(TAG, "onCreate: in " + TAG);
-
-        mAuth = FirebaseAuth.getInstance();
-
+    protected void establish(){
         editText_Email = findViewById(R.id.editText_RegistrationActivity_email);
         editText_Username = findViewById(R.id.editText_RegistrationActivity_username);
         editText_Password = findViewById(R.id.editText_RegistrationActivity_password);
@@ -227,6 +219,17 @@ public class RegistrationActivity extends AppCompatActivity {
         textView_RePassword = findViewById(R.id.textView_RegistrationActivity_rePassword);
         button_Create = findViewById(R.id.button_RegistrationActivity_create);
         button_Cancel = findViewById(R.id.button_RegistrationActivity_cancel);
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_registration);
+        Log.d(TAG, "onCreate: in " + TAG);
+
+        mAuth = FirebaseAuth.getInstance();
+
+        establish();
 
         button_Create.setOnClickListener(new View.OnClickListener() {
             @Override
