@@ -1,9 +1,10 @@
 package com.example.bryan.togatheradproject;
 
+import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
-public class User {
+public class User implements Serializable{
     private String password;
     private String userName;
     private String userEmail;
@@ -21,7 +22,12 @@ public class User {
         this.userEmail = userEmail;
         this.userRating = userRating;
         this.userInterests = userInterests;
-        this.userID = null;
+        this.userID = userID;
+    }
+
+    public ArrayList<String> addInterest(String newInterest){
+        userInterests.add(newInterest);
+        return new ArrayList<String>(userInterests);
     }
 
     public String getUserID() {
@@ -68,8 +74,8 @@ public class User {
         this.userRating++;
     }
 
-    public ArrayList<String> getUserInterests() {
-        return userInterests;
+    public ArrayList<String>  getUserInterests() {
+        return new ArrayList<String>(userInterests);
     }
 
     public void setUserInterests(ArrayList<String> userInterests) {

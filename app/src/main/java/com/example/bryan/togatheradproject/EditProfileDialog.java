@@ -16,18 +16,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class EditProfileDialog extends DialogFragment {
@@ -37,7 +32,6 @@ public class EditProfileDialog extends DialogFragment {
     FragmentManager fragmentManager;
     FragmentTransaction fragmentTransaction;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
-    CollectionReference userCollectionRef = db.collection("user");
     ArrayList<String> interests = new ArrayList<>();
 
 
@@ -52,41 +46,32 @@ public class EditProfileDialog extends DialogFragment {
     private EditText editText_interestEditText;
     private Button button_saveButton;
     private Button button_cancelButton;
+    private TextView textView_container;
 
-    private void updateInterestList(final String interest) {
-        Query userQuery = userCollectionRef
-                .whereEqualTo("userID", FirebaseAuth.getInstance().getCurrentUser().getUid());
+    private ArrayList<String> updateInterestList(DocumentReference userRef, String newInterest, ArrayList<String> interests) {
+        //add the new input to the list
+        interests.add(newInterest);
 
-        userQuery.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if(task.isSuccessful()) {
-                    for (QueryDocumentSnapshot document : task.getResult()) {
-                        User user = document.toObject(User.class);
-                        interests = user.getUserInterests();
-                        interests.add(interest);
-                    }
-                    Log.d(TAG, "onComplete: Query Success");
-                }
-                    else{
-                    Log.d(TAG, "onComplete: Query Failed ");
-                    }
-            }
-        });
+        //result: current interest + new interest
+        return interests;
     }
-
-
-
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        final String userID = getArguments().getString(USER_ID);
+        final String userID = getArguments().getString(Constants.USER_ID);
+        User currentUser = (User) getArguments().getSerializable(Constants.USER);
+        final DocumentReference userRef = FirebaseFirestore.getInstance().collection(Constants.USER).document(userID);
         View view = inflater.inflate(R.layout.dialog_edit_profile, container, false);
         textView_enterYourInterest = view.findViewById(R.id.textView_FragmentEditProfile_enterYourInterest);
         editText_interestEditText = view.findViewById(R.id.editText_FragmentEditProfile_interestEditText);
         button_saveButton = view.findViewById(R.id.button_FragmentEditProfile_saveButton);
         button_cancelButton = view.findViewById(R.id.button_FragmentEditProfile_cancelButton);
+        //get the current interest list
+        Log.d(TAG, "test1 getemail : " + currentUser.getUserEmail());
+
+        Log.d(TAG, "current list before addition : " + currentUser.getUserInterests());
+
 
         button_cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,9 +86,19 @@ public class EditProfileDialog extends DialogFragment {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "onClick: retrieving input");
+                //retrieve information from widget
+                String newInterest = editText_interestEditText.getText().toString();
+                onInputListener.sendInput(newInterest);
 
+                //add the new input to the database
+                //interests = updateInterestList(userRef,newInterest, interests);
+
+                Log.d(TAG, "current list after addition : " + interests);
+                //update database
+                //userRef.update(Constants.USER_INTERESTS, interests);
                 getDialog().dismiss();
-                destroyFragment();
+                //destroyFragment();
+                //interests.clear();
             }
         });
         return view;

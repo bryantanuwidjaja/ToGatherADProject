@@ -18,10 +18,10 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-
-import com.google.firebase.auth.FirebaseAuthException;
-
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 
 
 public class LoginActivity extends AppCompatActivity {
@@ -34,8 +34,24 @@ public class LoginActivity extends AppCompatActivity {
     EditText editText_InsertPassword;
     TextView textView_Email;
     TextView textView_Password;
+    TextView textView_Container;
 
     private FirebaseAuth mAuth;
+    private FirebaseFirestore firebaseFirestore;
+    private CollectionReference userRef = firebaseFirestore.collection(Constants.USER);
+
+    private void getUserID(String email, String password){
+        userRef
+                .whereEqualTo(Constants.USER_EMAIL , email)
+                .whereEqualTo(Constants.PASSWORD, password)
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        User loggedUser = 
+                    }
+                });
+    }
 
     private void Login(String email, String password) {
         Log.d(TAG, "Login: in");
@@ -44,16 +60,16 @@ public class LoginActivity extends AppCompatActivity {
                 .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                     @Override
                     public void onSuccess(AuthResult authResult) {
-                        Log.d(TAG, "onSuccess: in");
-                        Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
-                        Toast.makeText(getApplicationContext(), "Login successful", Toast.LENGTH_SHORT).show();
-                        startActivity(intent);
+                        Log.d(TAG, "onSuccess: login successful");
+                        //Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                        //Toast.makeText(getApplicationContext(), "Login successful", Toast.LENGTH_SHORT).show();
+                        //startActivity(intent);
                     }
                 }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
                 Log.e(TAG, "onFailure: Could not sign in user" + e);
-                Toast.makeText(getApplicationContext(), "Login failed", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(), "Login failed", Toast.LENGTH_SHORT).show();
             }
         });}
         catch (Exception e){
@@ -70,6 +86,7 @@ public class LoginActivity extends AppCompatActivity {
         Log.d(TAG, "onCreate: in");
 
         mAuth = FirebaseAuth.getInstance();
+        Log.d(TAG, "onCreate: login" );
         button_SignIn = findViewById(R.id.button_LoginActivity_signIn);
         button_SignUp = findViewById(R.id.button_LoginActivity_signUp);
         imageView_Image = findViewById(R.id.imageView_LoginActivity_image);
@@ -77,7 +94,7 @@ public class LoginActivity extends AppCompatActivity {
         editText_InsertPassword = findViewById(R.id.editText_LoginActivity_insertPassword);
         textView_Email = findViewById(R.id.textView_LoginActivity_email);
         textView_Password = findViewById(R.id.textView_LoginActivity_password);
-
+        textView_Container = findViewById(R.id.textView_LoginActivity_container);
 
         button_SignIn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,8 +102,12 @@ public class LoginActivity extends AppCompatActivity {
                 Log.d(TAG, "onClick: sign in - in ");
                 String email = editText_InsertEmail.getText().toString();
                 String password = editText_InsertPassword.getText().toString();
+                Query query = userRef.whereEqualTo(Constants.USER_EMAIL, email).whereEqualTo(Constants.PASSWORD, password);
                 Log.d(TAG, "onClick: sign in - before login");
                 Login(email, password);
+                Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                Toast.makeText(getApplicationContext(), "Login successful", Toast.LENGTH_SHORT).show();
+                startActivity(intent);
             }
         });
 
@@ -106,12 +127,11 @@ public class LoginActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        if(currentUser!=null){
+        if (currentUser != null) {
             mAuth.signOut();
             Log.d(TAG, "onStart: signed out");
-        }
-        else {
+        } else {
             Log.d(TAG, "onStart: current user = " + currentUser);
         }
-        }
+    }
 }

@@ -1,9 +1,14 @@
 package com.example.bryan.togatheradproject;
 
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -21,16 +26,22 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GetTokenResult;
+import com.google.firebase.auth.UserInfo;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class RegistrationActivity extends AppCompatActivity {
 
     private static final String TAG = "RegistrationActivity";
-    public static final String USER_ID = "userID";
+    //public static final String USER_ID = "userID";
 
     private EditText editText_Email;
     private EditText editText_Username;
@@ -42,7 +53,6 @@ public class RegistrationActivity extends AppCompatActivity {
     private TextView textView_RePassword;
     private Button button_Create;
     private Button button_Cancel;
-
 
     private FirebaseAuth mAuth;
 
@@ -62,51 +72,49 @@ public class RegistrationActivity extends AppCompatActivity {
         editText_Username.setText("");
     }
 
-    private void updateUserDatabase(String regisPassword, String regisRePassword, String regisEmail, String regisName){
-        if (regisPassword.equals(regisRePassword) && regisPassword.length() >= 6 && !regisEmail.equals("")) {
-            Log.d(TAG, "onClick: IF - in ");
-            String uid = mAuth.getUid();
-            final User user = new User(regisPassword, regisName, regisEmail, 0,null, uid);
-            FirebaseFirestore.getInstance().collection("user")
-                    .add(user)
-                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                        @Override
-                        public void onSuccess(DocumentReference documentReference) {
-                            Log.d(TAG, "onSuccess: in");
-                            String regisEmail = editText_Email.getText().toString();
-                            String regisPassword = editText_Password.getText().toString();
-                            createUser(regisEmail, regisPassword);
-                            Intent intent = new Intent(getApplication(), InterestActivity.class);
-                            Log.d(TAG, "onSuccess: creation success");
-                            Toast.makeText(getApplicationContext(), "Account creation successful", Toast.LENGTH_SHORT).show();
-                            startActivity(intent);
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            clearEditText();
-                            Log.e(TAG, "onFailure: Account creation failed, please retry again" + e);
-                        }
-                    });
-        } else if (regisPassword.length() < 6) {
-            clearEditText();
-            Toast.makeText(getApplicationContext(), "Password needs to be more than 6 characters", Toast.LENGTH_SHORT).show();
-        } else if (!regisPassword.equals(regisRePassword)) {
-            clearEditText();
-            Toast.makeText(getApplicationContext(), "Passwords are not the same", Toast.LENGTH_SHORT).show();
-        } else if (regisName.length() <= 4) {
-            clearEditText();
-            Toast.makeText(getApplicationContext(), "Username must be longer than 3 characters", Toast.LENGTH_SHORT).show();
-        } else if (regisEmail.equals("") && regisName.equals("") && regisPassword.equals("") && regisRePassword.equals("")) {
-            clearEditText();
-            Toast.makeText(getApplicationContext(), "Please fill all of the fields", Toast.LENGTH_SHORT).show();
-        }
+    private void login(String email, String password) {
+        Log.d(TAG, "Login: in");
+        mAuth.signInWithEmailAndPassword(email, password)
+                .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+                    @Override
+                    public void onSuccess(AuthResult authResult) {
+                        Log.d(TAG, "onSuccess: login successful, signed in"+ FirebaseAuth.getInstance().getCurrentUser().getUid());
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.e(TAG, "onFailure: Could not sign in user" + e);
+            }
+        });
+        Log.d(TAG, "Login: out");
     }
 
+    private void startAsychTask(View v){
 
-    protected void createUser(String regisEmail, String regisPassword) {
+    }
 
+   // private class getUIDAsych extends AsyncTask<String, String, String>
+
+    private String getUID() {
+        String result = null;
+            try {
+                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                Log.d(TAG, "onClick: success get user" + FirebaseAuth.getInstance().getCurrentUser().getUid());
+                if (user != null) {
+                    Log.d(TAG, "onClick: if in");
+                    result = user.getUid().toString();
+                    if (result == null)
+                        Log.d(TAG, "onClick: " + user.getUid());
+                }
+                Log.d(TAG, "onClick: selamat");
+                Log.d(TAG, "onClick: hadoooh");
+            } catch (NullPointerException e) {
+                Log.d(TAG, "onClick: null buffer");
+            }
+        return result;
+    }
+
+    protected void createUser(final String regisEmail,final String regisPassword) {
         Log.d(TAG, "regisEmail :" + regisEmail);
         Log.d(TAG, "regisPassword: " + regisPassword);
         mAuth.createUserWithEmailAndPassword(regisEmail, regisPassword)
@@ -116,8 +124,11 @@ public class RegistrationActivity extends AppCompatActivity {
                                 if (task.isSuccessful()) {
                                     Log.d(TAG, "createUserWithEmail: success");
                                     FirebaseUser user = mAuth.getCurrentUser();
+                                    login(regisEmail, regisPassword);
+                                    Log.d(TAG, "onComplete: onclick"+ FirebaseAuth.getInstance().getCurrentUser().getUid());
                                     updateUI(user);
-                                } else {
+                                }
+                                else {
                                     Log.w(TAG, "createUserWithEmail: failure", task.getException());
                                     Toast.makeText(RegistrationActivity.this, "Account creation failed",
                                             Toast.LENGTH_SHORT).show();
@@ -125,24 +136,30 @@ public class RegistrationActivity extends AppCompatActivity {
                                 }
                             }
                         }
-                );
+                ).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+            @Override
+            public void onSuccess(AuthResult authResult) {
+
+            }
+        });
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        updateUI(currentUser);
+        //FirebaseUser currentUser = mAuth.getCurrentUser();
+        //updateUI(currentUser);
     }
+
 
     //private Button button_Cancel;
 
     private String whyError = "";
 
-    public boolean checkIfPasswordSame(String password1, String password2){
+    public boolean checkIfPasswordSame(String password1, String password2) {
         boolean result = true;
-        if (!password1.equals(password2)){
-            whyError += "Passwords are not the same ";
+        if (!password1.equals(password2)) {
+            whyError = "Passwords are not the same ";
             result = false;
         }
         return result;
@@ -157,9 +174,9 @@ public class RegistrationActivity extends AppCompatActivity {
         return result;
     }
 
-    public boolean checkUserValidity(String username){
+    public boolean checkUserValidity(String username) {
         boolean result = true;
-        if (username.length()<4){
+        if (username.length() < 4) {
             whyError = "Username must be 4 or more characters ";
             result = false;
         }
@@ -176,14 +193,13 @@ public class RegistrationActivity extends AppCompatActivity {
         Matcher matcher = pattern.matcher(inputStr);
         if (matcher.matches()) {
             isValid = true;
-        }
-        else {
+        } else {
             whyError = "invalid email ";
         }
         return isValid;
     }
 
-    public boolean checkIfDataNotBlank (String email, String name, String password, String rePassword){
+    public boolean checkIfDataNotBlank(String email, String name, String password, String rePassword) {
         boolean result = true;
         if (email.equals("") || name.equals("") || password.equals("") || rePassword.equals("")) {
             whyError = "Please fill all of the fields properly ";
@@ -212,77 +228,70 @@ public class RegistrationActivity extends AppCompatActivity {
         button_Create = findViewById(R.id.button_RegistrationActivity_create);
         button_Cancel = findViewById(R.id.button_RegistrationActivity_cancel);
 
-
         button_Create.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "onClick: create button - in ");
+                //retrieve information from widgets
                 String regisEmail = editText_Email.getText().toString();
                 String regisName = editText_Username.getText().toString();
                 String regisPassword = editText_Password.getText().toString();
                 String regisRePassword = editText_RePassword.getText().toString();
-                String userID = null;
 
 
-                //regisEmail = checkEmail(regisEmail, emailChar);
-
-                Log.d(TAG, "regisEmail: " + regisEmail);
-                Log.d(TAG, "regisName: " + regisName);
-                Log.d(TAG, "regisPassword: " + regisPassword);
-                Log.d(TAG, "regisRePassword: " + regisRePassword);
-
-                if ( checkIfDataNotBlank(regisEmail,regisName,regisPassword,regisRePassword)
+                //validating input
+                if (checkIfDataNotBlank(regisEmail, regisName, regisPassword, regisRePassword)
                         && checkEmailValidity(regisEmail)
                         && checkIfPasswordSame(regisPassword, regisRePassword)
                         && checkIfPasswordValid(regisPassword)
-                        && checkUserValidity(regisName)){
+                        && checkUserValidity(regisName)) {
                     Log.d(TAG, "onClick: IF - in ");
-                    User user = new User(regisPassword, regisName, regisEmail, 0, null);
-                    //createUser(regisEmail, regisPassword);
 
-                    FirebaseFirestore.getInstance().collection(Constants.USER)
-                            .add(user)
-                            .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    //register user to the authentication
+                    createUser(regisEmail, regisPassword);
+
+
+                    //generate unique id
+                    final String uid = UUID.randomUUID().toString();
+
+                    ArrayList<String> emptyList = new ArrayList<>();
+                    //emptyList.add("empty");
+                    //create new user object
+                    final User newUser = new User(regisPassword, regisName, regisEmail, 0, emptyList,uid);
+
+                    //update the database
+                    FirebaseFirestore.getInstance().collection(Constants.USER).document(uid).set(newUser)
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
-                                public void onSuccess(DocumentReference documentReference) {
-                                    String regisEmail = editText_Email.getText().toString();
-                                    String regisPassword = editText_Password.getText().toString();
-                                    String userID = null;
-                                    createUser(regisEmail, regisPassword);
-                                    Intent intent = new Intent(getApplication(), LoginActivity.class);
-                                    Log.d(TAG, "onSuccess: creation success");
-                                    Toast.makeText(getApplicationContext(), "Account creation successful", Toast.LENGTH_SHORT).show();
+                                public void onSuccess(Void aVoid) {
+                                    Log.d(TAG, "onSuccess: Account creation successful");
+                                    Intent intent = new Intent(getApplicationContext(), InterestActivity.class);
+                                    intent.putExtra(Constants.USER_ID , uid);
+                                    intent.putExtra(Constants.USER, newUser);
                                     startActivity(intent);
                                 }
                             })
                             .addOnFailureListener(new OnFailureListener() {
                                 @Override
                                 public void onFailure(@NonNull Exception e) {
-                                    Log.e(TAG, "onFailure: Account creation failed, please retry again" + e);
+                                    Log.d(TAG, "onFailure: Account creation failed");
                                 }
                             });
-                }else {
+                } else {
                     clearEditText();
                     Toast.makeText(getApplicationContext(), whyError, Toast.LENGTH_SHORT).show();
                     whyError = "";
                 }
-
-//                Log.d(TAG, "regisEmail: " + regisEmail);
-//                Log.d(TAG, "regisName: " + regisName);
-//                Log.d(TAG, "regisPassword: " + regisPassword);
-//                Log.d(TAG, "regisRePassword: " + regisRePassword);
-
-                updateUserDatabase(regisPassword,regisRePassword,regisEmail,regisName);
                 Log.d(TAG, "onClick: create button - out");
             }
         });
+
         button_Cancel.setOnClickListener(new View.OnClickListener() {
             @Override
 
-            public void onClick(View v){
+            public void onClick(View v) {
                 Toast.makeText(getApplicationContext(), "Registration cancelled", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent (getApplicationContext(), LoginActivity.class);
-
+                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                 startActivity(intent);
             }
         });

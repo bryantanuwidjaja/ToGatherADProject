@@ -9,11 +9,12 @@ public class Lobby {
     private String lobbyDescriptions;
     private String activity;
 
-    public Lobby(String[] guestID, int capacity, String lobbyDescriptions, String activity, String location) {
+    public Lobby(String hostID,String[] guestID, int capacity, String lobbyDescriptions, String activity, String location) {
         this.capacity = capacity;
         this.lobbyDescriptions = lobbyDescriptions;
         this.activity = activity;
         this.location = location;
+        this.hostID = hostID;
     }
 
     //temporary constructor

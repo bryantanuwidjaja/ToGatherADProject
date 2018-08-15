@@ -38,7 +38,6 @@ public class CreateLobbyActivity extends AppCompatActivity implements AdapterVie
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         String text = parent.getItemAtPosition(position).toString();
-        ;
     }
 
     @Override
@@ -60,6 +59,10 @@ public class CreateLobbyActivity extends AppCompatActivity implements AdapterVie
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_lobby);
+
+        Intent intent = getIntent();
+        final String userID = intent.getStringExtra(Constants.USER_ID);
+        Log.d(TAG, "Logged user : " + userID);
 
 
         textView_Activity = findViewById(R.id.textView_CreateLobbyActivity_activity);
@@ -86,7 +89,7 @@ public class CreateLobbyActivity extends AppCompatActivity implements AdapterVie
                 String activity = spinner.getSelectedItem().toString();
 
 
-                Lobby lobby = new Lobby(null, capacity, description, activity, "dummy location");
+                Lobby lobby = new Lobby(userID, null, capacity, description, activity, "dummy location");
 
                 FirebaseFirestore.getInstance().collection(Constants.LOBBY)
                         .add(lobby)

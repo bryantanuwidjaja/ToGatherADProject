@@ -11,6 +11,7 @@ public final class Constants {
     static final String PASSWORD = "password";
     static final String USERNAME = "userName";
     static final String USER_EMAIL = "userEmail";
+    static final String USER_ID = "userID";
     static final int USER_RATING = 0;
     static final String USER_INTERESTS = "userInterests";
     static final String USER = "user";
