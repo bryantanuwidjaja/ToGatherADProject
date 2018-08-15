@@ -1,5 +1,7 @@
 package com.example.bryan.togatheradproject;
 
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 
 import android.net.Uri;
@@ -29,7 +31,9 @@ import com.google.firebase.auth.UserInfo;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -37,7 +41,7 @@ import java.util.regex.Pattern;
 public class RegistrationActivity extends AppCompatActivity {
 
     private static final String TAG = "RegistrationActivity";
-    public static final String USER_ID = "userID";
+    //public static final String USER_ID = "userID";
 
     private EditText editText_Email;
     private EditText editText_Username;
@@ -233,7 +237,7 @@ public class RegistrationActivity extends AppCompatActivity {
                 String regisName = editText_Username.getText().toString();
                 String regisPassword = editText_Password.getText().toString();
                 String regisRePassword = editText_RePassword.getText().toString();
-                String documentID = null;
+
 
                 //validating input
                 if (checkIfDataNotBlank(regisEmail, regisName, regisPassword, regisRePassword)
@@ -250,8 +254,10 @@ public class RegistrationActivity extends AppCompatActivity {
                     //generate unique id
                     final String uid = UUID.randomUUID().toString();
 
+                    ArrayList<String> emptyList = new ArrayList<>();
+                    //emptyList.add("empty");
                     //create new user object
-                    User newUser = new User(regisPassword, regisName, regisEmail, 0, null,uid);
+                    final User newUser = new User(regisPassword, regisName, regisEmail, 0, emptyList,uid);
 
                     //update the database
                     FirebaseFirestore.getInstance().collection(Constants.USER).document(uid).set(newUser)
@@ -261,6 +267,7 @@ public class RegistrationActivity extends AppCompatActivity {
                                     Log.d(TAG, "onSuccess: Account creation successful");
                                     Intent intent = new Intent(getApplicationContext(), InterestActivity.class);
                                     intent.putExtra(Constants.USER_ID , uid);
+                                    intent.putExtra(Constants.USER, newUser);
                                     startActivity(intent);
                                 }
                             })

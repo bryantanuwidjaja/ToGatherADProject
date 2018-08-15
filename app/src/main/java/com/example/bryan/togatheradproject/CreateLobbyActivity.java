@@ -38,7 +38,6 @@ public class CreateLobbyActivity extends AppCompatActivity implements AdapterVie
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         String text = parent.getItemAtPosition(position).toString();
-        ;
     }
 
     @Override
