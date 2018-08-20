@@ -48,50 +48,27 @@ public class HomeActivity extends AppCompatActivity {
     String loggedID;
 
     private void retreivedLobby() {
+        //reset the list
+        lobbyList.clear();
+
         FirebaseFirestore.getInstance().collection(Constants.LOBBY)
                 .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-
-                        Map<String, Object> lobbyMap = new HashMap<String, Object>();
-                        lobbyMap.put("activity", null);
-                        lobbyMap.put("capacity", null);
-                        lobbyMap.put("guestID", null);
-                        lobbyMap.put("hostID", null);
-                        lobbyMap.put("lobbyDescription", null);
-                        lobbyMap.put("lobbyID", null);
-                        lobbyMap.put("location", null);
-
-                        if (task.isSuccessful()) {
-                            for (DocumentSnapshot document : task.getResult()) {
-                                Log.d(TAG, "DocumentSnapshot data : " + document.getData());
-                                lobbyMap = document.getData();
-                                String activity = lobbyMap.get("activity").toString();
-                                String capacityString = lobbyMap.get("capacity").toString();
-                                int capacity = Integer.parseInt(capacityString);
-                                //String guestID = lobbyMap.get("guestID").toString();
-                                String[] guestID = {""};
-                                String hostID = "";
-                                //String hostID = lobbyMap.get("hostID").toString();
-                                String lobbyDescription = lobbyMap.get("lobbyDescriptions").toString();
-                                //String lobbyID = lobbyMap.get("lobbyID").toString();
-                                String lobbyID = "";
-                                String location = lobbyMap.get("location").toString();
-                                Log.d(TAG, "guestID : " + guestID);
-                                Log.d(TAG, "capacity : " + capacity);
-                                Log.d(TAG, "lobbyDescriptions : " + lobbyDescription);
-                                Log.d(TAG, "activity : " + activity);
-                                Log.d(TAG, "location : " + location);
-                                Lobby lobby = new Lobby(capacity, location, activity, lobbyDescription);
-
-                                lobbyList.add(lobby);
-                                Log.d(TAG, "onComplete: " + lobbyList);
-                            }
-                        } else {
-                            Log.d(TAG, "Data does not exist");
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
+                            Lobby lobby = documentSnapshot.toObject(Lobby.class);
+                            String lobbyID = lobby.getLobbyID();
+                            String hostID = lobby.getHostID();
+                            int capacity = lobby.getCapacity();
+                            String location = lobby.getLocation();
+                            String lobbyDescriptions = lobby.getLobbyDescriptions();
+                            String activity = lobby.getActivity();
+                            Lobby newLobby = new Lobby(lobbyID, hostID, capacity, location, lobbyDescriptions, activity);
+                            lobbyList.add(newLobby);
+                            LobbyList adapter = new LobbyList(HomeActivity.this, lobbyList);
+                            listView_LobbyList.setAdapter(adapter);
                         }
-
                         LobbyList adapter = new LobbyList(HomeActivity.this, lobbyList);
                         listView_LobbyList.setAdapter(adapter);
                     }
@@ -148,9 +125,13 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Lobby lobby = lobbyList.get(position);
-
+                String lobbyID = lobby.getLobbyID();
                 Intent intent = new Intent(getApplicationContext(), LobbyActivity.class);
                 intent.putExtra(Constants.USER_ID, loggedID);
+                intent.putExtra(Constants.LOBBY_ID, lobbyID);
+                Log.d(TAG, "userID : " + loggedID);
+                Log.d(TAG, "lobbyID : " + lobbyID);
+                startActivity(intent);
             }
         });
         Log.d(TAG, "onCreate: out");

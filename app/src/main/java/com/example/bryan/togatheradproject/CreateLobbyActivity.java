@@ -33,6 +33,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import java.util.UUID;
+
 public class CreateLobbyActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     @Override
@@ -88,15 +90,18 @@ public class CreateLobbyActivity extends AppCompatActivity implements AdapterVie
                 int capacity = (Integer.parseInt(temp_Capacity));
                 String activity = spinner.getSelectedItem().toString();
 
-                Lobby lobby = new Lobby(userID, null, capacity, description, activity, "dummy location");
+                final String lobbyID = UUID.randomUUID().toString();
+                Lobby lobby = new Lobby(lobbyID, userID, capacity, mAddressOutput, description, activity);
 
                 FirebaseFirestore.getInstance().collection(Constants.LOBBY)
-                        .add(lobby)
+                        .document(lobbyID)
+                        .set(lobby)
                         .addOnSuccessListener(new OnSuccessListener() {
                             @Override
                             public void onSuccess(Object o) {
                                 Intent intent = new Intent(getApplicationContext(), LobbyActivity.class);
                                 intent.putExtra(Constants.USER_ID, userID);
+                                intent.putExtra(Constants.LOBBY_ID, lobbyID);
                                 startActivity(intent);
                             }
                         })
