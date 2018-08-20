@@ -62,7 +62,7 @@ public class CreateLobbyActivity extends AppCompatActivity implements AdapterVie
 
         Intent intent = getIntent();
         final String userID = intent.getStringExtra(Constants.USER_ID);
-        Log.d(TAG, "Logged user : " + userID);
+        Log.d(TAG, "CreateLobby - Logged user : " + userID);
 
 
         textView_Activity = findViewById(R.id.textView_CreateLobbyActivity_activity);
@@ -88,7 +88,6 @@ public class CreateLobbyActivity extends AppCompatActivity implements AdapterVie
                 int capacity = (Integer.parseInt(temp_Capacity));
                 String activity = spinner.getSelectedItem().toString();
 
-
                 Lobby lobby = new Lobby(userID, null, capacity, description, activity, "dummy location");
 
                 FirebaseFirestore.getInstance().collection(Constants.LOBBY)
@@ -96,7 +95,8 @@ public class CreateLobbyActivity extends AppCompatActivity implements AdapterVie
                         .addOnSuccessListener(new OnSuccessListener() {
                             @Override
                             public void onSuccess(Object o) {
-                                Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                                Intent intent = new Intent(getApplicationContext(), LobbyActivity.class);
+                                intent.putExtra(Constants.USER_ID, userID);
                                 startActivity(intent);
                             }
                         })
@@ -114,6 +114,7 @@ public class CreateLobbyActivity extends AppCompatActivity implements AdapterVie
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                intent.putExtra(Constants.USER_ID, userID);
                 startActivity(intent);
             }
         });
