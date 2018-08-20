@@ -199,6 +199,7 @@ public class RegistrationActivity extends AppCompatActivity {
         return isValid;
     }
 
+
     public boolean checkIfDataNotBlank(String email, String name, String password, String rePassword) {
         boolean result = true;
         if (email.equals("") || name.equals("") || password.equals("") || rePassword.equals("")) {
@@ -207,7 +208,6 @@ public class RegistrationActivity extends AppCompatActivity {
         }
         return result;
     }
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
