@@ -89,31 +89,6 @@ public class RegistrationActivity extends AppCompatActivity {
         Log.d(TAG, "Login: out");
     }
 
-    private void startAsychTask(View v){
-
-    }
-
-    // private class getUIDAsych extends AsyncTask<String, String, String>
-
-    private String getUID() {
-        String result = null;
-        try {
-            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-            Log.d(TAG, "onClick: success get user" + FirebaseAuth.getInstance().getCurrentUser().getUid());
-            if (user != null) {
-                Log.d(TAG, "onClick: if in");
-                result = user.getUid().toString();
-                if (result == null)
-                    Log.d(TAG, "onClick: " + user.getUid());
-            }
-            Log.d(TAG, "onClick: selamat");
-            Log.d(TAG, "onClick: hadoooh");
-        } catch (NullPointerException e) {
-            Log.d(TAG, "onClick: null buffer");
-        }
-        return result;
-    }
-
     protected void createUser(final String regisEmail,final String regisPassword) {
         Log.d(TAG, "regisEmail :" + regisEmail);
         Log.d(TAG, "regisPassword: " + regisPassword);
@@ -150,9 +125,6 @@ public class RegistrationActivity extends AppCompatActivity {
         //FirebaseUser currentUser = mAuth.getCurrentUser();
         //updateUI(currentUser);
     }
-
-
-    //private Button button_Cancel;
 
     private String whyError = "";
 
@@ -209,14 +181,7 @@ public class RegistrationActivity extends AppCompatActivity {
         return result;
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_registration);
-        Log.d(TAG, "onCreate: in " + TAG);
-
-        mAuth = FirebaseAuth.getInstance();
-
+    public void establish(){
         editText_Email = findViewById(R.id.editText_RegistrationActivity_email);
         editText_Username = findViewById(R.id.editText_RegistrationActivity_username);
         editText_Password = findViewById(R.id.editText_RegistrationActivity_password);
@@ -227,6 +192,17 @@ public class RegistrationActivity extends AppCompatActivity {
         textView_RePassword = findViewById(R.id.textView_RegistrationActivity_rePassword);
         button_Create = findViewById(R.id.button_RegistrationActivity_create);
         button_Cancel = findViewById(R.id.button_RegistrationActivity_cancel);
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_registration);
+        Log.d(TAG, "onCreate: in " + TAG);
+
+        mAuth = FirebaseAuth.getInstance();
+
+        establish();
 
         button_Create.setOnClickListener(new View.OnClickListener() {
             @Override
