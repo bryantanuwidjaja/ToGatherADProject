@@ -48,9 +48,6 @@ public class CreateLobbyActivity extends AppCompatActivity implements AdapterVie
     private AddressResultReceiver mResultReceiver;
     private TextView mLocationAddressTextView;
     private Button mFetchAddressButton;
-    private TextView textView_Activity;
-    private TextView textView_Capacity;
-    private TextView textView_Description;
     private EditText editText_Capacity;
     private EditText editText_Description;
     private Button button_Create;
@@ -69,9 +66,6 @@ public class CreateLobbyActivity extends AppCompatActivity implements AdapterVie
 
 
     protected void establish(){
-        textView_Activity = findViewById(R.id.textView_CreateLobbyActivity_activity);
-        textView_Capacity = findViewById(R.id.textView_CreateLobbyActivity_capacity);
-        textView_Description = findViewById(R.id.textView_CreateLobbyActivity_description);
         editText_Capacity = findViewById(R.id.editText_CreateLobbyActivity_capacity);
         editText_Description = findViewById(R.id.editText_CreateLobbyActivity_description);
         button_Create = findViewById(R.id.button_CreateLobbyActivity_create);
