@@ -17,6 +17,8 @@
         <item>Outdoor</item>
     </string-array>
 
+    <string name="login_Failed">Login Failed</string>
+
     <string name="no_geocoder_available">No geocoder available</string>
 
     <string name="fetch_address">Fetch address</string>
