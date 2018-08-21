@@ -60,7 +60,7 @@ public class EditProfileDialog extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         final String userID = getArguments().getString(Constants.USER_ID);
-        User currentUser = (User) getArguments().getSerializable(Constants.USER);
+        //User currentUser = (User) getArguments().getSerializable(Constants.USER);
         final DocumentReference userRef = FirebaseFirestore.getInstance().collection(Constants.USER).document(userID);
         View view = inflater.inflate(R.layout.dialog_edit_profile, container, false);
         textView_enterYourInterest = view.findViewById(R.id.textView_FragmentEditProfile_enterYourInterest);
@@ -68,9 +68,9 @@ public class EditProfileDialog extends DialogFragment {
         button_saveButton = view.findViewById(R.id.button_FragmentEditProfile_saveButton);
         button_cancelButton = view.findViewById(R.id.button_FragmentEditProfile_cancelButton);
         //get the current interest list
-        Log.d(TAG, "test1 getemail : " + currentUser.getUserEmail());
+        //Log.d(TAG, "test1 getemail : " + currentUser.getUserEmail());
 
-        Log.d(TAG, "current list before addition : " + currentUser.getUserInterests());
+        //Log.d(TAG, "current list before addition : " + currentUser.getUserInterests());
 
 
         button_cancelButton.setOnClickListener(new View.OnClickListener() {

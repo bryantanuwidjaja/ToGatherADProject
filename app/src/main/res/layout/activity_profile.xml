@@ -29,47 +29,25 @@
         app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintTop_toBottomOf="@+id/imageView_ProfileScreen_image" />
 
+
     <TextView
-        android:id="@+id/textView_ProfileScreen_interest1"
+        android:id="@+id/textView_ProfileScreen_interestTAG"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="32dp"
         android:layout_marginStart="8dp"
         android:text="Interest: "
-        app:layout_constraintBottom_toTopOf="@+id/textView_ProfileScreen_interest5"
+        app:layout_constraintBottom_toTopOf="@+id/textView_ProfileScreen_interest1"
         app:layout_constraintStart_toStartOf="@+id/guideline" />
-
-
-    <TextView
-        android:id="@+id/textView_ProfileScreen_interest2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
-        android:layout_marginEnd="16dp"
-        android:text="TextView"
-        app:layout_constraintBottom_toTopOf="@+id/textView_ProfileScreen_interest3"
-        app:layout_constraintEnd_toStartOf="@+id/guideline2" />
-
-
-    <TextView
-        android:id="@+id/textView_ProfileScreen_interest3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
-        android:layout_marginEnd="16dp"
-        android:text="TextView"
-        app:layout_constraintBottom_toTopOf="@+id/textView_ProfileScreen_interest4"
-        app:layout_constraintEnd_toStartOf="@+id/guideline2" />
-
 
     <TextView
         android:id="@+id/textView_ProfileScreen_interest4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
         android:layout_marginEnd="16dp"
-
         android:text="TextView"
-        app:layout_constraintBaseline_toBaselineOf="@+id/textView_ProfileScreen_interest7"
+        app:layout_constraintBottom_toTopOf="@+id/textView_ProfileScreen_interest5"
         app:layout_constraintEnd_toStartOf="@+id/guideline2" />
 
 
@@ -77,27 +55,49 @@
         android:id="@+id/textView_ProfileScreen_interest5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
         android:layout_marginBottom="32dp"
-        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:text="TextView"
         app:layout_constraintBottom_toTopOf="@+id/textView_ProfileScreen_interest6"
-        app:layout_constraintStart_toStartOf="@+id/guideline" />
+        app:layout_constraintEnd_toStartOf="@+id/guideline2" />
 
 
     <TextView
         android:id="@+id/textView_ProfileScreen_interest6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+
+        android:text="TextView"
+        app:layout_constraintBaseline_toBaselineOf="@+id/textView_ProfileScreen_interest3"
+        app:layout_constraintEnd_toStartOf="@+id/guideline2" />
+
+
+    <TextView
+        android:id="@+id/textView_ProfileScreen_interest1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
 
         android:layout_marginBottom="32dp"
         android:layout_marginStart="16dp"
         android:text="TextView"
-        app:layout_constraintBottom_toTopOf="@+id/textView_ProfileScreen_interest7"
+        app:layout_constraintBottom_toTopOf="@+id/textView_ProfileScreen_interest2"
+        app:layout_constraintStart_toStartOf="@+id/guideline" />
+
+
+    <TextView
+        android:id="@+id/textView_ProfileScreen_interest2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_marginBottom="32dp"
+        android:layout_marginStart="16dp"
+        android:text="TextView"
+        app:layout_constraintBottom_toTopOf="@+id/textView_ProfileScreen_interest3"
         app:layout_constraintStart_toStartOf="@+id/guideline" />
 
     <TextView
-        android:id="@+id/textView_ProfileScreen_interest7"
+        android:id="@+id/textView_ProfileScreen_interest3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 

@@ -9,20 +9,13 @@ public class Lobby {
     private String lobbyDescriptions;
     private String activity;
 
-    public Lobby(String hostID,String[] guestID, int capacity, String lobbyDescriptions, String activity, String location) {
-        this.capacity = capacity;
-        this.lobbyDescriptions = lobbyDescriptions;
-        this.activity = activity;
-        this.location = location;
+    public Lobby(String lobbyID, String hostID, int capacity, String location, String lobbyDescriptions, String activity) {
+        this.lobbyID = lobbyID;
         this.hostID = hostID;
-    }
-
-    //temporary constructor
-    public Lobby(int capacity, String location, String activity, String lobbyDescriptions) {
         this.capacity = capacity;
         this.location = location;
-        this.activity = activity;
         this.lobbyDescriptions = lobbyDescriptions;
+        this.activity = activity;
     }
 
     public Lobby(){
