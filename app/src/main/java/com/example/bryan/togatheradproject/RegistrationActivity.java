@@ -41,26 +41,16 @@ import java.util.regex.Pattern;
 public class RegistrationActivity extends AppCompatActivity {
 
     private static final String TAG = "RegistrationActivity";
-    //public static final String USER_ID = "userID";
-
     private EditText editText_Email;
     private EditText editText_Username;
     private EditText editText_Password;
     private EditText editText_RePassword;
-    private TextView textView_Email;
-    private TextView textView_Username;
-    private TextView textView_Password;
-    private TextView textView_RePassword;
     private Button button_Create;
     private Button button_Cancel;
-
     private FirebaseAuth mAuth;
 
     private void updateUI(FirebaseUser user) {
-        if (user != null) {
-//            Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-//            startActivity(intent);
-        } else {
+        if (user == null) {
             clearEditText();
         }
     }
@@ -89,30 +79,6 @@ public class RegistrationActivity extends AppCompatActivity {
         Log.d(TAG, "Login: out");
     }
 
-    private void startAsychTask(View v){
-
-    }
-
-   // private class getUIDAsych extends AsyncTask<String, String, String>
-
-    private String getUID() {
-        String result = null;
-            try {
-                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                Log.d(TAG, "onClick: success get user" + FirebaseAuth.getInstance().getCurrentUser().getUid());
-                if (user != null) {
-                    Log.d(TAG, "onClick: if in");
-                    result = user.getUid().toString();
-                    if (result == null)
-                        Log.d(TAG, "onClick: " + user.getUid());
-                }
-                Log.d(TAG, "onClick: selamat");
-                Log.d(TAG, "onClick: hadoooh");
-            } catch (NullPointerException e) {
-                Log.d(TAG, "onClick: null buffer");
-            }
-        return result;
-    }
 
     protected void createUser(final String regisEmail,final String regisPassword) {
         Log.d(TAG, "regisEmail :" + regisEmail);
@@ -135,24 +101,13 @@ public class RegistrationActivity extends AppCompatActivity {
                                     updateUI(null);
                                 }
                             }
-                        }
-                ).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
-            @Override
-            public void onSuccess(AuthResult authResult) {
-
-            }
         });
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        //FirebaseUser currentUser = mAuth.getCurrentUser();
-        //updateUI(currentUser);
     }
-
-
-    //private Button button_Cancel;
 
     private String whyError = "";
 
@@ -199,7 +154,6 @@ public class RegistrationActivity extends AppCompatActivity {
         return isValid;
     }
 
-
     public boolean checkIfDataNotBlank(String email, String name, String password, String rePassword) {
         boolean result = true;
         if (email.equals("") || name.equals("") || password.equals("") || rePassword.equals("")) {
@@ -209,25 +163,22 @@ public class RegistrationActivity extends AppCompatActivity {
         return result;
     }
 
+    protected void establish(){
+        editText_Email = findViewById(R.id.editText_RegistrationActivity_email);
+        editText_Username = findViewById(R.id.editText_RegistrationActivity_username);
+        editText_Password = findViewById(R.id.editText_RegistrationActivity_password);
+        editText_RePassword = findViewById(R.id.editText_RegistrationActivity_rePassword);
+        button_Create = findViewById(R.id.button_RegistrationActivity_create);
+        button_Cancel = findViewById(R.id.button_RegistrationActivity_cancel);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
         Log.d(TAG, "onCreate: in " + TAG);
-
         mAuth = FirebaseAuth.getInstance();
-
-        editText_Email = findViewById(R.id.editText_RegistrationActivity_email);
-        editText_Username = findViewById(R.id.editText_RegistrationActivity_username);
-        editText_Password = findViewById(R.id.editText_RegistrationActivity_password);
-        editText_RePassword = findViewById(R.id.editText_RegistrationActivity_rePassword);
-        textView_Email = findViewById(R.id.textView_RegistrationActivity_email);
-        textView_Username = findViewById(R.id.textView_RegistrationActivity_username);
-        textView_Password = findViewById(R.id.textView_RegistrationActivity_password);
-        textView_RePassword = findViewById(R.id.textView_RegistrationActivity_rePassword);
-        button_Create = findViewById(R.id.button_RegistrationActivity_create);
-        button_Cancel = findViewById(R.id.button_RegistrationActivity_cancel);
-
+        establish();
         button_Create.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -238,7 +189,6 @@ public class RegistrationActivity extends AppCompatActivity {
                 String regisPassword = editText_Password.getText().toString();
                 String regisRePassword = editText_RePassword.getText().toString();
 
-
                 //validating input
                 if (checkIfDataNotBlank(regisEmail, regisName, regisPassword, regisRePassword)
                         && checkEmailValidity(regisEmail)
@@ -246,19 +196,13 @@ public class RegistrationActivity extends AppCompatActivity {
                         && checkIfPasswordValid(regisPassword)
                         && checkUserValidity(regisName)) {
                     Log.d(TAG, "onClick: IF - in ");
-
                     //register user to the authentication
                     createUser(regisEmail, regisPassword);
-
-
                     //generate unique id
                     final String uid = UUID.randomUUID().toString();
-
                     ArrayList<String> emptyList = new ArrayList<>();
-                    //emptyList.add("empty");
                     //create new user object
                     final User newUser = new User(regisPassword, regisName, regisEmail, 0, emptyList,uid);
-
                     //update the database
                     FirebaseFirestore.getInstance().collection(Constants.USER).document(uid).set(newUser)
                             .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -285,10 +229,8 @@ public class RegistrationActivity extends AppCompatActivity {
                 Log.d(TAG, "onClick: create button - out");
             }
         });
-
         button_Cancel.setOnClickListener(new View.OnClickListener() {
             @Override
-
             public void onClick(View v) {
                 Toast.makeText(getApplicationContext(), "Registration cancelled", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
