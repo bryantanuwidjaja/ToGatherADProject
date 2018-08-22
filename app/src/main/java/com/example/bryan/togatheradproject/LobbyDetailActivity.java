@@ -20,46 +20,41 @@ public class LobbyDetailActivity extends AppCompatActivity {
     private String userID;
     private String lobbyID;
 
-    private TextView textView_activityTAG;
     private TextView textView_activity;
-    private TextView textView_maximumCapacityTAG;
     private TextView textView_maximumCapacity;
-    private TextView textView_hostTAG;
     private TextView textView_host;
-    private TextView textView_descriptionTAG;
     private TextView textView_description;
-    private TextView textView_locationTAG;
     private TextView textView_location;
     private Button button_returnToLobby;
 
+
+    protected void establish(){
+        textView_activity = findViewById(R.id.textView_ActivityLobbyDetail_activity);
+        textView_maximumCapacity = findViewById(R.id.textView_ActivityLobbyDetail_maximumCapacity);
+        textView_host = findViewById(R.id.textView_ActivityLobbyDetail_host);
+        textView_description = findViewById(R.id.textView_ActivityLobbyDetail_description);
+        textView_location = findViewById(R.id.textView_ActivityLobbyDetail_location);
+        button_returnToLobby = findViewById(R.id.button_ActivityLobbyDetail_returnToLobby);
+    }
+
+    protected void acceptIntent(){
+        Intent intent = getIntent();
+        userID = intent.getStringExtra(Constants.USER_ID);
+        lobbyID = intent.getStringExtra(Constants.LOBBY_ID);
+        String hostID = textView_host.getText().toString();
+        Log.d(TAG, "hostID : " + hostID);
+        Log.d(TAG, "userID : " + userID);
+        Log.d(TAG, "lobbyID : " + lobbyID);
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lobby_detail);
 
-        Intent intent = getIntent();
-        userID = intent.getStringExtra(Constants.USER_ID);
-        lobbyID = intent.getStringExtra(Constants.LOBBY_ID);
-        Log.d(TAG, "userID : " + userID);
-        Log.d(TAG, "lobbyID : " + lobbyID);
-
-        textView_activityTAG = findViewById(R.id.textView_ActivityLobbyDetail_activityTAG);
-        textView_activity = findViewById(R.id.textView_ActivityLobbyDetail_activity);
-        textView_maximumCapacityTAG = findViewById(R.id.textView_ActivityLobbyDetail_maximumCapacityTAG);
-        textView_maximumCapacity = findViewById(R.id.textView_ActivityLobbyDetail_maximumCapacity);
-        textView_hostTAG = findViewById(R.id.textView_ActivityLobbyDetail_hostTAG);
-        textView_host = findViewById(R.id.textView_ActivityLobbyDetail_host);
-        textView_descriptionTAG = findViewById(R.id.textView_ActivityLobbyDetail_descriptionTAG);
-        textView_description = findViewById(R.id.textView_ActivityLobbyDetail_description);
-        textView_locationTAG = findViewById(R.id.textView_ActivityLobbyDetail_locationTAG);
-        textView_location = findViewById(R.id.textView_ActivityLobbyDetail_location);
-        button_returnToLobby = findViewById(R.id.button_ActivityLobbyDetail_returnToLobby);
-
+        establish();
+        acceptIntent();
         queryInformation(lobbyID);
-
-        String hostID = textView_host.getText().toString();
-        Log.d(TAG, "hostID : " + hostID);
 
         button_returnToLobby.setOnClickListener(new View.OnClickListener() {
             @Override
