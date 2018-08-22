@@ -26,6 +26,7 @@ import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.protobuf.Any;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -64,7 +65,8 @@ public class HomeActivity extends AppCompatActivity {
                             String location = lobby.getLocation();
                             String lobbyDescriptions = lobby.getLobbyDescriptions();
                             String activity = lobby.getActivity();
-                            Lobby newLobby = new Lobby(lobbyID, hostID, capacity, location, lobbyDescriptions, activity);
+                            ArrayList<User> guestList = lobby.getGuestList();
+                            Lobby newLobby = new Lobby(lobbyID, hostID, capacity, location, lobbyDescriptions, activity, guestList);
                             lobbyList.add(newLobby);
                             LobbyList adapter = new LobbyList(HomeActivity.this, lobbyList);
                             listView_LobbyList.setAdapter(adapter);
@@ -95,6 +97,8 @@ public class HomeActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         loggedID = intent.getStringExtra(Constants.USER_ID);
+        final User user = (User) intent.getSerializableExtra(Constants.USER);
+        Log.d(TAG, "User: " + user.getUserID());
         Log.d(TAG, "HomeActivity : Logged user : " + loggedID);
 
         lobbyList = new ArrayList<>();
@@ -108,6 +112,7 @@ public class HomeActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), CreateLobbyActivity.class);
                 intent.putExtra(Constants.USER_ID, loggedID);
+                intent.putExtra(Constants.USER, user);
                 startActivity(intent);
             }
         });
@@ -129,6 +134,9 @@ public class HomeActivity extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), LobbyActivity.class);
                 intent.putExtra(Constants.USER_ID, loggedID);
                 intent.putExtra(Constants.LOBBY_ID, lobbyID);
+                intent.putExtra(Constants.USER, user);
+                intent.putExtra(Constants.LOBBY, lobby);
+                Log.d(TAG, "User: " + user.getUserID());
                 Log.d(TAG, "userID : " + loggedID);
                 Log.d(TAG, "lobbyID : " + lobbyID);
                 startActivity(intent);

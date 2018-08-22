@@ -56,7 +56,9 @@ public class LoginActivity extends AppCompatActivity {
                             textView_Container.setText(userID);
                             Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
                             intent.putExtra(Constants.USER_ID, userID );
-                            Toast.makeText(getApplicationContext(), "Login successful", Toast.LENGTH_SHORT).show();
+                            intent.putExtra(Constants.USER, user);
+                            Log.d(TAG, "User: " + user.getUserID());
+                            Toast.makeText(getApplicationContext(), "Login Successful", Toast.LENGTH_SHORT).show();
                             startActivity(intent);
                         }
                     }
@@ -75,14 +77,14 @@ public class LoginActivity extends AppCompatActivity {
                         String userID = textView_Container.getText().toString();
                         Log.d(TAG,"logged user id : " + userID);
                         //Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
-                        //Toast.makeText(getApplicationContext(), "Login successful", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Login Successful", Toast.LENGTH_SHORT).show();
                         //startActivity(intent);
                     }
                 }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
                 Log.e(TAG, "onFailure: Could not sign in user" + e);
-                //Toast.makeText(getApplicationContext(), "Login failed", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Login Failed", Toast.LENGTH_SHORT).show();
             }
         });}
         catch (Exception e){
@@ -118,7 +120,7 @@ public class LoginActivity extends AppCompatActivity {
                 Log.d(TAG, "onClick: sign in - before login");
                 Login(email, password);}
                 catch (Exception e){
-                    Toast.makeText(LoginActivity.this, R.string.login_Failed, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "Login Failed", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -126,7 +128,7 @@ public class LoginActivity extends AppCompatActivity {
         button_SignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG, "onClick: signup - in");
+                Log.d(TAG, "onClick: sign up - in");
                 Intent intent = new Intent(getApplicationContext(), RegistrationActivity.class);
                 Log.d(TAG, "onClick: sign up - before intent");
                 startActivity(intent);

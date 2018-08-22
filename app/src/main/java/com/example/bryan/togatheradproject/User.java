@@ -75,7 +75,7 @@ public class User implements Serializable{
     }
 
     public ArrayList<String>  getUserInterests() {
-        return new ArrayList<String>(userInterests);
+        return userInterests;
     }
 
     public void setUserInterests(ArrayList<String> userInterests) {

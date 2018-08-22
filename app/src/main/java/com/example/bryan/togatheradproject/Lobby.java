@@ -1,6 +1,12 @@
 package com.example.bryan.togatheradproject;
 
-public class Lobby {
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.io.Serializable;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
+public class Lobby implements Serializable {
 
     private String lobbyID;
     private String hostID;
@@ -8,18 +14,28 @@ public class Lobby {
     private String location;
     private String lobbyDescriptions;
     private String activity;
+    private ArrayList<User> guestList;
 
-    public Lobby(String lobbyID, String hostID, int capacity, String location, String lobbyDescriptions, String activity) {
+    public Lobby(String lobbyID, String hostID, int capacity, String location, String lobbyDescriptions, String activity, ArrayList<User> guestList) {
         this.lobbyID = lobbyID;
         this.hostID = hostID;
         this.capacity = capacity;
         this.location = location;
         this.lobbyDescriptions = lobbyDescriptions;
         this.activity = activity;
+        this.guestList = guestList;
     }
 
     public Lobby(){
 
+    }
+
+    public ArrayList<User> getGuestList() {
+        return guestList;
+    }
+
+    public void setGuestList(ArrayList<User> guestList) {
+        this.guestList = guestList;
     }
 
     public String getLocation() {
@@ -72,5 +88,9 @@ public class Lobby {
 
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    public void addGuest(User user) {
+        guestList.add(user);
     }
 }

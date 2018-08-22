@@ -53,7 +53,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:ems="10"
-        android:hint="must be more than 3 characters"
+        android:hint="must be more than 4 characters"
         android:inputType="textPersonName"
         android:maxLength="20"
         android:textSize="14sp"

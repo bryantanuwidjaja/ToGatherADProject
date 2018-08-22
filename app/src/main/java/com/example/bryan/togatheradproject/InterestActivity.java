@@ -112,6 +112,7 @@ public class InterestActivity extends AppCompatActivity implements EditProfileDi
             Intent intent = getIntent();
             final String userID = intent.getStringExtra(Constants.USER_ID);
             final User currentUser = (User) intent.getSerializableExtra(Constants.USER);
+
             final DocumentReference userRef = FirebaseFirestore.getInstance().collection(Constants.USER).document(userID);
             button_SaveButton = findViewById(R.id.button_InterestActivity_saveButton);
             button_AddButton = findViewById(R.id.button2_InterestActivity_addButton);
