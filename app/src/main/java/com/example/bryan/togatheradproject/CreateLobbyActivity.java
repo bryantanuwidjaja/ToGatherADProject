@@ -25,6 +25,7 @@ import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.protobuf.Any;
 
@@ -33,6 +34,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.UUID;
 
 public class CreateLobbyActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
@@ -64,6 +67,7 @@ public class CreateLobbyActivity extends AppCompatActivity implements AdapterVie
 
         Intent intent = getIntent();
         final String userID = intent.getStringExtra(Constants.USER_ID);
+        final User user = (User) intent.getSerializableExtra(Constants.USER);
         Log.d(TAG, "CreateLobby - Logged user : " + userID);
 
 
@@ -89,9 +93,10 @@ public class CreateLobbyActivity extends AppCompatActivity implements AdapterVie
                 String temp_Capacity = editText_Capacity.getText().toString();
                 int capacity = (Integer.parseInt(temp_Capacity));
                 String activity = spinner.getSelectedItem().toString();
-
+                ArrayList<User> guestList = new ArrayList<>();
+                Log.d(TAG, "user = " + guestList);
                 final String lobbyID = UUID.randomUUID().toString();
-                Lobby lobby = new Lobby(lobbyID, userID, capacity, mAddressOutput, description, activity);
+                Lobby lobby = new Lobby(lobbyID, userID, capacity, mAddressOutput, description, activity, guestList);
 
                 FirebaseFirestore.getInstance().collection(Constants.LOBBY)
                         .document(lobbyID)
@@ -102,19 +107,20 @@ public class CreateLobbyActivity extends AppCompatActivity implements AdapterVie
                                 Intent intent = new Intent(getApplicationContext(), LobbyActivity.class);
                                 intent.putExtra(Constants.USER_ID, userID);
                                 intent.putExtra(Constants.LOBBY_ID, lobbyID);
+                                intent.putExtra(Constants.USER, user);
                                 startActivity(intent);
                             }
                         })
-
                         .addOnFailureListener(new OnFailureListener() {
                             @Override
                             public void onFailure(@NonNull Exception e) {
                                 Log.e(TAG, "onFailure: Could not create lobby " + e);
                             }
                         });
-
             }
         });
+
+
         button_Cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -140,7 +146,6 @@ public class CreateLobbyActivity extends AppCompatActivity implements AdapterVie
         updateUIWidgets();
 
     }
-
 
     private static final int REQUEST_PERMISSIONS_REQUEST_CODE = 34;
 
@@ -321,7 +326,7 @@ public class CreateLobbyActivity extends AppCompatActivity implements AdapterVie
         }
 
         /**
-         *  Receives data sent from FetchAddressIntentService and updates the UI in MainActivity.
+         * Receives data sent from FetchAddressIntentService and updates the UI in MainActivity.
          */
         @Override
         protected void onReceiveResult(int resultCode, Bundle resultData) {

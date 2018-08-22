@@ -11,6 +11,9 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 
 public class LobbyActivity extends AppCompatActivity {
 
@@ -37,6 +40,13 @@ public class LobbyActivity extends AppCompatActivity {
         Intent intent = getIntent();
         userID = intent.getStringExtra(Constants.USER_ID);
         lobbyID = intent.getStringExtra(Constants.LOBBY_ID);
+        final Lobby lobby = (Lobby) intent.getSerializableExtra(Constants.LOBBY);
+        final User user = (User) intent.getSerializableExtra(Constants.USER);
+        Log.d(TAG, "User: " + user.getUserID());
+
+        //joinLobby(user, lobby);
+        updateDatabase(user, userID);
+
         Log.d(TAG, "userID : " + userID);
         Log.d(TAG, "lobbyID : " + lobbyID);
 
@@ -58,6 +68,35 @@ public class LobbyActivity extends AppCompatActivity {
             }
         });
 
+        button_guestList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), GuestListActivity.class);
+                intent.putExtra(Constants.USER_ID, userID);
+                intent.putExtra(Constants.LOBBY_ID, lobbyID);
+                intent.putExtra(Constants.LOBBY, lobby);
+                startActivity(intent);
+            }
+        });
+
         Log.d(TAG, "onCreate: out");
+    }
+
+    private void joinLobby(User user, Lobby lobby) {
+        lobby.addGuest(user);
+    }
+
+    private void updateDatabase(User user, String userID) {
+        FirebaseFirestore.getInstance().collection(Constants.LOBBY)
+                .document(lobbyID)
+                .collection(Constants.LOBBY_GUESTLIST)
+                .document(userID)
+                .set(user)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "onSuccess: update successful");
+                    }
+                });
     }
 }
