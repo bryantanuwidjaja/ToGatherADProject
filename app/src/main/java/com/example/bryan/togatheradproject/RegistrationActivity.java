@@ -208,13 +208,16 @@ public class RegistrationActivity extends AppCompatActivity {
         establish();
 
 
-        @Override
-        protected void onCreate (Bundle savedInstanceState){
-            super.onCreate(savedInstanceState);
-            setContentView(R.layout.activity_registration);
-            Log.d(TAG, "onCreate: in " + TAG);
-            mAuth = FirebaseAuth.getInstance();
-            establish();
+        //@Override
+        //protected void onCreate (Bundle savedInstanceState){
+        //    super.onCreate(savedInstanceState);
+        //    setContentView(R.layout.activity_registration);
+        //    Log.d(TAG, "onCreate: in " + TAG);
+        //    mAuth = FirebaseAuth.getInstance();
+        //    establish();
+
+
+        
             button_Create.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
