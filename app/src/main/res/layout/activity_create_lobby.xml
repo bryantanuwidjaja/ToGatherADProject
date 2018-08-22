@@ -139,4 +139,5 @@
         android:layout_marginTop="8dp"
         app:layout_constraintStart_toEndOf="@+id/button_CreateLobbyActivity_fetch"
         app:layout_constraintTop_toBottomOf="@+id/editText_CreateLobbyActivity_description" />
+
 </android.support.constraint.ConstraintLayout>

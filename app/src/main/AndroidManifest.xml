@@ -29,7 +29,8 @@
             android:name=".FetchAddressIntentService"
             android:exported="false" />
 
-        <activity android:name=".LobbyDetailActivity"></activity>
+        <activity android:name=".LobbyDetailActivity" />
+        <activity android:name=".GuestListActivity"></activity>
     </application>
 
 </manifest>
