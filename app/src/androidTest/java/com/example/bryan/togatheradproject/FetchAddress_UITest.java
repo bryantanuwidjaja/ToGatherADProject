@@ -60,7 +60,10 @@ public class FetchAddress_UITest {
                 .perform(click());
         onView(withId(R.id.button_CreateLobbyActivity_fetch))
                 .perform(click());
-        onView(isRoot()).perform(idleFor(1000));
+        onView(withText(R.string.toast_successFetchAddress)).inRoot(withDecorView(not(
+                fetchAddressActivityTestRule.getActivity().getWindow().getDecorView())))
+                .check(matches(isDisplayed()));
+        onView(isRoot()).perform(idleFor(500));
         onView(withId(R.id.textView_CreateLobbyActivity_address))
                 .check(matches(not(withText(""))));
     }
@@ -80,6 +83,9 @@ public class FetchAddress_UITest {
                 .perform(typeText("Local coffee shop at level 1"));
         onView(withId(R.id.button_CreateLobbyActivity_create))
                 .perform(click());
+        onView(withText(R.string.toast_emptyFetchAddress)).inRoot(withDecorView(not(
+                fetchAddressActivityTestRule.getActivity().getWindow().getDecorView())))
+                .check(matches(isDisplayed()));
         onView(withId(R.id.button_CreateLobbyActivity_create))
                 .check(matches(isDisplayed()));
     }

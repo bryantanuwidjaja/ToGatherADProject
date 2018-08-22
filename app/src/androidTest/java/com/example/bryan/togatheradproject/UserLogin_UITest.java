@@ -16,9 +16,12 @@ import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.RootMatchers.withDecorView;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.isRoot;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static org.hamcrest.Matchers.not;
 
 public class UserLogin_UITest {
 
@@ -66,7 +69,8 @@ public class UserLogin_UITest {
     public void invalidEmailLogin() throws Exception {
         loginActivityUI("suki@yahoo.com", "123123");
         onView(isRoot()).perform(idleFor(1000));
-        onView(withId(R.id.button_LoginActivity_signIn))
+        onView(withText(R.string.toast_emptyEmailLogin)).inRoot(withDecorView(not(
+                loginActivityTestRule.getActivity().getWindow().getDecorView())))
                 .check(matches(isDisplayed()));
     }
 
@@ -74,23 +78,27 @@ public class UserLogin_UITest {
     public void invalidPassLogin() throws Exception {
         loginActivityUI("sukiliong@yahoo.com", "password123");
         onView(isRoot()).perform(idleFor(1000));
-        onView(withId(R.id.button_LoginActivity_signIn))
+        onView(withText(R.string.toast_emptyEmailLogin)).inRoot(withDecorView(not(
+                loginActivityTestRule.getActivity().getWindow().getDecorView())))
                 .check(matches(isDisplayed()));
     }
 
     @Test
     public void emptyEmailLogin() throws Exception {
         loginActivityUI("", "123123");
-        onView(isRoot()).perform(idleFor(1000));
-        onView(withId(R.id.button_LoginActivity_signIn))
+        onView(isRoot()).perform(idleFor(100));
+        onView(withText(R.string.toast_emptyFieldLogin)).inRoot(withDecorView(not(
+                loginActivityTestRule.getActivity().getWindow().getDecorView())))
                 .check(matches(isDisplayed()));
+
     }
 
     @Test
     public void emptyPassLogin() throws Exception {
         loginActivityUI("sukiliong@yahoo.com", "");
-        onView(isRoot()).perform(idleFor(1000));
-        onView(withId(R.id.button_LoginActivity_signIn))
+        onView(isRoot()).perform(idleFor(100));
+        onView(withText(R.string.toast_emptyFieldLogin)).inRoot(withDecorView(not(
+                loginActivityTestRule.getActivity().getWindow().getDecorView())))
                 .check(matches(isDisplayed()));
     }
 }

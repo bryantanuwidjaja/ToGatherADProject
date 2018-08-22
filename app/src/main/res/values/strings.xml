@@ -35,4 +35,10 @@
     <string name="permission_denied_explanation">Permission was denied, but is needed for core
         functionality.</string>
     <string name="settings">Settings</string>
+    <string name="toast_emptyFieldLogin">\error empty field\</string>
+    <string name="toast_cancelRegistration">Registration cancelled</string>
+    <string name="toast_emptyFieldLobby">Please fill all empty fields</string>
+    <string name="toast_invalidCapacityLobby">Please determine lobby\'s capacity</string>
+    <string name="toast_successFetchAddress">Address found</string>
+    <string name="toast_emptyFetchAddress">Address has not been fetched</string>
 </resources>
