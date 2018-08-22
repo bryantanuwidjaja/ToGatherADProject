@@ -107,11 +107,15 @@ public class LoginActivity extends AppCompatActivity {
         button_SignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                try{
                 Log.d(TAG, "onClick: sign in - in ");
                 String email = editText_InsertEmail.getText().toString();
                 String password = editText_InsertPassword.getText().toString();
                 Log.d(TAG, "onClick: sign in - before login");
-                Login(email, password);
+                Login(email, password);}
+                catch (Exception e){
+                    Toast.makeText(LoginActivity.this, R.string.login_Failed, Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
