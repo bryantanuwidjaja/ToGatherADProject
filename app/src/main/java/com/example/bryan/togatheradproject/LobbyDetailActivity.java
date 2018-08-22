@@ -41,6 +41,8 @@ public class LobbyDetailActivity extends AppCompatActivity {
         Intent intent = getIntent();
         userID = intent.getStringExtra(Constants.USER_ID);
         lobbyID = intent.getStringExtra(Constants.LOBBY_ID);
+        final Lobby lobby = (Lobby) intent.getSerializableExtra(Constants.LOBBY);
+        final User user = (User) intent.getSerializableExtra(Constants.USER);
         Log.d(TAG, "userID : " + userID);
         Log.d(TAG, "lobbyID : " + lobbyID);
 
@@ -67,6 +69,8 @@ public class LobbyDetailActivity extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), LobbyActivity.class);
                 intent.putExtra(Constants.USER_ID, userID);
                 intent.putExtra(Constants.LOBBY_ID, lobbyID);
+                intent.putExtra(Constants.USER, user);
+                intent.putExtra(Constants.LOBBY, lobby);
                 startActivity(intent);
             }
         });

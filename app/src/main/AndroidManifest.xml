@@ -30,7 +30,8 @@
             android:exported="false" />
 
         <activity android:name=".LobbyDetailActivity" />
-        <activity android:name=".GuestListActivity"></activity>
+        <activity android:name=".GuestListActivity" />
+        <activity android:name=".GuestProfileActivity"></activity>
     </application>
 
 </manifest>

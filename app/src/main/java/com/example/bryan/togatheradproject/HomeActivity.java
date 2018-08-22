@@ -122,6 +122,7 @@ public class HomeActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
                 intent.putExtra(Constants.USER_ID, loggedID);
+                intent.putExtra(Constants.USER, user);
                 startActivity(intent);
             }
         });
