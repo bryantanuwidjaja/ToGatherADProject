@@ -17,12 +17,16 @@ import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.RootMatchers.withDecorView;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.isRoot;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static com.example.bryan.togatheradproject.UserLogin_UITest.idleFor;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
 
 public class CreateLobby_UITest {
 
@@ -51,34 +55,17 @@ public class CreateLobby_UITest {
         onView(isRoot()).perform(idleFor(1000));
         onView(withId(R.id.button_CreateLobbyActivity_create))
                 .perform(click());
-        onView(isRoot()).perform(idleFor(1000));
+        onView(isRoot()).perform(idleFor(200));
     }
 
-    public static ViewAction idleFor(final long millisec) {
-        return new ViewAction() {
-            @Override
-            public Matcher<View> getConstraints() {
-                return isRoot();
-            }
 
-            @Override
-            public String getDescription() {
-                return "Idle for " + millisec + " milliseconds.";
-            }
-
-            @Override
-            public void perform(UiController uiController, final View view) {
-                uiController.loopMainThreadForAtLeast(millisec);
-            }
-        };
-    }
 
     @Rule
     public ActivityTestRule<LoginActivity> createLobbyTestRule =
             new ActivityTestRule<LoginActivity>(LoginActivity.class);
 
     @Test
-    public void succesCreateLobby() throws Exception {
+    public void successCreateLobby() throws Exception {
         createLobbyUI("Movies", "15", "Lobby Description");
         onView(withId(R.id.textView_LobbyActivity_lobbyID))
                 .check(matches(isDisplayed()));
@@ -87,6 +74,9 @@ public class CreateLobby_UITest {
     @Test
     public void emptyCapacityCreateLobby() throws Exception {
         createLobbyUI("Movies", "", "Lobby Description");
+        onView(withText(R.string.toast_emptyFieldLobby)).inRoot(withDecorView(not(
+                createLobbyTestRule.getActivity().getWindow().getDecorView())))
+                .check(matches(isDisplayed()));
         onView(withId(R.id.button_CreateLobbyActivity_create))
                 .check(matches(isDisplayed()));
     }
@@ -94,6 +84,9 @@ public class CreateLobby_UITest {
     @Test
     public void emptyDescriptionCreateLobby() throws Exception {
         createLobbyUI("Movies", "15", "");
+        onView(withText(R.string.toast_emptyFieldLobby)).inRoot(withDecorView(not(
+                createLobbyTestRule.getActivity().getWindow().getDecorView())))
+                .check(matches(isDisplayed()));
         onView(withId(R.id.button_CreateLobbyActivity_create))
                 .check(matches(isDisplayed()));
     }
@@ -101,6 +94,9 @@ public class CreateLobby_UITest {
     @Test
     public void invalidCapacityCreateLobby() throws Exception {
         createLobbyUI("Movies", "p!", "Lobby Description");
+        onView(withText(R.string.toast_invalidCapacityLobby)).inRoot(withDecorView(not(
+                createLobbyTestRule.getActivity().getWindow().getDecorView())))
+                .check(matches(isDisplayed()));
         onView(withId(R.id.button_CreateLobbyActivity_create))
                 .check(matches(isDisplayed()));
     }

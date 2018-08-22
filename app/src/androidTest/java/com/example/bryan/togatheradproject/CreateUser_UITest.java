@@ -16,9 +16,12 @@ import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.RootMatchers.withDecorView;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.isRoot;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static org.hamcrest.Matchers.not;
 
 
 @RunWith(AndroidJUnit4.class)
@@ -125,5 +128,16 @@ public class CreateUser_UITest {
         passUserRegistrationUI("naufaladi10@gmail.com", "naufalAdi", "kappa123", "");
         onView(withId(R.id.button_RegistrationActivity_create))
                 .check(matches(isDisplayed()));
+    }
+
+    @Test // User cancels registration
+    public void cancelRegistration() throws Exception {
+        onView(withId(R.id.button_LoginActivity_signUp))
+                .perform(click());
+        onView(withId(R.id.button_RegistrationActivity_cancel)).perform(click());
+        onView(withText(R.string.toast_cancelRegistration)).inRoot(withDecorView(not(
+                loginActivityTestRule.getActivity().getWindow().getDecorView())))
+                .check(matches(isDisplayed()));
+
     }
 }

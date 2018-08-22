@@ -60,6 +60,17 @@ public class SpinnerActivities_UITest {
         onView(withId(R.id.spinnerActivities))
                 .check(matches(withSpinnerText(containsString("Eat out"))));
     }
+
+    @Test
+    public void spinnerDisplays2() throws Exception {
+        onView(withId(R.id.spinnerActivities))
+                .perform(click());
+        onView(isRoot()).perform(idleFor(500));
+        onData(allOf(is(instanceOf(String.class)), is("Games")))
+                .perform(click());
+        onView(withId(R.id.spinnerActivities))
+                .check(matches(withSpinnerText(containsString("Games"))));
+    }
 }
 
 
