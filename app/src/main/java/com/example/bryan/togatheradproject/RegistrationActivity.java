@@ -68,7 +68,7 @@ public class RegistrationActivity extends AppCompatActivity {
                 .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                     @Override
                     public void onSuccess(AuthResult authResult) {
-                        Log.d(TAG, "onSuccess: login successful, signed in"+ FirebaseAuth.getInstance().getCurrentUser().getUid());
+                        Log.d(TAG, "onSuccess: login successful, signed in" + FirebaseAuth.getInstance().getCurrentUser().getUid());
                     }
                 }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -79,7 +79,7 @@ public class RegistrationActivity extends AppCompatActivity {
         Log.d(TAG, "Login: out");
     }
 
-    private void startAsychTask(View v){
+    private void startAsychTask(View v) {
 
     }
 
@@ -104,28 +104,27 @@ public class RegistrationActivity extends AppCompatActivity {
         return result;
     }
 
-    protected void createUser(final String regisEmail,final String regisPassword) {
+    protected void createUser(final String regisEmail, final String regisPassword) {
         Log.d(TAG, "regisEmail :" + regisEmail);
         Log.d(TAG, "regisPassword: " + regisPassword);
         mAuth.createUserWithEmailAndPassword(regisEmail, regisPassword)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                if (task.isSuccessful()) {
-                                    Log.d(TAG, "createUserWithEmail: success");
-                                    FirebaseUser user = mAuth.getCurrentUser();
-                                    login(regisEmail, regisPassword);
-                                    Log.d(TAG, "onComplete: onclick"+ FirebaseAuth.getInstance().getCurrentUser().getUid());
-                                    updateUI(user);
-                                }
-                                else {
-                                    Log.w(TAG, "createUserWithEmail: failure", task.getException());
-                                    Toast.makeText(RegistrationActivity.this, "Account creation failed",
-                                            Toast.LENGTH_SHORT).show();
-                                    updateUI(null);
-                                }
-                            }
-        });
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            Log.d(TAG, "createUserWithEmail: success");
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            login(regisEmail, regisPassword);
+                            Log.d(TAG, "onComplete: onclick" + FirebaseAuth.getInstance().getCurrentUser().getUid());
+                            updateUI(user);
+                        } else {
+                            Log.w(TAG, "createUserWithEmail: failure", task.getException());
+                            Toast.makeText(RegistrationActivity.this, "Account creation failed",
+                                    Toast.LENGTH_SHORT).show();
+                            updateUI(null);
+                        }
+                    }
+                });
     }
 
     @Override
@@ -187,7 +186,7 @@ public class RegistrationActivity extends AppCompatActivity {
         return result;
     }
 
-    public void establish(){
+    public void establish() {
 
         editText_Email = findViewById(R.id.editText_RegistrationActivity_email);
         editText_Username = findViewById(R.id.editText_RegistrationActivity_username);
@@ -209,71 +208,72 @@ public class RegistrationActivity extends AppCompatActivity {
         establish();
 
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_registration);
-        Log.d(TAG, "onCreate: in " + TAG);
-        mAuth = FirebaseAuth.getInstance();
-        establish();
-        button_Create.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d(TAG, "onClick: create button - in ");
-                //retrieve information from widgets
-                String regisEmail = editText_Email.getText().toString();
-                String regisName = editText_Username.getText().toString();
-                String regisPassword = editText_Password.getText().toString();
-                String regisRePassword = editText_RePassword.getText().toString();
+        @Override
+        protected void onCreate (Bundle savedInstanceState){
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_registration);
+            Log.d(TAG, "onCreate: in " + TAG);
+            mAuth = FirebaseAuth.getInstance();
+            establish();
+            button_Create.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.d(TAG, "onClick: create button - in ");
+                    //retrieve information from widgets
+                    String regisEmail = editText_Email.getText().toString();
+                    String regisName = editText_Username.getText().toString();
+                    String regisPassword = editText_Password.getText().toString();
+                    String regisRePassword = editText_RePassword.getText().toString();
 
-                //validating input
-                if (checkIfDataNotBlank(regisEmail, regisName, regisPassword, regisRePassword)
-                        && checkEmailValidity(regisEmail)
-                        && checkIfPasswordSame(regisPassword, regisRePassword)
-                        && checkIfPasswordValid(regisPassword)
-                        && checkUserValidity(regisName)) {
-                    Log.d(TAG, "onClick: IF - in ");
-                    //register user to the authentication
-                    createUser(regisEmail, regisPassword);
-                    //generate unique id
-                    final String uid = UUID.randomUUID().toString();
-                    ArrayList<String> emptyList = new ArrayList<>();
-                    //create new user object
-                    final User newUser = new User(regisPassword, regisName, regisEmail, 0, emptyList,uid);
-                    //update the database
-                    FirebaseFirestore.getInstance().collection(Constants.USER).document(uid).set(newUser)
-                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void aVoid) {
-                                    Log.d(TAG, "onSuccess: Account creation successful");
-                                    Intent intent = new Intent(getApplicationContext(), InterestActivity.class);
-                                    intent.putExtra(Constants.USER_ID , uid);
-                                    intent.putExtra(Constants.USER, newUser);
-                                    startActivity(intent);
-                                }
-                            })
-                            .addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Log.d(TAG, "onFailure: Account creation failed");
-                                }
-                            });
-                } else {
-                    clearEditText();
-                    Toast.makeText(getApplicationContext(), whyError, Toast.LENGTH_SHORT).show();
-                    whyError = "";
+                    //validating input
+                    if (checkIfDataNotBlank(regisEmail, regisName, regisPassword, regisRePassword)
+                            && checkEmailValidity(regisEmail)
+                            && checkIfPasswordSame(regisPassword, regisRePassword)
+                            && checkIfPasswordValid(regisPassword)
+                            && checkUserValidity(regisName)) {
+                        Log.d(TAG, "onClick: IF - in ");
+                        //register user to the authentication
+                        createUser(regisEmail, regisPassword);
+                        //generate unique id
+                        final String uid = UUID.randomUUID().toString();
+                        ArrayList<String> emptyList = new ArrayList<>();
+                        //create new user object
+                        final User newUser = new User(regisPassword, regisName, regisEmail, 0, emptyList, uid);
+                        //update the database
+                        FirebaseFirestore.getInstance().collection(Constants.USER).document(uid).set(newUser)
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        Log.d(TAG, "onSuccess: Account creation successful");
+                                        Intent intent = new Intent(getApplicationContext(), InterestActivity.class);
+                                        intent.putExtra(Constants.USER_ID, uid);
+                                        intent.putExtra(Constants.USER, newUser);
+                                        startActivity(intent);
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Log.d(TAG, "onFailure: Account creation failed");
+                                    }
+                                });
+                    } else {
+                        clearEditText();
+                        Toast.makeText(getApplicationContext(), whyError, Toast.LENGTH_SHORT).show();
+                        whyError = "";
+                    }
+                    Log.d(TAG, "onClick: create button - out");
                 }
-                Log.d(TAG, "onClick: create button - out");
-            }
-        });
-        button_Cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "Registration cancelled", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-                startActivity(intent);
-            }
-        });
-        Log.d(TAG, "onCreate: out " + TAG);
+            });
+            button_Cancel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(getApplicationContext(), "Registration cancelled", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                    startActivity(intent);
+                }
+            });
+            Log.d(TAG, "onCreate: out " + TAG);
+        }
     }
 }
