@@ -9,11 +9,13 @@
 
     <TextView
         android:id="@+id/textView_HomeActivity_nearbyLobby"
-        android:layout_width="wrap_content"
-        android:layout_height="19dp"
+        android:layout_width="160dp"
+        android:layout_height="39dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="Available Lobby"
+        android:textColor="#000000"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
