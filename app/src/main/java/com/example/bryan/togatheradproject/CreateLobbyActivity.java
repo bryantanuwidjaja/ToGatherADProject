@@ -82,6 +82,22 @@ public class CreateLobbyActivity extends AppCompatActivity implements AdapterVie
         mFetchAddressButton = (Button) findViewById(R.id.button_CreateLobbyActivity_fetch);
     }
 
+    private String whyError = "";
+
+    protected boolean checkIfDataNotBlank(String capacity,String description, String location){
+        boolean result = true;
+        if (capacity.equals("") || description.equals("") || location.equals("")) {
+            whyError = "Please fill all of the fields properly ";
+            result = false;
+        }
+        return result;
+    }
+
+    protected void clearEditTest(){
+        editText_Capacity.setText("");
+        editText_Description.setText("");
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -119,7 +135,6 @@ public class CreateLobbyActivity extends AppCompatActivity implements AdapterVie
 
                 if (checkIfDataNotBlank(temp_Capacity, description, mAddressOutput)) {
                     final String lobbyID = UUID.randomUUID().toString();
-                    int capacity = (Integer.parseInt(temp_Capacity));
                     Lobby lobby = new Lobby(lobbyID, userID, capacity, mAddressOutput, description, activity, guestList);
 
                     FirebaseFirestore.getInstance().collection(Constants.LOBBY)
