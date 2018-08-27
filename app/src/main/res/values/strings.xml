@@ -41,4 +41,6 @@
     <string name="toast_invalidCapacityLobby">Please determine lobby\'s capacity</string>
     <string name="toast_successFetchAddress">Address found</string>
     <string name="toast_emptyFetchAddress">Address has not been fetched</string>
+    <string name="toast_emptyFieldRegistration">Please fill all of the fields properly</string>
+    <string name="toast_invalidFieldLogin">Either email or password is wrong</string>
 </resources>
