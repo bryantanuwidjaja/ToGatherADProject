@@ -114,7 +114,7 @@ public class RegistrationActivity extends AppCompatActivity {
     public boolean checkIfPasswordSame(String password1, String password2) {
         boolean result = true;
         if (!password1.equals(password2)) {
-            whyError = "Passwords are not the same ";
+            whyError = "Passwords are not the same";
             result = false;
         }
         return result;
@@ -123,7 +123,7 @@ public class RegistrationActivity extends AppCompatActivity {
     public boolean checkIfPasswordValid(String password) {
         boolean result = true;
         if (password.length() < 6) {
-            whyError = "Password needs to be more than 6 characters ";
+            whyError = "Password needs to be more than 6 characters";
             result = false;
         }
         return result;
@@ -132,7 +132,7 @@ public class RegistrationActivity extends AppCompatActivity {
     public boolean checkUserValidity(String username) {
         boolean result = true;
         if (username.length() < 4) {
-            whyError = "Username must be 4 or more characters ";
+            whyError = "Username must be 4 or more characters";
             result = false;
         }
         return result;
@@ -149,7 +149,7 @@ public class RegistrationActivity extends AppCompatActivity {
         if (matcher.matches()) {
             isValid = true;
         } else {
-            whyError = "invalid email ";
+            whyError = "invalid email";
         }
         return isValid;
     }
@@ -157,7 +157,7 @@ public class RegistrationActivity extends AppCompatActivity {
     public boolean checkIfDataNotBlank(String email, String name, String password, String rePassword) {
         boolean result = true;
         if (email.equals("") || name.equals("") || password.equals("") || rePassword.equals("")) {
-            whyError = "Please fill all of the fields properly ";
+            whyError = "Please fill all of the fields properly";
             result = false;
         }
         return result;
