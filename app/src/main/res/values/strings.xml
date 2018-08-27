@@ -43,4 +43,8 @@
     <string name="toast_emptyFetchAddress">Address has not been fetched</string>
     <string name="toast_emptyFieldRegistration">Please fill all of the fields properly</string>
     <string name="toast_invalidFieldLogin">Either email or password is wrong</string>
+    <string name="toast_invalidRePassRegistration">Passwords are not the same</string>
+    <string name="toast_invalidPassRegistration">Password needs to be more than 6 characters</string>
+    <string name="toast_invalidNameRegistration">Username must be 4 or more characters</string>
+    <string name="toast_invalidEmailRegistration">invalid email</string>
 </resources>

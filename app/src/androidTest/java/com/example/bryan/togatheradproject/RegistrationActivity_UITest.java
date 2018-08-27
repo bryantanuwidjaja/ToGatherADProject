@@ -25,7 +25,7 @@ import static org.hamcrest.Matchers.not;
 
 
 @RunWith(AndroidJUnit4.class)
-public class CreateUser_UITest {
+public class RegistrationActivity_UITest {
 
     public void passUserRegistrationUI(String email, String username, String password, String rePassword) {
         onView(withId(R.id.button_LoginActivity_signUp))
@@ -78,7 +78,7 @@ public class CreateUser_UITest {
     @Test // User inputted invalid password
     public void failInvalidPass() throws Exception {
         passUserRegistrationUI("naufaladi10@gmail.com", "naufalAdi", "fa", "fa");
-        onView(withText(R.string.toast_emptyFieldRegistration)).inRoot(withDecorView(not(
+        onView(withText(R.string.toast_invalidPassRegistration)).inRoot(withDecorView(not(
                 loginActivityTestRule.getActivity().getWindow().getDecorView())))
                 .check(matches(isDisplayed()));
     }
@@ -86,7 +86,7 @@ public class CreateUser_UITest {
     @Test // User inputted invalid username
     public void failInvalidName() throws Exception {
         passUserRegistrationUI("naufaladi10@gmail.com", "p", "kappa123", "kappa123");
-        onView(withText(R.string.toast_emptyFieldRegistration)).inRoot(withDecorView(not(
+        onView(withText(R.string.toast_invalidNameRegistration)).inRoot(withDecorView(not(
                 loginActivityTestRule.getActivity().getWindow().getDecorView())))
                 .check(matches(isDisplayed()));
     }
@@ -94,7 +94,7 @@ public class CreateUser_UITest {
     @Test // User inputted invalid email
     public void failInvalidEmail() throws Exception {
         passUserRegistrationUI("***)email", "naufalAdi", "kappa123", "kappa123");
-        onView(withText(R.string.toast_emptyFieldRegistration)).inRoot(withDecorView(not(
+        onView(withText(R.string.toast_invalidEmailRegistration)).inRoot(withDecorView(not(
                 loginActivityTestRule.getActivity().getWindow().getDecorView())))
                 .check(matches(isDisplayed()));
     }
@@ -102,7 +102,7 @@ public class CreateUser_UITest {
     @Test // User inputted invalid RePassword
     public void failInvalidRePass() throws Exception {
         passUserRegistrationUI("naufaladi10@gmail.com", "naufalAdi", "kappa123", "kAppa123");
-        onView(withText(R.string.toast_emptyFieldRegistration)).inRoot(withDecorView(not(
+        onView(withText(R.string.toast_invalidRePassRegistration)).inRoot(withDecorView(not(
                 loginActivityTestRule.getActivity().getWindow().getDecorView())))
                 .check(matches(isDisplayed()));
     }
