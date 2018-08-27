@@ -141,7 +141,7 @@ public class ProfileActivity extends AppCompatActivity implements EditProfileDia
 
         Intent intent = getIntent();
         final String userID = intent.getStringExtra(Constants.USER_ID);
-        final User loggedUser = (User) intent.getSerializableExtra(Constants.USER);
+
         FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
         DocumentReference userRef = firebaseFirestore.collection(Constants.USER).document(userID);
 
@@ -252,7 +252,6 @@ public class ProfileActivity extends AppCompatActivity implements EditProfileDia
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext() , HomeActivity.class);
                 intent.putExtra(Constants.USER_ID, userID);
-                intent.putExtra(Constants.USER, loggedUser);
                 startActivity(intent);
             }
         });

@@ -3,9 +3,7 @@ package com.example.bryan.togatheradproject;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -20,7 +18,6 @@ import java.util.List;
 import java.util.concurrent.CompletionService;
 
 public class GuestListActivity extends AppCompatActivity {
-    private static final String TAG = "GuestListActivity";
 
     private ArrayList<User> guestList = new ArrayList<>();
     private TextView textView_guestListTAG;
@@ -52,20 +49,6 @@ public class GuestListActivity extends AppCompatActivity {
                 intent.putExtra(Constants.LOBBY_ID, lobbyID);
                 intent.putExtra(Constants.LOBBY, lobby);
                 intent.putExtra(Constants.USER, user);
-                startActivity(intent);
-            }
-        });
-
-        listView_guestList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                User clickedUser = guestList.get(position);
-                Intent intent = new Intent(getApplicationContext(), GuestProfileActivity.class);
-                intent.putExtra(Constants.USER_ID, userID);
-                intent.putExtra(Constants.LOBBY_ID, lobbyID);
-                intent.putExtra(Constants.USER, user);
-                intent.putExtra(Constants.CLICKED_USER, clickedUser);
-                intent.putExtra(Constants.LOBBY, lobby);
                 startActivity(intent);
             }
         });

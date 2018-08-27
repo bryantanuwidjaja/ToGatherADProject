@@ -17,7 +17,6 @@ public final class Constants {
     static final int USER_RATING = 0;
     static final String USER_INTERESTS = "userInterests";
     static final String USER = "user";
-    static final String CLICKED_USER = "clickedUser";
 
     //public static final String chatMessage = "chatMessage";
     //public static final Time time
@@ -26,7 +25,8 @@ public final class Constants {
 
     static final int FAILURE_RESULT = 1;
 
-    private static final String PACKAGE_NAME = "com.example.bryan.togatheradproject";
+    private static final String PACKAGE_NAME =
+            "com.example.bryan.togatheradproject";
 
     static final String RECEIVER = PACKAGE_NAME + ".RECEIVER";
 

@@ -15,8 +15,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="24dp"
         android:text="Email"
-        android:textColor="#000000"
-        android:textSize="18sp"
+        android:textSize="14sp"
         app:layout_constraintStart_toStartOf="@+id/guideline1"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -43,8 +42,6 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="Username"
-        android:textColor="#000000"
-        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="@+id/guideline1"
         app:layout_constraintTop_toBottomOf="@+id/editText_RegistrationActivity_email" />
 
@@ -71,8 +68,6 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="Password"
-        android:textColor="#000000"
-        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="@+id/guideline1"
         app:layout_constraintTop_toBottomOf="@+id/editText_RegistrationActivity_username" />
 
@@ -99,8 +94,6 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="Re-enter Password"
-        android:textColor="#000000"
-        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="@+id/guideline1"
         app:layout_constraintTop_toBottomOf="@+id/editText_RegistrationActivity_password" />
 
