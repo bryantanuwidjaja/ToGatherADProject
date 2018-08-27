@@ -48,6 +48,7 @@ public class LoginActivity extends AppCompatActivity {
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+
                         for(QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots){
                             User user = documentSnapshot.toObject(User.class);
                             String userID = user.getUserID();
@@ -66,7 +67,8 @@ public class LoginActivity extends AppCompatActivity {
 
     private void Login(final String email, final String password) {
         Log.d(TAG, "Login: in");
-        mAuth.signInWithEmailAndPassword(email, password)
+        try {
+            mAuth.signInWithEmailAndPassword(email, password)
                 .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                     @Override
                     public void onSuccess(AuthResult authResult) {
@@ -74,9 +76,7 @@ public class LoginActivity extends AppCompatActivity {
                         getUserID(email, password);
                         String userID = textView_Container.getText().toString();
                         Log.d(TAG,"logged user id : " + userID);
-                        //Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
                         Toast.makeText(getApplicationContext(), "Login Successful", Toast.LENGTH_SHORT).show();
-                        //startActivity(intent);
                     }
                 }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -84,7 +84,11 @@ public class LoginActivity extends AppCompatActivity {
                 Log.e(TAG, "onFailure: Could not sign in user" + e);
                 Toast.makeText(getApplicationContext(), "Login Failed", Toast.LENGTH_SHORT).show();
             }
-        });
+            });
+        } catch (Exception e) {
+            Log.d(TAG, "Login: error sign in");
+            Toast.makeText(getApplicationContext(), "Error Empty Field", Toast.LENGTH_SHORT).show();
+        }
         Log.d(TAG, "Login: out");
     }
 
