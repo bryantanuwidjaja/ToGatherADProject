@@ -10,6 +10,7 @@ import android.os.Handler;
 import android.os.ResultReceiver;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -25,6 +26,7 @@ import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.protobuf.Any;
@@ -36,6 +38,9 @@ import android.widget.Toast;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.UUID;
 
 public class CreateLobbyActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
@@ -113,7 +118,6 @@ public class CreateLobbyActivity extends AppCompatActivity implements AdapterVie
                 Log.d(TAG, "user = " + guestList);
                 final String lobbyID = UUID.randomUUID().toString();
                 Lobby lobby = new Lobby(lobbyID, userID, capacity, mAddressOutput, description, activity, guestList);
-
                 FirebaseFirestore.getInstance().collection(Constants.LOBBY)
                         .document(lobbyID)
                         .set(lobby)
@@ -124,6 +128,7 @@ public class CreateLobbyActivity extends AppCompatActivity implements AdapterVie
                                 intent.putExtra(Constants.USER_ID, userID);
                                 intent.putExtra(Constants.LOBBY_ID, lobbyID);
                                 intent.putExtra(Constants.USER, user);
+                                createRoomChatLog(lobbyID, user);
                                 startActivity(intent);
                             }
                         })
@@ -156,6 +161,17 @@ public class CreateLobbyActivity extends AppCompatActivity implements AdapterVie
         } else {
             getAddress();
         }
+    }
+
+    private void createRoomChatLog(String lobbyID, User user) {
+        //create chat instance
+        Chat chat = new Chat();
+
+        //generate automated entry chat
+        chat = chat.entryChat(user);
+
+        //update the database
+        chat.updateChat(chat, lobbyID);
     }
 
     private void updateValuesFromBundle(Bundle savedInstanceState) {

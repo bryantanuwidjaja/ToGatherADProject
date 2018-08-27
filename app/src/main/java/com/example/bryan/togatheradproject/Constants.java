@@ -9,6 +9,7 @@ public final class Constants {
     static final String LOBBY = "lobby";
     static final String LOBBY_ID = "lobbyID";
     static final String LOBBY_GUESTLIST = "guestList";
+    static final String LOBBY_CHATLOG = "chatLog";
 
     static final String PASSWORD = "password";
     static final String USERNAME = "userName";

@@ -132,6 +132,9 @@ public class HomeActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Lobby lobby = lobbyList.get(position);
                 String lobbyID = lobby.getLobbyID();
+                Chat chat = new Chat();
+                chat = chat.entryChat(user);
+                chat.updateChat(chat, lobbyID);
                 Intent intent = new Intent(getApplicationContext(), LobbyActivity.class);
                 intent.putExtra(Constants.USER_ID, loggedID);
                 intent.putExtra(Constants.LOBBY_ID, lobbyID);
