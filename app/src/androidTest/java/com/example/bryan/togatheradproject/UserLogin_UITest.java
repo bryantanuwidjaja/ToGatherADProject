@@ -69,7 +69,7 @@ public class UserLogin_UITest {
     public void invalidEmailLogin() throws Exception {
         loginActivityUI("suki@yahoo.com", "123123");
         onView(isRoot()).perform(idleFor(1000));
-        onView(withText(R.string.toast_emptyEmailLogin)).inRoot(withDecorView(not(
+        onView(withText(R.string.toast_invalidFieldLogin)).inRoot(withDecorView(not(
                 loginActivityTestRule.getActivity().getWindow().getDecorView())))
                 .check(matches(isDisplayed()));
     }
@@ -78,7 +78,7 @@ public class UserLogin_UITest {
     public void invalidPassLogin() throws Exception {
         loginActivityUI("sukiliong@yahoo.com", "password123");
         onView(isRoot()).perform(idleFor(1000));
-        onView(withText(R.string.toast_emptyEmailLogin)).inRoot(withDecorView(not(
+        onView(withText(R.string.toast_invalidFieldLogin)).inRoot(withDecorView(not(
                 loginActivityTestRule.getActivity().getWindow().getDecorView())))
                 .check(matches(isDisplayed()));
     }

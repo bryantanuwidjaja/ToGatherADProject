@@ -41,6 +41,7 @@ public class CreateUser_UITest {
                 .perform(ViewActions.closeSoftKeyboard());
         onView(withId(R.id.button_RegistrationActivity_create))
                 .perform(click());
+        onView(isRoot()).perform(idleFor(100));
     }
 
     public static ViewAction idleFor(final long millisec) {
@@ -77,56 +78,64 @@ public class CreateUser_UITest {
     @Test // User inputted invalid password
     public void failInvalidPass() throws Exception {
         passUserRegistrationUI("naufaladi10@gmail.com", "naufalAdi", "fa", "fa");
-        onView(withId(R.id.button_RegistrationActivity_create))
+        onView(withText(R.string.toast_emptyFieldRegistration)).inRoot(withDecorView(not(
+                loginActivityTestRule.getActivity().getWindow().getDecorView())))
                 .check(matches(isDisplayed()));
     }
 
     @Test // User inputted invalid username
     public void failInvalidName() throws Exception {
         passUserRegistrationUI("naufaladi10@gmail.com", "p", "kappa123", "kappa123");
-        onView(withId(R.id.button_RegistrationActivity_create))
+        onView(withText(R.string.toast_emptyFieldRegistration)).inRoot(withDecorView(not(
+                loginActivityTestRule.getActivity().getWindow().getDecorView())))
                 .check(matches(isDisplayed()));
     }
 
     @Test // User inputted invalid email
     public void failInvalidEmail() throws Exception {
         passUserRegistrationUI("***)email", "naufalAdi", "kappa123", "kappa123");
-        onView(withId(R.id.button_RegistrationActivity_create))
+        onView(withText(R.string.toast_emptyFieldRegistration)).inRoot(withDecorView(not(
+                loginActivityTestRule.getActivity().getWindow().getDecorView())))
                 .check(matches(isDisplayed()));
     }
 
     @Test // User inputted invalid RePassword
     public void failInvalidRePass() throws Exception {
         passUserRegistrationUI("naufaladi10@gmail.com", "naufalAdi", "kappa123", "kAppa123");
-        onView(withId(R.id.button_RegistrationActivity_create))
+        onView(withText(R.string.toast_emptyFieldRegistration)).inRoot(withDecorView(not(
+                loginActivityTestRule.getActivity().getWindow().getDecorView())))
                 .check(matches(isDisplayed()));
     }
 
     @Test // User inputted empty password
     public void failEmptyPassword() throws Exception {
         passUserRegistrationUI("naufaladi10@gmail.com", "naufalAdi", "", "");
-        onView(withId(R.id.button_RegistrationActivity_create))
+        onView(withText(R.string.toast_emptyFieldRegistration)).inRoot(withDecorView(not(
+                loginActivityTestRule.getActivity().getWindow().getDecorView())))
                 .check(matches(isDisplayed()));
     }
 
     @Test // User inputted empty username
     public void failEmptyName() throws Exception {
         passUserRegistrationUI("naufaladi10@gmail.com", "", "kappa123", "kappa123");
-        onView(withId(R.id.button_RegistrationActivity_create))
+        onView(withText(R.string.toast_emptyFieldRegistration)).inRoot(withDecorView(not(
+                loginActivityTestRule.getActivity().getWindow().getDecorView())))
                 .check(matches(isDisplayed()));
     }
 
     @Test // User inputted empty email
     public void failEmptyEmail() throws Exception {
         passUserRegistrationUI("", "naufalAdi", "kappa123", "kappa123");
-        onView(withId(R.id.button_RegistrationActivity_create))
+        onView(withText(R.string.toast_emptyFieldRegistration)).inRoot(withDecorView(not(
+                loginActivityTestRule.getActivity().getWindow().getDecorView())))
                 .check(matches(isDisplayed()));
     }
 
     @Test // User inputted empty RePassword
     public void failEmptyRePassword() throws Exception {
         passUserRegistrationUI("naufaladi10@gmail.com", "naufalAdi", "kappa123", "");
-        onView(withId(R.id.button_RegistrationActivity_create))
+        onView(withText(R.string.toast_emptyFieldRegistration)).inRoot(withDecorView(not(
+                loginActivityTestRule.getActivity().getWindow().getDecorView())))
                 .check(matches(isDisplayed()));
     }
 
