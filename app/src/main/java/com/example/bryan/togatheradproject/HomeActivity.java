@@ -1,7 +1,11 @@
 package com.example.bryan.togatheradproject;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
 import android.support.annotation.NonNull;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -45,7 +49,6 @@ public class HomeActivity extends AppCompatActivity {
     FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
     ListenerRegistration listenerRegistration;
     CollectionReference lobbyCollection = firebaseFirestore.collection(Constants.LOBBY);
-
     String loggedID;
 
     private void retreivedLobby() {
@@ -122,6 +125,7 @@ public class HomeActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
                 intent.putExtra(Constants.USER_ID, loggedID);
+                intent.putExtra(Constants.USER, user);
                 startActivity(intent);
             }
         });

@@ -48,6 +48,7 @@ public class LoginActivity extends AppCompatActivity {
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+
                         for(QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots){
                             User user = documentSnapshot.toObject(User.class);
                             String userID = user.getUserID();
@@ -66,7 +67,8 @@ public class LoginActivity extends AppCompatActivity {
 
     private void Login(final String email, final String password) {
         Log.d(TAG, "Login: in");
-        mAuth.signInWithEmailAndPassword(email, password)
+        try{
+            mAuth.signInWithEmailAndPassword(email, password)
                 .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                     @Override
                     public void onSuccess(AuthResult authResult) {
@@ -84,7 +86,11 @@ public class LoginActivity extends AppCompatActivity {
                 Log.e(TAG, "onFailure: Could not sign in user" + e);
                 Toast.makeText(getApplicationContext(), "Login Failed", Toast.LENGTH_SHORT).show();
             }
-        });
+        });}
+        catch (Exception e){
+            Log.d(TAG, "Login: error sign in");
+            Toast.makeText(getApplicationContext(),"error empty field", Toast.LENGTH_SHORT).show();
+        }
         Log.d(TAG, "Login: out");
     }
 
