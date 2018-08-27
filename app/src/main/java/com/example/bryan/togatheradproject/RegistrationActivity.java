@@ -149,7 +149,7 @@ public class RegistrationActivity extends AppCompatActivity {
         if (matcher.matches()) {
             isValid = true;
         } else {
-            whyError = "invalid email ";
+            whyError = "invalid email";
         }
         return isValid;
     }
