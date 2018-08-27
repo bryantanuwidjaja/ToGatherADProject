@@ -12,7 +12,15 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.List;
 
 
 public class LobbyActivity extends AppCompatActivity {
@@ -21,7 +29,7 @@ public class LobbyActivity extends AppCompatActivity {
 
     private String userID;
     private String lobbyID;
-
+    private ArrayList<Chat> chatlogList = new ArrayList<>();
 
     TextView textView_lobbyID;
     EditText editView_chatDialog;
@@ -58,6 +66,9 @@ public class LobbyActivity extends AppCompatActivity {
         button_guestList = findViewById(R.id.button_LobbyActivity_guestList);
         button_lobbyDetail = findViewById(R.id.button_LobbyActivity_lobbyDetail);
 
+        //create a function to get current chat log
+
+
         button_lobbyDetail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -79,6 +90,20 @@ public class LobbyActivity extends AppCompatActivity {
             }
         });
 
+        button_enter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //create chat instance
+                Chat chat = new Chat();
+                //retrieve input from widget
+                String input = editView_chatDialog.getText().toString();
+                //generate the chat object
+                chat = chat.inputChat(user, input);
+                //update the database
+                chat.updateChat(chat, lobbyID);
+                editView_chatDialog.setText("");
+            }
+        });
         Log.d(TAG, "onCreate: out");
     }
 
@@ -99,4 +124,8 @@ public class LobbyActivity extends AppCompatActivity {
                     }
                 });
     }
+
+//    private void getChatlog(){
+//        FirebaseFirestore.getInstance().collection()
+//    }
 }
