@@ -36,6 +36,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="24dp"
         android:text="TextView"
+        android:textColor="#000000"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView_GuestProfileActivity_profilepicture" />
@@ -47,6 +48,8 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="32dp"
         android:text="Interests:"
+        android:textColor="#000000"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="@+id/guideline12"
         app:layout_constraintTop_toBottomOf="@+id/textView_GuestProfileActivity_username" />
 
@@ -57,6 +60,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="32dp"
         android:text="TextView"
+        android:textColor="#000000"
         app:layout_constraintStart_toStartOf="@+id/guideline12"
         app:layout_constraintTop_toBottomOf="@+id/textView_GuestProfileActivity_interestTAG" />
 
@@ -67,6 +71,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="32dp"
         android:text="TextView"
+        android:textColor="#000000"
         app:layout_constraintStart_toStartOf="@+id/guideline12"
         app:layout_constraintTop_toBottomOf="@+id/textView_GuestProfileActivity_interest1" />
 
@@ -77,6 +82,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="32dp"
         android:text="TextView"
+        android:textColor="#000000"
         app:layout_constraintStart_toStartOf="@+id/guideline12"
         app:layout_constraintTop_toBottomOf="@+id/textView_GuestProfileActivity_interest2" />
 
@@ -86,6 +92,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:text="TextView"
+        android:textColor="#000000"
         app:layout_constraintBaseline_toBaselineOf="@+id/textView_GuestProfileActivity_interest1"
         app:layout_constraintEnd_toStartOf="@+id/guideline13" />
 
@@ -95,6 +102,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:text="TextView"
+        android:textColor="#000000"
         app:layout_constraintBaseline_toBaselineOf="@+id/textView_GuestProfileActivity_interest2"
         app:layout_constraintEnd_toStartOf="@+id/guideline13" />
 
@@ -104,6 +112,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:text="TextView"
+        android:textColor="#000000"
         app:layout_constraintBaseline_toBaselineOf="@+id/textView_GuestProfileActivity_interest3"
         app:layout_constraintEnd_toStartOf="@+id/guideline13" />
 
