@@ -77,6 +77,22 @@ public class CreateLobbyActivity extends AppCompatActivity implements AdapterVie
         mFetchAddressButton = (Button) findViewById(R.id.button_CreateLobbyActivity_fetch);
     }
 
+    private String whyError = "";
+
+    protected boolean checkIfDataNotBlank(String capacity,String description, String location){
+        boolean result = true;
+        if (capacity.equals("") || description.equals("") || location.equals("")) {
+            whyError = "Please fill all of the fields properly ";
+            result = false;
+        }
+        return result;
+    }
+
+    protected void clearEditTest(){
+        editText_Capacity.setText("");
+        editText_Description.setText("");
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -102,37 +118,45 @@ public class CreateLobbyActivity extends AppCompatActivity implements AdapterVie
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         updateUIWidgets();
 
+
         button_Create.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String description = editText_Description.getText().toString();
                 String temp_Capacity = editText_Capacity.getText().toString();
-                int capacity = (Integer.parseInt(temp_Capacity));
                 String activity = spinner.getSelectedItem().toString();
                 ArrayList<User> guestList = new ArrayList<>();
                 Log.d(TAG, "user = " + guestList);
-                final String lobbyID = UUID.randomUUID().toString();
-                Lobby lobby = new Lobby(lobbyID, userID, capacity, mAddressOutput, description, activity, guestList);
+                if (checkIfDataNotBlank(temp_Capacity, description, mAddressOutput)) {
+                    final String lobbyID = UUID.randomUUID().toString();
+                    int capacity = (Integer.parseInt(temp_Capacity));
+                    Lobby lobby = new Lobby(lobbyID, userID, capacity, mAddressOutput, description, activity, guestList);
 
-                FirebaseFirestore.getInstance().collection(Constants.LOBBY)
-                        .document(lobbyID)
-                        .set(lobby)
-                        .addOnSuccessListener(new OnSuccessListener() {
-                            @Override
-                            public void onSuccess(Object o) {
-                                Intent intent = new Intent(getApplicationContext(), LobbyActivity.class);
-                                intent.putExtra(Constants.USER_ID, userID);
-                                intent.putExtra(Constants.LOBBY_ID, lobbyID);
-                                intent.putExtra(Constants.USER, user);
-                                startActivity(intent);
-                            }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Log.e(TAG, "onFailure: Could not create lobby " + e);
-                            }
-                        });
+                    FirebaseFirestore.getInstance().collection(Constants.LOBBY)
+                            .document(lobbyID)
+                            .set(lobby)
+                            .addOnSuccessListener(new OnSuccessListener() {
+                                @Override
+                                public void onSuccess(Object o) {
+                                    Intent intent = new Intent(getApplicationContext(), LobbyActivity.class);
+                                    intent.putExtra(Constants.USER_ID, userID);
+                                    intent.putExtra(Constants.LOBBY_ID, lobbyID);
+                                    intent.putExtra(Constants.USER, user);
+                                    startActivity(intent);
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Log.e(TAG, "onFailure: Could not create lobby " + e);
+                                }
+                            });
+                }
+                else{
+                    clearEditTest();
+                    Toast.makeText(CreateLobbyActivity.this, whyError, Toast.LENGTH_SHORT).show();
+                    whyError = "";
+                }
             }
         });
 
