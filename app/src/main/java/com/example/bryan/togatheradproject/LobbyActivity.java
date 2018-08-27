@@ -75,6 +75,8 @@ public class LobbyActivity extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), LobbyDetailActivity.class);
                 intent.putExtra(Constants.USER_ID, userID);
                 intent.putExtra(Constants.LOBBY_ID, lobbyID);
+                intent.putExtra(Constants.USER, user);
+                intent.putExtra(Constants.LOBBY, lobby);
                 startActivity(intent);
             }
         });
@@ -86,6 +88,7 @@ public class LobbyActivity extends AppCompatActivity {
                 intent.putExtra(Constants.USER_ID, userID);
                 intent.putExtra(Constants.LOBBY_ID, lobbyID);
                 intent.putExtra(Constants.LOBBY, lobby);
+                intent.putExtra(Constants.USER, user);
                 startActivity(intent);
             }
         });
