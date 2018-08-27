@@ -17,6 +17,7 @@ public final class Constants {
     static final int USER_RATING = 0;
     static final String USER_INTERESTS = "userInterests";
     static final String USER = "user";
+    static final String CLICKED_USER = "clickedUser";
 
     //public static final String chatMessage = "chatMessage";
     //public static final Time time

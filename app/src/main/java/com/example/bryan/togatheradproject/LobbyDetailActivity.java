@@ -28,33 +28,31 @@ public class LobbyDetailActivity extends AppCompatActivity {
     private Button button_returnToLobby;
 
 
-    protected void establish(){
-        textView_activity = findViewById(R.id.textView_ActivityLobbyDetail_activity);
-        textView_maximumCapacity = findViewById(R.id.textView_ActivityLobbyDetail_maximumCapacity);
-        textView_host = findViewById(R.id.textView_ActivityLobbyDetail_host);
-        textView_description = findViewById(R.id.textView_ActivityLobbyDetail_description);
-        textView_location = findViewById(R.id.textView_ActivityLobbyDetail_location);
-        button_returnToLobby = findViewById(R.id.button_ActivityLobbyDetail_returnToLobby);
-    }
-
-    protected void acceptIntent(){
-        Intent intent = getIntent();
-        userID = intent.getStringExtra(Constants.USER_ID);
-        lobbyID = intent.getStringExtra(Constants.LOBBY_ID);
-        String hostID = textView_host.getText().toString();
-        Log.d(TAG, "hostID : " + hostID);
-        Log.d(TAG, "userID : " + userID);
-        Log.d(TAG, "lobbyID : " + lobbyID);
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lobby_detail);
 
-        establish();
-        acceptIntent();
+        Intent intent = getIntent();
+        userID = intent.getStringExtra(Constants.USER_ID);
+        lobbyID = intent.getStringExtra(Constants.LOBBY_ID);
+        final Lobby lobby = (Lobby) intent.getSerializableExtra(Constants.LOBBY);
+        final User user = (User) intent.getSerializableExtra(Constants.USER);
+        Log.d(TAG, "userID : " + userID);
+        Log.d(TAG, "lobbyID : " + lobbyID);
+
+        textView_activity = findViewById(R.id.textView_ActivityLobbyDetail_activity);
+        textView_maximumCapacity = findViewById(R.id.textView_ActivityLobbyDetail_maximumCapacity);
+        textView_host = findViewById(R.id.textView_ActivityLobbyDetail_host);
+        textView_description = findViewById(R.id.textView_ActivityLobbyDetail_description);
+        textView_location = findViewById(R.id.textView_ActivityLobbyDetail_location);
+        button_returnToLobby = findViewById(R.id.button_ActivityLobbyDetail_returnToLobby);
+
         queryInformation(lobbyID);
+
+        String hostID = textView_host.getText().toString();
+        Log.d(TAG, "hostID : " + hostID);
 
         button_returnToLobby.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -62,6 +60,8 @@ public class LobbyDetailActivity extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), LobbyActivity.class);
                 intent.putExtra(Constants.USER_ID, userID);
                 intent.putExtra(Constants.LOBBY_ID, lobbyID);
+                intent.putExtra(Constants.USER, user);
+                intent.putExtra(Constants.LOBBY, lobby);
                 startActivity(intent);
             }
         });
