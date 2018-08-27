@@ -5,12 +5,14 @@ import android.util.Log;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
 
-import java.sql.Time;
-import java.sql.Timestamp;
+
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+
 
 public class Chat {
 
@@ -53,7 +55,22 @@ public class Chat {
     }
 
     protected Chat entryChat(User user) {
-        String chatMessage = user.getUserName() + " entered the room";
+        String chatMessage = " entered the room";
+        Date date = new Date();
+        Calendar calendar = GregorianCalendar.getInstance();
+        calendar.setTime(date);
+        int hour = calendar.get(Calendar.HOUR);
+        int minute = calendar.get(Calendar.MINUTE);
+        String stringHour = Integer.toString(hour);
+        String stringMinute = Integer.toString(minute);
+        String stringTime = stringHour + ":" + stringMinute;
+        String username = user.getUserName();
+        Chat chat = new Chat(username, chatMessage, stringTime);
+        return chat;
+    }
+
+    protected Chat createEntryChat(User user) {
+        String chatMessage = " created the room";
         Date date = new Date();
         Calendar calendar = GregorianCalendar.getInstance();
         calendar.setTime(date);
@@ -68,8 +85,8 @@ public class Chat {
     }
 
     protected Chat inputChat(User user, String input) {
-        String chatMessage = user.getUserName() + ": " + input;
         Date date = new Date();
+        String formattedInput = ": " + input;
         Calendar calendar = GregorianCalendar.getInstance();
         calendar.setTime(date);
         int hour = calendar.get(Calendar.HOUR);
@@ -78,20 +95,23 @@ public class Chat {
         String stringMinute = Integer.toString(minute);
         String stringTime = stringHour + ":" + stringMinute;
         String username = user.getUserName();
-        Chat chat = new Chat(username, chatMessage, stringTime);
+        Chat chat = new Chat(username, formattedInput, stringTime);
         return chat;
     }
 
-    protected void updateChat(Chat chat, String lobbyID) {
+    protected void updateChat(ArrayList<Chat> chatlog, String lobbyID, String chatlogID) {
+        Chatlog newChatlog = new Chatlog(chatlog);
+        Log.d(TAG, "chatloglist: " + newChatlog);
         FirebaseFirestore.getInstance()
                 .collection(Constants.LOBBY)
                 .document(lobbyID)
                 .collection(Constants.LOBBY_CHATLOG)
-                .add(chat)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                .document(chatlogID)
+                .set(newChatlog, SetOptions.merge())
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                        Log.d(TAG, "onSuccess: updated");
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "updated");
                     }
                 });
     }

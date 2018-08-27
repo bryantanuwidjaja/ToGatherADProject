@@ -19,6 +19,7 @@ public class LobbyDetailActivity extends AppCompatActivity {
 
     private String userID;
     private String lobbyID;
+    private String chatlogID;
 
     private TextView textView_activity;
     private TextView textView_maximumCapacity;
@@ -37,6 +38,7 @@ public class LobbyDetailActivity extends AppCompatActivity {
         Intent intent = getIntent();
         userID = intent.getStringExtra(Constants.USER_ID);
         lobbyID = intent.getStringExtra(Constants.LOBBY_ID);
+        chatlogID = intent.getStringExtra(Constants.LOBBY_CHATLOG_ID);
         final Lobby lobby = (Lobby) intent.getSerializableExtra(Constants.LOBBY);
         final User user = (User) intent.getSerializableExtra(Constants.USER);
         Log.d(TAG, "userID : " + userID);
@@ -62,6 +64,7 @@ public class LobbyDetailActivity extends AppCompatActivity {
                 intent.putExtra(Constants.LOBBY_ID, lobbyID);
                 intent.putExtra(Constants.USER, user);
                 intent.putExtra(Constants.LOBBY, lobby);
+                intent.putExtra(Constants.LOBBY_CHATLOG_ID, chatlogID);
                 startActivity(intent);
             }
         });
