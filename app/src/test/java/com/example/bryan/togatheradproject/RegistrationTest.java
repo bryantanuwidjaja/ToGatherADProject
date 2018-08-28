@@ -83,4 +83,9 @@ public class RegistrationTest {
     public void registerWithValidUsername(){
         Assert.assertEquals(check.checkUserValidity(expectedUsername), true);
     }
+
+    @Test
+    public void registerWithCorrectInformation() {
+        Assert.assertEquals(check.checkIfDataNotBlank(expectedEmail, expectedUsername, expectedPassword, expectedPassword), true);
+    }
 }

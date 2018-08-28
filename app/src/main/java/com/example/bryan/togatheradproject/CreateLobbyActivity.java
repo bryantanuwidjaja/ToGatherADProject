@@ -10,6 +10,7 @@ import android.os.Handler;
 import android.os.ResultReceiver;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -25,6 +26,7 @@ import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.protobuf.Any;
@@ -36,6 +38,9 @@ import android.widget.Toast;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.UUID;
 
 public class CreateLobbyActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
@@ -118,18 +123,18 @@ public class CreateLobbyActivity extends AppCompatActivity implements AdapterVie
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         updateUIWidgets();
 
-
         button_Create.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String description = editText_Description.getText().toString();
                 String temp_Capacity = editText_Capacity.getText().toString();
+                int capacity = (Integer.parseInt(temp_Capacity));
                 String activity = spinner.getSelectedItem().toString();
                 ArrayList<User> guestList = new ArrayList<>();
                 Log.d(TAG, "user = " + guestList);
+
                 if (checkIfDataNotBlank(temp_Capacity, description, mAddressOutput)) {
                     final String lobbyID = UUID.randomUUID().toString();
-                    int capacity = (Integer.parseInt(temp_Capacity));
                     Lobby lobby = new Lobby(lobbyID, userID, capacity, mAddressOutput, description, activity, guestList);
 
                     FirebaseFirestore.getInstance().collection(Constants.LOBBY)
@@ -156,6 +161,7 @@ public class CreateLobbyActivity extends AppCompatActivity implements AdapterVie
                     Toast.makeText(CreateLobbyActivity.this, whyError, Toast.LENGTH_SHORT).show();
                     whyError = "";
                 }
+
             }
         });
 
@@ -179,6 +185,17 @@ public class CreateLobbyActivity extends AppCompatActivity implements AdapterVie
         } else {
             getAddress();
         }
+    }
+
+    private void createRoomChatLog(String lobbyID, User user) {
+        //create chat instance
+        Chat chat = new Chat();
+
+        //generate automated entry chat
+        chat = chat.entryChat(user);
+
+        //update the database
+        chat.updateChat(chat, lobbyID);
     }
 
     private void updateValuesFromBundle(Bundle savedInstanceState) {

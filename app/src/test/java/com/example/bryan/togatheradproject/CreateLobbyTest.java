@@ -27,7 +27,6 @@ public class CreateLobbyTest {
     public void registerWithBlankDescription() {
         Assert.assertEquals(check.checkIfDataNotBlank(capacity, blank, location), false);
     }
-
     @Test
     public void registerWithBlankLocation() {
         Assert.assertEquals(check.checkIfDataNotBlank(capacity, description, blank), false);

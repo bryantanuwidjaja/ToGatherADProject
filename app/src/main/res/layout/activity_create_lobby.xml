@@ -83,9 +83,9 @@
         android:id="@+id/button_CreateLobbyActivity_create"
         android:layout_width="292dp"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:background="#8b9dc3"
         android:fontFamily="sans-serif"
         android:text="Create"
@@ -93,8 +93,7 @@
         android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@+id/button_CreateLobbyActivity_cancel"
         app:layout_constraintEnd_toStartOf="@+id/guideline4"
-        app:layout_constraintStart_toStartOf="@+id/guideline2"
-        app:layout_constraintTop_toBottomOf="@+id/button_CreateLobbyActivity_fetch" />
+        app:layout_constraintStart_toStartOf="@+id/guideline2" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline2"

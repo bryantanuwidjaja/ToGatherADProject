@@ -76,7 +76,9 @@ public class LoginActivity extends AppCompatActivity {
                         getUserID(email, password);
                         String userID = textView_Container.getText().toString();
                         Log.d(TAG,"logged user id : " + userID);
+                        //Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
                         Toast.makeText(getApplicationContext(), "Login Successful", Toast.LENGTH_SHORT).show();
+                        //startActivity(intent);
                     }
                 }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -87,17 +89,28 @@ public class LoginActivity extends AppCompatActivity {
             });
         } catch (Exception e) {
             Log.d(TAG, "Login: error sign in");
-            Toast.makeText(getApplicationContext(), "Error Empty Field", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "error empty field", Toast.LENGTH_SHORT).show();
         }
         Log.d(TAG, "Login: out");
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
-        Log.d(TAG, "onCreate: in");
+    private String whyError = "";
 
+    protected boolean checkIfDataNotBlank(String username, String password) {
+        boolean result = true;
+        if (username.equals("") || password.equals("")) {
+            whyError = "Please fill all of the fields properly ";
+            result = false;
+        }
+        return result;
+    }
+
+    protected void clearEditTest() {
+        editText_InsertEmail.setText("");
+        editText_InsertPassword.setText("");
+    }
+
+    protected void establish() {
         mAuth = FirebaseAuth.getInstance();
         button_SignIn = findViewById(R.id.button_LoginActivity_signIn);
         button_SignUp = findViewById(R.id.button_LoginActivity_signUp);
@@ -107,17 +120,31 @@ public class LoginActivity extends AppCompatActivity {
         textView_Email = findViewById(R.id.textView_LoginActivity_email);
         textView_Password = findViewById(R.id.textView_LoginActivity_password);
         textView_Container = findViewById(R.id.textView_LoginActivity_container);
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_login);
+        Log.d(TAG, "onCreate: in");
+
+        establish();
 
         button_SignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 try{
-                Log.d(TAG, "onClick: sign in - in ");
-                String email = editText_InsertEmail.getText().toString();
-                String password = editText_InsertPassword.getText().toString();
-                Log.d(TAG, "onClick: sign in - before login");
-                Login(email, password);}
-                catch (Exception e){
+                    Log.d(TAG, "onClick: sign in - in ");
+                    String email = editText_InsertEmail.getText().toString();
+                    String password = editText_InsertPassword.getText().toString();
+                    Log.d(TAG, "onClick: sign in - before login");
+                    if (checkIfDataNotBlank(email, password)) {
+                        Login(email, password);} else {
+                        clearEditTest();
+                        Toast.makeText(LoginActivity.this, whyError, Toast.LENGTH_SHORT).show();
+                        whyError = "";
+                    }
+                } catch (Exception e){
                     Toast.makeText(LoginActivity.this, "Login Failed", Toast.LENGTH_SHORT).show();
                 }
             }
