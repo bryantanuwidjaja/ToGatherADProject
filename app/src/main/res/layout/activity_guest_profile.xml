@@ -69,7 +69,7 @@
         android:textColor="#000000"
         android:textSize="16sp"
         tools:layout_editor_absoluteX="46dp"
-        tools:layout_editor_absoluteY="212dp">>>>>>> origin/GuestListActivity
+        tools:layout_editor_absoluteY="212dp"
         app:layout_constraintStart_toStartOf="@+id/guideline12"
         app:layout_constraintTop_toBottomOf="@+id/textView_GuestProfileActivity_interestTAG" />
 

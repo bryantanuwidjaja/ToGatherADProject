@@ -12,8 +12,16 @@ public class Lobby implements Serializable {
     private String lobbyDescriptions;
     private String activity;
     private ArrayList<User> guestList;
+    private String chatlogID;
 
-    public Lobby(String lobbyID, String hostID, int capacity, String location, String lobbyDescriptions, String activity, ArrayList<User> guestList) {
+    public Lobby(String lobbyID,
+                 String hostID,
+                 int capacity,
+                 String location,
+                 String lobbyDescriptions,
+                 String activity,
+                 ArrayList<User> guestList,
+                 String chatlogID) {
         this.lobbyID = lobbyID;
         this.hostID = hostID;
         this.capacity = capacity;
@@ -21,10 +29,19 @@ public class Lobby implements Serializable {
         this.lobbyDescriptions = lobbyDescriptions;
         this.activity = activity;
         this.guestList = guestList;
+        this.chatlogID = chatlogID;
     }
 
     public Lobby(){
 
+    }
+
+    public String getChatlogID() {
+        return chatlogID;
+    }
+
+    public void setChatlogID(String chatlogID) {
+        this.chatlogID = chatlogID;
     }
 
     public ArrayList<User> getGuestList() {

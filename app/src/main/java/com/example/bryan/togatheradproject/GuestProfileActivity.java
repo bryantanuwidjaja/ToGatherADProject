@@ -48,6 +48,7 @@ public class GuestProfileActivity extends AppCompatActivity {
         final User loggeduser = (User) intent.getSerializableExtra(Constants.USER);
         final User clickedUser = (User) intent.getSerializableExtra(Constants.CLICKED_USER);
         final Lobby lobby = (Lobby) intent.getSerializableExtra(Constants.LOBBY);
+        final String chatlogID = intent.getStringExtra(Constants.LOBBY_CHATLOG_ID);
         String clickedID = clickedUser.getUserID();
 
         textView_username = findViewById(R.id.textView_GuestProfileActivity_username);
@@ -74,6 +75,7 @@ public class GuestProfileActivity extends AppCompatActivity {
                 intent.putExtra(Constants.LOBBY, lobby);
                 intent.putExtra(Constants.LOBBY_ID, lobbyID);
                 intent.putExtra(Constants.USER_ID, userID);
+                intent.putExtra(Constants.LOBBY_CHATLOG_ID, chatlogID);
                 startActivity(intent);
             }
         });

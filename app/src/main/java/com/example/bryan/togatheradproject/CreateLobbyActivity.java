@@ -135,7 +135,8 @@ public class CreateLobbyActivity extends AppCompatActivity implements AdapterVie
 
                 if (checkIfDataNotBlank(temp_Capacity, description, mAddressOutput)) {
                     final String lobbyID = UUID.randomUUID().toString();
-                    Lobby lobby = new Lobby(lobbyID, userID, capacity, mAddressOutput, description, activity, guestList);
+                    final String chatlogID = UUID.randomUUID().toString();
+                    final Lobby lobby = new Lobby(lobbyID, userID, capacity, mAddressOutput, description, activity, guestList, chatlogID);
 
                     FirebaseFirestore.getInstance().collection(Constants.LOBBY)
                             .document(lobbyID)
@@ -143,10 +144,27 @@ public class CreateLobbyActivity extends AppCompatActivity implements AdapterVie
                             .addOnSuccessListener(new OnSuccessListener() {
                                 @Override
                                 public void onSuccess(Object o) {
+                                    //create an empty chat instance
+                                    Chat chat = new Chat();
+
+                                    //create an empty arraylist to contain all of the chat object
+                                    ArrayList<Chat> chatlog = new ArrayList<>();
+
+                                    //generate the creation message
+                                    chat = chat.createEntryChat(user);
+
+                                    //add the message to the empty arraylist
+                                    chatlog.add(chat);
+
+                                    //update the database
+                                    chat.updateChat(chatlog, lobbyID, chatlogID);
+
+                                    //create the intent along and pass the relevant information
                                     Intent intent = new Intent(getApplicationContext(), LobbyActivity.class);
                                     intent.putExtra(Constants.USER_ID, userID);
                                     intent.putExtra(Constants.LOBBY_ID, lobbyID);
                                     intent.putExtra(Constants.USER, user);
+                                    intent.putExtra(Constants.LOBBY_CHATLOG_ID, chatlogID);
                                     startActivity(intent);
                                 }
                             })
@@ -186,17 +204,6 @@ public class CreateLobbyActivity extends AppCompatActivity implements AdapterVie
         } else {
             getAddress();
         }
-    }
-
-    private void createRoomChatLog(String lobbyID, User user) {
-        //create chat instance
-        Chat chat = new Chat();
-
-        //generate automated entry chat
-        chat = chat.entryChat(user);
-
-        //update the database
-        chat.updateChat(chat, lobbyID);
     }
 
     private void updateValuesFromBundle(Bundle savedInstanceState) {
