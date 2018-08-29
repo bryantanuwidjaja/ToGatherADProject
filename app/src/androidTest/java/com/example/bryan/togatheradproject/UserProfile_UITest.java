@@ -6,6 +6,8 @@ import android.support.test.espresso.action.ViewActions;
 import android.support.test.rule.ActivityTestRule;
 import android.view.View;
 
+import static org.hamcrest.core.StringContains.containsString;
+
 import org.hamcrest.Matcher;
 import org.junit.Rule;
 import org.junit.Test;
@@ -86,6 +88,35 @@ public class UserProfile_UITest {
     @Test
     public void changeInterest6() throws Exception {
         changeInterestUI(R.id.textView_ProfileScreen_interest6, "Interest 6");
+    }
+
+    @Test
+    public void saveChangedInterest() throws Exception {
+        changeInterestUI(R.id.textView_ProfileScreen_interest1, "Test Interest");
+        changeInterestUI(R.id.textView_ProfileScreen_interest2, "bla bla");
+        onView(withId(R.id.button_ProfileScreen_saveButton)).perform(click());
+        onView(isRoot()).perform(idleFor(1000));
+        onView(withId(R.id.button_HomeActivity_viewProfile)).perform(click());
+        onView(withId(R.id.textView_ProfileScreen_interest1)).check(matches(withText("Test Interest")));
+        onView(withId(R.id.textView_ProfileScreen_interest2)).check(matches(withText("bla bla")));
+    }
+
+    @Test
+    public void cancelChangedInterest() throws Exception {
+        changeInterestUI(R.id.textView_ProfileScreen_interest1, "Interest 1");
+        changeInterestUI(R.id.textView_ProfileScreen_interest2, "Interest 2");
+        onView(withId(R.id.button_ProfileScreen_saveButton)).perform(click());
+        onView(isRoot()).perform(idleFor(1000));
+        onView(withId(R.id.button_HomeActivity_viewProfile)).perform(click());
+        changeInterestUI(R.id.textView_ProfileScreen_interest1, "blabla");
+        changeInterestUI(R.id.textView_ProfileScreen_interest2, "test");
+        onView(withId(R.id.button_ProfileScreen_cancelButton)).perform(click());
+        onView(isRoot()).perform(idleFor(1000));
+        onView(withId(R.id.button_HomeActivity_viewProfile)).perform(click());
+        onView(withId(R.id.textView_ProfileScreen_interest1)).check(matches(withText("Interest 1")));
+        onView(withId(R.id.textView_ProfileScreen_interest2)).check(matches(withText("Interest 1")));
+
+
     }
 
 }
