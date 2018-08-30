@@ -28,7 +28,8 @@ public final class Constants {
 
     static final int FAILURE_RESULT = 1;
 
-    private static final String PACKAGE_NAME = "com.example.bryan.togatheradproject";
+    private static final String PACKAGE_NAME =
+            "com.example.bryan.togatheradproject";
 
     static final String RECEIVER = PACKAGE_NAME + ".RECEIVER";
 
