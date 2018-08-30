@@ -72,9 +72,9 @@ public class LobbyActivity_UITest {
         onView(withId(R.id.listView_LobbyActivity_chatLog)).perform(swipeUp());
         onData(anything())
                 .inAdapterView(withId(R.id.listView_LobbyActivity_chatLog))
-                .atPosition(0)
+                .atPosition(-1)
                 .onChildView(withId(R.id.textView_ChatlogListLayout_chatmessage))
-                .check(matches(not(withText(text))));
+                .check(matches(withText(text)));
     }
 
 
@@ -101,6 +101,17 @@ public class LobbyActivity_UITest {
         onView(withId(R.id.button_LobbyActivity_lobbyDetail)).perform(closeSoftKeyboard()).perform(click());
         onView(isRoot()).perform(idleFor(3000));
         onView(withId(R.id.button_ActivityLobbyDetail_returnToLobby)).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void guestProfile() throws Exception {
+        lobbyActivityUI();
+        onView(withId(R.id.button_LobbyActivity_guestList)).perform(closeSoftKeyboard()).perform(click());
+        onView(isRoot()).perform(idleFor(3000));
+        onData(anything()).inAdapterView(withId(R.id.listView_GuestListActivity_guestList)).atPosition(0).perform(click());
+        onView(isRoot()).perform(idleFor(20000));
+        onView(withId(R.id.button_GuestProfileActivity_returnToLobby)).perform(closeSoftKeyboard())
+                .check(matches(isDisplayed()));
     }
 
 }
