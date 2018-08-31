@@ -96,7 +96,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="50dp"
         android:fontFamily="sans-serif"
-        android:text="E-Mail"
+        android:text="E-mail"
         android:textColor="#000000"
         android:textSize="18sp"
         app:layout_constraintStart_toEndOf="@+id/guideline2"
