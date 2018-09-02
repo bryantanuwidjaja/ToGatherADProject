@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/backgroundColor"
     tools:context=".LobbyActivity">
 
     <TextView
@@ -23,10 +24,10 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
         android:ems="10"
-        android:hint="Enter your chat here"
+        android:hint="Enter your message here"
         android:inputType="textPersonName"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/button_LobbyActivity_enter"
         app:layout_constraintStart_toStartOf="parent" />
@@ -58,6 +59,7 @@
         android:layout_width="33dp"
         android:layout_height="31dp"
         android:layout_marginStart="8dp"
+        android:src="@drawable/activity"
         app:layout_constraintBottom_toTopOf="@+id/guideline11"
         app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@mipmap/ic_launcher_round" />
@@ -67,17 +69,25 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
+        android:background="@color/buttonColor"
         android:text="Enter"
+        android:textColor="@color/buttonTextColor"
+        android:fontFamily="sans-serif"
+        android:textStyle="bold"
         app:layout_constraintBaseline_toBaselineOf="@+id/editText_LobbyActivity_chatDialog"
         app:layout_constraintEnd_toEndOf="parent" />
 
     <Button
         android:id="@+id/button_LobbyActivity_guestList"
-        android:layout_width="51dp"
+        android:layout_width="48dp"
         android:layout_height="33dp"
         android:layout_marginEnd="8dp"
+        android:background="@color/buttonColor"
+        android:fontFamily="sans-serif"
         android:text="List"
+        android:textColor="@color/buttonTextColor"
         android:textSize="10sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/guideline11"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -86,8 +96,12 @@
         android:layout_width="48dp"
         android:layout_height="33dp"
         android:layout_marginEnd="8dp"
-        android:text="detail"
+        android:text="Detail"
         android:textSize="10sp"
+        android:background="@color/buttonColor"
+        android:textColor="@color/buttonTextColor"
+        android:fontFamily="sans-serif"
+        android:textStyle="bold"
         app:layout_constraintBaseline_toBaselineOf="@+id/button_LobbyActivity_guestList"
         app:layout_constraintEnd_toStartOf="@+id/button_LobbyActivity_guestList" />
 

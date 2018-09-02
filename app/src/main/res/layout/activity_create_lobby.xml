@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/backgroundColor"
     tools:context=".CreateLobbyActivity">
 
     <Spinner
@@ -22,6 +23,7 @@
         android:layout_height="27dp"
         android:layout_marginTop="8dp"
         android:text="Activity"
+        android:textColor="@color/buttonTextColor"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="@+id/guideline2"
         app:layout_constraintTop_toTopOf="parent" />
@@ -32,6 +34,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="Capacity"
+        android:textColor="@color/buttonTextColor"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="@+id/guideline2"
         app:layout_constraintTop_toBottomOf="@+id/spinnerActivities" />
@@ -56,6 +59,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="Description"
+        android:textColor="@color/buttonTextColor"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="@+id/guideline2"
         app:layout_constraintTop_toBottomOf="@+id/editText_CreateLobbyActivity_capacity" />
@@ -66,11 +70,10 @@
         android:layout_height="112dp"
         android:layout_marginTop="16dp"
         android:ems="10"
-
         android:hint="Describe about your activity here"
         android:inputType="textPersonName"
         android:maxLength="25"
-
+        android:textSize="14sp"
         app:layout_constraintEnd_toStartOf="@+id/guideline4"
         app:layout_constraintStart_toStartOf="@+id/guideline2"
         app:layout_constraintTop_toBottomOf="@+id/textView_CreateLobbyActivity_description" />
@@ -82,7 +85,11 @@
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
+        android:background="@color/buttonColor"
         android:text="Create"
+        android:textColor="@color/buttonTextColor"
+        android:fontFamily="sans-serif"
+        android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/button_CreateLobbyActivity_cancel"
         app:layout_constraintEnd_toStartOf="@+id/guideline4"
         app:layout_constraintStart_toStartOf="@+id/guideline2" />
@@ -115,19 +122,27 @@
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
+        android:background="@color/buttonColor"
         android:text="Cancel"
+        android:textColor="@color/buttonTextColor"
+        android:fontFamily="sans-serif"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline4"
         app:layout_constraintStart_toEndOf="@+id/guideline2" />
 
     <Button
         android:id="@+id/button_CreateLobbyActivity_fetch"
-        android:layout_width="wrap_content"
+        android:layout_width="135dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:background="@color/buttonColor"
+        android:fontFamily="sans-serif"
         android:onClick="fetchAddressButtonHandler"
         android:text="Fetch Address"
+        android:textColor="@color/buttonTextColor"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@+id/guideline2"
         app:layout_constraintTop_toBottomOf="@+id/editText_CreateLobbyActivity_description" />
 
