@@ -33,8 +33,6 @@ public class LoginActivity extends AppCompatActivity {
     ImageView imageView_Image;
     EditText editText_InsertEmail;
     EditText editText_InsertPassword;
-    TextView textView_Email;
-    TextView textView_Password;
     TextView textView_Container;
 
     private FirebaseAuth mAuth;
@@ -111,8 +109,6 @@ public class LoginActivity extends AppCompatActivity {
         imageView_Image = findViewById(R.id.imageView_LoginActivity_image);
         editText_InsertEmail = findViewById(R.id.editText_LoginActivity_insertEmail);
         editText_InsertPassword = findViewById(R.id.editText_LoginActivity_insertPassword);
-        textView_Email = findViewById(R.id.textView_LoginActivity_email);
-        textView_Password = findViewById(R.id.textView_LoginActivity_password);
         textView_Container = findViewById(R.id.textView_LoginActivity_container);
     }
     @Override
