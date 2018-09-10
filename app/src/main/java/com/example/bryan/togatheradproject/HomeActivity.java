@@ -75,7 +75,6 @@ public class HomeActivity extends AppCompatActivity {
         Intent intent = getIntent();
         loggedID = intent.getStringExtra(Constants.USER_ID);
         final User user = (User) intent.getSerializableExtra(Constants.USER);
-        Log.d(TAG, "User: " + user.getUserID());
         Log.d(TAG, "HomeActivity : Logged user : " + loggedID);
 
         lobbyList = new ArrayList<>();
