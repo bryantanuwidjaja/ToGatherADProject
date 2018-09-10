@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -41,6 +42,7 @@ public class LobbyActivity extends AppCompatActivity {
     private String userID;
     private String lobbyID;
     private String chatlogID;
+    private int backCounter;
     private ArrayList<Chat> chatlogList = new ArrayList<>();
     private ListenerRegistration listenerRegistration;
 
@@ -234,6 +236,21 @@ public class LobbyActivity extends AppCompatActivity {
                         }
                     }
                 });
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        if(backCounter == 1) {
+            Toast.makeText(getApplicationContext(), "Press back again to leave the room", Toast.LENGTH_SHORT).show();
+        } else if (backCounter == 2) {
+            //leave room
+            //intent back to home
+        }
+    }
+
+    private void leaveRoom(){
+        FirebaseFirestore.getInstance().collection()
     }
 
     private interface FirestoreCallback {
