@@ -1,7 +1,6 @@
 package com.example.bryan.togatheradproject;
 
 import android.content.Intent;
-import android.net.sip.SipSession;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -17,8 +16,7 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.Timestamp;
-import com.google.firebase.firestore.DocumentReference;
+
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -27,10 +25,6 @@ import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.List;
 
 import javax.annotation.Nullable;
 
@@ -44,7 +38,8 @@ public class LobbyActivity extends AppCompatActivity {
     private String chatlogID;
     private int backCounter;
     private ArrayList<Chat> chatlogList = new ArrayList<>();
-    private ListenerRegistration listenerRegistration;
+    ListenerRegistration listenerRegistration;
+    ListenerRegistration lobbyListener;
 
     TextView textView_lobbyID;
     EditText editView_chatDialog;
@@ -200,6 +195,38 @@ public class LobbyActivity extends AppCompatActivity {
                         }
                     }
                 });
+
+        lobbyListener = FirebaseFirestore.getInstance().collection(Constants.LOBBY)
+                .document(lobbyID)
+                .collection(Constants.LOBBY_GUESTLIST)
+                .addSnapshotListener(this, new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots,
+                                        @Nullable FirebaseFirestoreException e) {
+                        ArrayList<User> guestList = new ArrayList<>();
+                        for (User user : queryDocumentSnapshots.toObjects(User.class)) {
+                            guestList.add(user);
+                        }
+                        int size = guestList.size();
+                        if(size == 0){
+                            //delete lobby
+                            deleteLobby();
+                        }
+                    }
+                });
+    }
+
+    //delete lobby function
+    private void deleteLobby(){
+        FirebaseFirestore.getInstance().collection(Constants.LOBBY)
+                .document(lobbyID)
+                .collection(Constants.LOBBY_CHATLOG)
+                .document(chatlogID)
+                .delete();
+
+        FirebaseFirestore.getInstance().collection(Constants.LOBBY)
+                .document(lobbyID)
+                .delete();
     }
 
     //join lobby function
@@ -240,17 +267,28 @@ public class LobbyActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+        Intent intent = getIntent();
+        final User user = (User) intent.getSerializableExtra(Constants.USER);
+        backCounter++;
         if(backCounter == 1) {
             Toast.makeText(getApplicationContext(), "Press back again to leave the room", Toast.LENGTH_SHORT).show();
         } else if (backCounter == 2) {
             //leave room
+            leaveRoom();
+
             //intent back to home
+            Intent intentback = new Intent(getApplicationContext(), HomeActivity.class);
+            intent.putExtra(Constants.USER, user);
+            startActivity(intentback);
         }
     }
 
     private void leaveRoom(){
-        FirebaseFirestore.getInstance().collection()
+        FirebaseFirestore.getInstance().collection(Constants.LOBBY)
+                .document(lobbyID)
+                .collection(Constants.LOBBY_GUESTLIST)
+                .document(userID)
+                .delete();
     }
 
     private interface FirestoreCallback {

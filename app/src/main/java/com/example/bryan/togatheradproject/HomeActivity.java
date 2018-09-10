@@ -49,6 +49,7 @@ public class HomeActivity extends AppCompatActivity {
     Button button_Viewprofile;
     FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
     ListenerRegistration listenerRegistration;
+    ListenerRegistration lobbyListener;
     CollectionReference lobbyCollection = firebaseFirestore.collection(Constants.LOBBY);
     String loggedID;
 
@@ -57,7 +58,15 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        retreivedLobby();
+        
+        lobbyListener = FirebaseFirestore.getInstance().collection(Constants.LOBBY)
+                .addSnapshotListener(this, new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots,
+                                        @Nullable FirebaseFirestoreException e) {
+                        retreivedLobby();
+                    }
+                });
     }
 
     @Override
@@ -114,32 +123,6 @@ public class HomeActivity extends AppCompatActivity {
 
                 //retrieve current chat log
                 retrieveChatLog(lobbyID, chatlogID, user, lobby);
-//                Log.d(TAG, "chatloglist: 1 " + chatlogList);
-
-                //create an empty chat instance
-//                Chat chat = new Chat();
-//
-//                //create the entry message
-//                chat = chat.entryChat(user);
-//
-//                //add the entry message to the array
-//                chatlogList.add(chat);
-//                Log.d(TAG, "chatloglist: 2 " + chatlogList);
-//
-//                //update the database
-//                chat.updateChat(chatlogList, lobbyID, chatlogID);
-//
-//                //create the intent along with the relevant information to be passed
-//                Intent intent = new Intent(getApplicationContext(), LobbyActivity.class);
-//                intent.putExtra(Constants.USER_ID, loggedID);
-//                intent.putExtra(Constants.LOBBY_ID, lobbyID);
-//                intent.putExtra(Constants.LOBBY_CHATLOG_ID ,chatlogID);
-//                intent.putExtra(Constants.USER, user);
-//                intent.putExtra(Constants.LOBBY, lobby);
-//                Log.d(TAG, "User: " + user.getUserID());
-//                Log.d(TAG, "userID : " + loggedID);
-//                Log.d(TAG, "lobbyID : " + lobbyID);
-//                startActivity(intent);
             }
         });
         Log.d(TAG, "onCreate: out");
