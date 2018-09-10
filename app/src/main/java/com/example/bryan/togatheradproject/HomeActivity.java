@@ -153,8 +153,6 @@ public class HomeActivity extends AppCompatActivity {
                             ArrayList<User> guestList = lobby.getGuestList();
                             Lobby newLobby = new Lobby(lobbyID, hostID, capacity, location, lobbyDescriptions, activity, guestList, chatlogID);
                             lobbyList.add(newLobby);
-//                            LobbyList adapter = new LobbyList(HomeActivity.this, lobbyList);
-//                            listView_LobbyList.setAdapter(adapter);
                         }
                         LobbyList adapter = new LobbyList(HomeActivity.this, lobbyList);
                         listView_LobbyList.setAdapter(adapter);
@@ -196,9 +194,6 @@ public class HomeActivity extends AppCompatActivity {
 
                         //create the intent along with the relevant information to be passed
                         Intent intent = new Intent(getApplicationContext(), LobbyActivity.class);
-                        intent.putExtra(Constants.USER_ID, user.getUserID());
-                        intent.putExtra(Constants.LOBBY_ID, lobbyID);
-                        intent.putExtra(Constants.LOBBY_CHATLOG_ID, chatlogID);
                         intent.putExtra(Constants.USER, user);
                         intent.putExtra(Constants.LOBBY, lobby);
                         Log.d(TAG, "User: " + user.getUserID());

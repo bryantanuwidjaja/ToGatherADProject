@@ -45,6 +45,7 @@ public class LobbyActivity extends AppCompatActivity {
     Button button_guestList;
     Button button_lobbyDetail;
     private int backCounter;
+    private int clickIndicator = 0;
     private ArrayList<Chat> chatlogList = new ArrayList<>();
 
     @Override
@@ -108,12 +109,10 @@ public class LobbyActivity extends AppCompatActivity {
         button_lobbyDetail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                clickIndicator = 1;
                 Intent intent = new Intent(getApplicationContext(), LobbyDetailActivity.class);
-                intent.putExtra(Constants.USER_ID, user.getUserID());
-                intent.putExtra(Constants.LOBBY_ID, lobby.getLobbyID());
                 intent.putExtra(Constants.USER, user);
                 intent.putExtra(Constants.LOBBY, lobby);
-                intent.putExtra(Constants.LOBBY_CHATLOG_ID, lobby.getChatlogID());
                 startActivity(intent);
             }
         });
@@ -121,12 +120,10 @@ public class LobbyActivity extends AppCompatActivity {
         button_guestList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                clickIndicator = 1;
                 Intent intent = new Intent(getApplicationContext(), GuestListActivity.class);
-                intent.putExtra(Constants.USER_ID, user.getUserID());
-                intent.putExtra(Constants.LOBBY_ID, lobby.getLobbyID());
                 intent.putExtra(Constants.LOBBY, lobby);
                 intent.putExtra(Constants.USER, user);
-                intent.putExtra(Constants.LOBBY_CHATLOG_ID, lobby.getChatlogID());
                 startActivity(intent);
             }
         });
@@ -134,6 +131,7 @@ public class LobbyActivity extends AppCompatActivity {
         button_enter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                clickIndicator = 1;
                 //Clear the list
                 //chatlogList.clear();
 
@@ -290,10 +288,12 @@ public class LobbyActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        Intent intent = getIntent();
-        final User user = (User) intent.getSerializableExtra(Constants.USER);
-        final Lobby lobby = (Lobby) intent.getSerializableExtra(Constants.LOBBY);
-        leaveRoom(user, lobby);
+        if(clickIndicator == 0) {
+            Intent intent = getIntent();
+            final User user = (User) intent.getSerializableExtra(Constants.USER);
+            final Lobby lobby = (Lobby) intent.getSerializableExtra(Constants.LOBBY);
+            leaveRoom(user, lobby);
+        }
     }
 
     @Override

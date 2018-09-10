@@ -88,7 +88,6 @@ public class ConfirmDeleteDialog extends DialogFragment{
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), ProfileActivity.class);
                 intent.putExtra(Constants.USER, user);
-                intent.putExtra(Constants.USER_ID, user.getUserID());
                 startActivity(intent);
             }
         });

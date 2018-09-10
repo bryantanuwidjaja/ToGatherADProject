@@ -97,7 +97,6 @@ public class CreateLobbyActivity extends AppCompatActivity implements AdapterVie
         setContentView(R.layout.activity_create_lobby);
 
         Intent intent = getIntent();
-//        final String userID = intent.getStringExtra(Constants.USER_ID);
         final User user = (User) intent.getSerializableExtra(Constants.USER);
         Log.d(TAG, "CreateLobby - Logged user : " + user.getUserID());
 
@@ -154,11 +153,8 @@ public class CreateLobbyActivity extends AppCompatActivity implements AdapterVie
 
                                     //create the intent along and pass the relevant information
                                     Intent intent = new Intent(getApplicationContext(), LobbyActivity.class);
-                                    intent.putExtra(Constants.USER_ID, user.getUserID());
-                                    intent.putExtra(Constants.LOBBY_ID, lobbyID);
                                     intent.putExtra(Constants.LOBBY, lobby);
                                     intent.putExtra(Constants.USER, user);
-                                    intent.putExtra(Constants.LOBBY_CHATLOG_ID, chatlogID);
                                     startActivity(intent);
                                     finish();
                                 }
@@ -183,7 +179,7 @@ public class CreateLobbyActivity extends AppCompatActivity implements AdapterVie
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
-                intent.putExtra(Constants.USER_ID, user.getUserID());
+                intent.putExtra(Constants.USER, user);
                 startActivity(intent);
             }
         });
@@ -198,16 +194,6 @@ public class CreateLobbyActivity extends AppCompatActivity implements AdapterVie
         } else {
             getAddress();
         }
-    }
-
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        Intent intent = getIntent();
-        final User user = (User) intent.getSerializableExtra(Constants.USER);
-        Intent restartIntent = new Intent(getApplicationContext(), HomeActivity.class);
-        restartIntent.putExtra(Constants.USER, user);
-        startActivity(restartIntent);
     }
 
     private void updateValuesFromBundle(Bundle savedInstanceState) {

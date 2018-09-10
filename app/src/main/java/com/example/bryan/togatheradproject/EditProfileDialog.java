@@ -59,9 +59,8 @@ public class EditProfileDialog extends DialogFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        final String userID = getArguments().getString(Constants.USER_ID);
-        //User currentUser = (User) getArguments().getSerializable(Constants.USER);
-        final DocumentReference userRef = FirebaseFirestore.getInstance().collection(Constants.USER).document(userID);
+        User user = (User) getArguments().getSerializable(Constants.USER);
+        final DocumentReference userRef = FirebaseFirestore.getInstance().collection(Constants.USER).document(user.getUserID());
         View view = inflater.inflate(R.layout.dialog_edit_profile, container, false);
         textView_enterYourInterest = view.findViewById(R.id.textView_FragmentEditProfile_enterYourInterest);
         editText_interestEditText = view.findViewById(R.id.editText_FragmentEditProfile_interestEditText);
