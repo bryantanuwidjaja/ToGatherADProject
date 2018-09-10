@@ -123,19 +123,18 @@ public class CreateLobbyActivity extends AppCompatActivity implements AdapterVie
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         updateUIWidgets();
 
-
         button_Create.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String description = editText_Description.getText().toString();
                 String temp_Capacity = editText_Capacity.getText().toString();
+                int capacity = (Integer.parseInt(temp_Capacity));
                 String activity = spinner.getSelectedItem().toString();
                 ArrayList<User> guestList = new ArrayList<>();
                 Log.d(TAG, "user = " + guestList);
 
                 if (checkIfDataNotBlank(temp_Capacity, description, mAddressOutput)) {
                     final String lobbyID = UUID.randomUUID().toString();
-                    int capacity = (Integer.parseInt(temp_Capacity));
                     final String chatlogID = UUID.randomUUID().toString();
                     final Lobby lobby = new Lobby(lobbyID, userID, capacity, mAddressOutput, description, activity, guestList, chatlogID);
 
@@ -181,6 +180,7 @@ public class CreateLobbyActivity extends AppCompatActivity implements AdapterVie
                     Toast.makeText(CreateLobbyActivity.this, whyError, Toast.LENGTH_SHORT).show();
                     whyError = "";
                 }
+
             }
         });
 

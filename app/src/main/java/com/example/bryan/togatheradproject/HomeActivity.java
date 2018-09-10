@@ -1,7 +1,11 @@
 package com.example.bryan.togatheradproject;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
 import android.support.annotation.NonNull;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -46,7 +50,6 @@ public class HomeActivity extends AppCompatActivity {
     FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
     ListenerRegistration listenerRegistration;
     CollectionReference lobbyCollection = firebaseFirestore.collection(Constants.LOBBY);
-
     String loggedID;
 
 
@@ -72,7 +75,6 @@ public class HomeActivity extends AppCompatActivity {
         Intent intent = getIntent();
         loggedID = intent.getStringExtra(Constants.USER_ID);
         final User user = (User) intent.getSerializableExtra(Constants.USER);
-        Log.d(TAG, "User: " + user.getUserID());
         Log.d(TAG, "HomeActivity : Logged user : " + loggedID);
 
         lobbyList = new ArrayList<>();

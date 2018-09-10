@@ -101,4 +101,22 @@ public class UserLogin_UITest {
                 loginActivityTestRule.getActivity().getWindow().getDecorView())))
                 .check(matches(isDisplayed()));
     }
+
+    @Test
+    public void invalidAllLogin() throws Exception {
+        loginActivityUI("sukiliong@yaho.com", "asd");
+        onView(isRoot()).perform(idleFor(100));
+        onView(withText(R.string.toast_invalidFieldLogin)).inRoot(withDecorView(not(
+                loginActivityTestRule.getActivity().getWindow().getDecorView())))
+                .check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void emptyAllLogin() throws Exception {
+        loginActivityUI("", "");
+        onView(isRoot()).perform(idleFor(100));
+        onView(withText(R.string.toast_emptyFieldLogin)).inRoot(withDecorView(not(
+                loginActivityTestRule.getActivity().getWindow().getDecorView())))
+                .check(matches(isDisplayed()));
+    }
 }

@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/backgroundColor"
     tools:context=".ProfileActivity">
 
     <ImageView
@@ -13,6 +14,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="24dp"
+        android:src="@drawable/account"
         app:layout_constraintEnd_toStartOf="@+id/guideline2"
         app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintTop_toTopOf="parent"
@@ -26,10 +28,12 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:text="Username"
+        android:textSize="16sp"
+        android:fontFamily="sans-serif-condensed"
+        android:textColor="@color/buttonTextColor"
         app:layout_constraintEnd_toStartOf="@+id/guideline2"
         app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintTop_toBottomOf="@+id/imageView_ProfileScreen_image" />
-
 
     <TextView
         android:id="@+id/textView_ProfileScreen_interestTAG"
@@ -38,7 +42,47 @@
         android:layout_marginBottom="32dp"
         android:layout_marginStart="8dp"
         android:text="Interest: "
+        android:textStyle="bold"
+        android:textSize="24sp"
+        android:fontFamily="serif-monospace"
+        android:textColor="@color/buttonTextColor"
         app:layout_constraintBottom_toTopOf="@+id/textView_ProfileScreen_interest1"
+        app:layout_constraintStart_toStartOf="@+id/guideline" />
+
+    <TextView
+        android:id="@+id/textView_ProfileScreen_interest1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
+        android:layout_marginStart="16dp"
+        android:text="TextView"
+        android:textSize="12sp"
+        android:textColor="@color/buttonTextColor"
+        app:layout_constraintBottom_toTopOf="@+id/textView_ProfileScreen_interest2"
+        app:layout_constraintStart_toStartOf="@+id/guideline" />
+
+    <TextView
+        android:id="@+id/textView_ProfileScreen_interest2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
+        android:layout_marginStart="16dp"
+        android:text="TextView"
+        android:textSize="12sp"
+        android:textColor="@color/buttonTextColor"
+        app:layout_constraintBottom_toTopOf="@+id/textView_ProfileScreen_interest3"
+        app:layout_constraintStart_toStartOf="@+id/guideline" />
+
+    <TextView
+        android:id="@+id/textView_ProfileScreen_interest3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="64dp"
+        android:layout_marginStart="16dp"
+        android:text="TextView"
+        android:textSize="12sp"
+        android:textColor="@color/buttonTextColor"
+        app:layout_constraintBottom_toTopOf="@+id/guideline3"
         app:layout_constraintStart_toStartOf="@+id/guideline" />
 
     <TextView
@@ -48,9 +92,10 @@
         android:layout_marginBottom="32dp"
         android:layout_marginEnd="16dp"
         android:text="TextView"
+        android:textSize="12sp"
+        android:textColor="@color/buttonTextColor"
         app:layout_constraintBottom_toTopOf="@+id/textView_ProfileScreen_interest5"
         app:layout_constraintEnd_toStartOf="@+id/guideline2" />
-
 
     <TextView
         android:id="@+id/textView_ProfileScreen_interest5"
@@ -59,55 +104,21 @@
         android:layout_marginBottom="32dp"
         android:layout_marginEnd="16dp"
         android:text="TextView"
+        android:textSize="12sp"
+        android:textColor="@color/buttonTextColor"
         app:layout_constraintBottom_toTopOf="@+id/textView_ProfileScreen_interest6"
         app:layout_constraintEnd_toStartOf="@+id/guideline2" />
-
 
     <TextView
         android:id="@+id/textView_ProfileScreen_interest6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
-
         android:text="TextView"
+        android:textSize="12sp"
+        android:textColor="@color/buttonTextColor"
         app:layout_constraintBaseline_toBaselineOf="@+id/textView_ProfileScreen_interest3"
         app:layout_constraintEnd_toStartOf="@+id/guideline2" />
-
-
-    <TextView
-        android:id="@+id/textView_ProfileScreen_interest1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-
-        android:layout_marginBottom="32dp"
-        android:layout_marginStart="16dp"
-        android:text="TextView"
-        app:layout_constraintBottom_toTopOf="@+id/textView_ProfileScreen_interest2"
-        app:layout_constraintStart_toStartOf="@+id/guideline" />
-
-
-    <TextView
-        android:id="@+id/textView_ProfileScreen_interest2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-
-        android:layout_marginBottom="32dp"
-        android:layout_marginStart="16dp"
-        android:text="TextView"
-        app:layout_constraintBottom_toTopOf="@+id/textView_ProfileScreen_interest3"
-        app:layout_constraintStart_toStartOf="@+id/guideline" />
-
-    <TextView
-        android:id="@+id/textView_ProfileScreen_interest3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-
-        android:layout_marginBottom="64dp"
-        android:layout_marginStart="16dp"
-        android:text="TextView"
-        app:layout_constraintBottom_toTopOf="@+id/guideline3"
-        app:layout_constraintStart_toStartOf="@+id/guideline" />
-
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline"
@@ -136,7 +147,11 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="24dp"
+        android:background="@color/buttonColor"
         android:text="Save"
+        android:fontFamily="sans-serif"
+        android:textStyle="bold"
+        android:textColor="@color/buttonTextColor"
         app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintTop_toTopOf="@+id/guideline3" />
 
@@ -146,7 +161,11 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="32dp"
         android:layout_marginTop="24dp"
+        android:background="@color/buttonColor"
         android:text="Cancel"
+        android:fontFamily="sans-serif"
+        android:textStyle="bold"
+        android:textColor="@color/buttonTextColor"
         app:layout_constraintEnd_toStartOf="@+id/guideline2"
         app:layout_constraintTop_toTopOf="@+id/guideline3" />
 
