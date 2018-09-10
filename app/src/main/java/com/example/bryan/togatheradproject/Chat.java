@@ -54,8 +54,38 @@ public class Chat {
         this.time = time;
     }
 
+    protected Chat rehostChat(User user){
+        String chatMessage = " is the new host";
+        Date date = new Date();
+        Calendar calendar = GregorianCalendar.getInstance();
+        calendar.setTime(date);
+        int hour = calendar.get(Calendar.HOUR);
+        int minute = calendar.get(Calendar.MINUTE);
+        String stringHour = Integer.toString(hour);
+        String stringMinute = Integer.toString(minute);
+        String stringTime = stringHour + ":" + stringMinute;
+        String username = user.getUserName();
+        Chat chat = new Chat(username, chatMessage, stringTime);
+        return chat;
+    }
+
     protected Chat entryChat(User user) {
         String chatMessage = " entered the room";
+        Date date = new Date();
+        Calendar calendar = GregorianCalendar.getInstance();
+        calendar.setTime(date);
+        int hour = calendar.get(Calendar.HOUR);
+        int minute = calendar.get(Calendar.MINUTE);
+        String stringHour = Integer.toString(hour);
+        String stringMinute = Integer.toString(minute);
+        String stringTime = stringHour + ":" + stringMinute;
+        String username = user.getUserName();
+        Chat chat = new Chat(username, chatMessage, stringTime);
+        return chat;
+    }
+
+    protected Chat leaveEntryChat(User user) {
+        String chatMessage = " left the room";
         Date date = new Date();
         Calendar calendar = GregorianCalendar.getInstance();
         calendar.setTime(date);
