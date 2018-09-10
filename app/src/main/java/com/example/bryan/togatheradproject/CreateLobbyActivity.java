@@ -160,6 +160,7 @@ public class CreateLobbyActivity extends AppCompatActivity implements AdapterVie
                                     intent.putExtra(Constants.USER, user);
                                     intent.putExtra(Constants.LOBBY_CHATLOG_ID, chatlogID);
                                     startActivity(intent);
+                                    finish();
                                 }
                             }).addOnFailureListener(new OnFailureListener() {
                         @Override
@@ -197,6 +198,16 @@ public class CreateLobbyActivity extends AppCompatActivity implements AdapterVie
         } else {
             getAddress();
         }
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Intent intent = getIntent();
+        final User user = (User) intent.getSerializableExtra(Constants.USER);
+        Intent restartIntent = new Intent(getApplicationContext(), HomeActivity.class);
+        restartIntent.putExtra(Constants.USER, user);
+        startActivity(restartIntent);
     }
 
     private void updateValuesFromBundle(Bundle savedInstanceState) {

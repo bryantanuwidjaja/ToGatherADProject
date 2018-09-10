@@ -220,11 +220,35 @@ public class LobbyActivity extends AppCompatActivity {
                 .document(lobby.getLobbyID())
                 .collection(Constants.LOBBY_CHATLOG)
                 .document(lobby.getChatlogID())
-                .delete();
+                .delete()
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        Log.d(TAG, "onComplete: Chatlog deletion complete");
+                    }
+                });
 
         FirebaseFirestore.getInstance().collection(Constants.LOBBY)
                 .document(lobby.getLobbyID())
-                .delete();
+                .collection(Constants.LOBBY_GUESTLIST)
+                .document()
+                .delete()
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        Log.d(TAG, "onComplete: Guestlist deletion complete");
+                    }
+                });
+
+        FirebaseFirestore.getInstance().collection(Constants.LOBBY)
+                .document(lobby.getLobbyID())
+                .delete()
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        Log.d(TAG, "onComplete: Lobby deletion complete");
+                    }
+                });
     }
 
     //join lobby function
@@ -264,6 +288,25 @@ public class LobbyActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onStop() {
+        super.onStop();
+        Intent intent = getIntent();
+        final User user = (User) intent.getSerializableExtra(Constants.USER);
+        final Lobby lobby = (Lobby) intent.getSerializableExtra(Constants.LOBBY);
+        leaveRoom(user, lobby);
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Intent intent = getIntent();
+        final User user = (User) intent.getSerializableExtra(Constants.USER);
+        Intent restartIntent = new Intent(getApplicationContext(), HomeActivity.class);
+        restartIntent.putExtra(Constants.USER, user );
+        startActivity(restartIntent);
+    }
+
+    @Override
     public void onBackPressed() {
         Intent intent = getIntent();
         final User user = (User) intent.getSerializableExtra(Constants.USER);
@@ -282,7 +325,7 @@ public class LobbyActivity extends AppCompatActivity {
         }
     }
 
-    private void leaveRoom(User user, Lobby lobby) {
+    private void leaveRoom(User user, final Lobby lobby) {
         FirebaseFirestore.getInstance().collection(Constants.LOBBY)
                 .document(lobby.getLobbyID())
                 .collection(Constants.LOBBY_GUESTLIST)
@@ -293,6 +336,14 @@ public class LobbyActivity extends AppCompatActivity {
         chat = chat.leaveEntryChat(user);
         chatlogList.add(chat);
         chat.updateChat(chatlogList, lobby.getLobbyID(), lobby.getChatlogID());
+        isEmpty(lobby, new BooleanCallback() {
+            @Override
+            public void onCallBack(Boolean isEmpty) {
+                if(isEmpty){
+                    deleteLobby(lobby);
+                }
+            }
+        });
     }
 
     //after removal
@@ -316,7 +367,7 @@ public class LobbyActivity extends AppCompatActivity {
                             if (guestList.size() > 0) {
                                 //randomise and select the host
                                 Random random = new Random();
-                                int randomIndex = (int) ((Math.random()*guestList.size()));
+                                int randomIndex = (int) ((Math.random() * guestList.size()));
                                 Log.d(TAG, "random index : " + randomIndex);
                                 User nexthost = guestList.get(randomIndex);
                                 //set the new hostID to the lobby
@@ -335,6 +386,32 @@ public class LobbyActivity extends AppCompatActivity {
                         }
                     });
         }
+    }
+
+    private void isEmpty(Lobby lobby, final BooleanCallback booleanCallback) {
+        FirebaseFirestore.getInstance().collection(Constants.LOBBY)
+                .document(lobby.getLobbyID())
+                .collection(Constants.LOBBY_GUESTLIST)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        ArrayList<User> guestList = new ArrayList<>();
+                        for (User user :
+                                task.getResult().toObjects(User.class)) {
+                            guestList.add(user);
+                        }
+                        if (guestList.size() > 0) {
+                            booleanCallback.onCallBack(false);
+                        } else {
+                            booleanCallback.onCallBack(true);
+                        }
+                    }
+                });
+    }
+
+    private interface BooleanCallback {
+        void onCallBack(Boolean isEmpty);
     }
 
     private interface FirestoreCallback {
