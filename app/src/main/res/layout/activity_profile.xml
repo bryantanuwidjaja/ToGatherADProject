@@ -150,4 +150,16 @@
         app:layout_constraintEnd_toStartOf="@+id/guideline2"
         app:layout_constraintTop_toTopOf="@+id/guideline3" />
 
+    <TextView
+        android:id="@+id/textView_ProfileScreen_deleteAccount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:text="Delete Account"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline2"
+        app:layout_constraintStart_toStartOf="@+id/guideline" />
+
 </android.support.constraint.ConstraintLayout>
