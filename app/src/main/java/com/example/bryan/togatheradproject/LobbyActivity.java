@@ -33,9 +33,6 @@ public class LobbyActivity extends AppCompatActivity {
 
     private static final String TAG = "LobbyActivity";
 
-    private String userID;
-    private String lobbyID;
-    private String chatlogID;
     private int backCounter;
     private ArrayList<Chat> chatlogList = new ArrayList<>();
     ListenerRegistration listenerRegistration;
@@ -56,18 +53,15 @@ public class LobbyActivity extends AppCompatActivity {
         Log.d(TAG, "onCreate: in");
 
         Intent intent = getIntent();
-        userID = intent.getStringExtra(Constants.USER_ID);
-        lobbyID = intent.getStringExtra(Constants.LOBBY_ID);
-        chatlogID = intent.getStringExtra(Constants.LOBBY_CHATLOG_ID);
         final Lobby lobby = (Lobby) intent.getSerializableExtra(Constants.LOBBY);
         final User user = (User) intent.getSerializableExtra(Constants.USER);
         Log.d(TAG, "User: " + user.getUserID());
 
         //join lobby
-        updateDatabase(user, userID);
+        updateDatabase(user, lobby);
 
-        Log.d(TAG, "userID : " + userID);
-        Log.d(TAG, "lobbyID : " + lobbyID);
+        Log.d(TAG, "userID : " + user.getUserID());
+        Log.d(TAG, "lobbyID : " + lobby.getLobbyID());
 
         textView_lobbyID = findViewById(R.id.textView_LobbyActivity_lobbyID);
         editView_chatDialog = findViewById(R.id.editText_LobbyActivity_chatDialog);
@@ -78,7 +72,7 @@ public class LobbyActivity extends AppCompatActivity {
         button_lobbyDetail = findViewById(R.id.button_LobbyActivity_lobbyDetail);
 
         //create a function to get current chat log
-        readData(new FirestoreCallback() {
+        readData(lobby ,new FirestoreCallback() {
             @Override
             public void onCallBack(Chatlog chatlog) {
                 chatlogList = chatlog.getChatlog();
@@ -87,7 +81,7 @@ public class LobbyActivity extends AppCompatActivity {
         });
 
         FirebaseFirestore.getInstance().collection(Constants.LOBBY)
-                .document(lobbyID)
+                .document(lobby.getLobbyID())
                 .collection(Constants.LOBBY_CHATLOG)
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
@@ -99,7 +93,7 @@ public class LobbyActivity extends AppCompatActivity {
                         }
                         if (queryDocumentSnapshots != null && !queryDocumentSnapshots.isEmpty()) {
                             Log.d(TAG, "current data " + queryDocumentSnapshots.getDocuments());
-                            readData(new FirestoreCallback() {
+                            readData(lobby, new FirestoreCallback() {
                                 @Override
                                 public void onCallBack(Chatlog chatlog) {
                                     chatlogList = chatlog.getChatlog();
@@ -114,11 +108,11 @@ public class LobbyActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), LobbyDetailActivity.class);
-                intent.putExtra(Constants.USER_ID, userID);
-                intent.putExtra(Constants.LOBBY_ID, lobbyID);
+                intent.putExtra(Constants.USER_ID, user.getUserID());
+                intent.putExtra(Constants.LOBBY_ID, lobby.getLobbyID());
                 intent.putExtra(Constants.USER, user);
                 intent.putExtra(Constants.LOBBY, lobby);
-                intent.putExtra(Constants.LOBBY_CHATLOG_ID, chatlogID);
+                intent.putExtra(Constants.LOBBY_CHATLOG_ID, lobby.getChatlogID());
                 startActivity(intent);
             }
         });
@@ -127,11 +121,11 @@ public class LobbyActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), GuestListActivity.class);
-                intent.putExtra(Constants.USER_ID, userID);
-                intent.putExtra(Constants.LOBBY_ID, lobbyID);
+                intent.putExtra(Constants.USER_ID, user.getUserID());
+                intent.putExtra(Constants.LOBBY_ID, lobby.getLobbyID());
                 intent.putExtra(Constants.LOBBY, lobby);
                 intent.putExtra(Constants.USER, user);
-                intent.putExtra(Constants.LOBBY_CHATLOG_ID, chatlogID);
+                intent.putExtra(Constants.LOBBY_CHATLOG_ID, lobby.getChatlogID());
                 startActivity(intent);
             }
         });
@@ -143,7 +137,7 @@ public class LobbyActivity extends AppCompatActivity {
                 //chatlogList.clear();
 
                 //Read the database;
-                readData(new FirestoreCallback() {
+                readData(lobby, new FirestoreCallback() {
                     @Override
                     public void onCallBack(Chatlog chatlog) {
                         chatlogList = chatlog.getChatlog();
@@ -164,7 +158,7 @@ public class LobbyActivity extends AppCompatActivity {
                 chatlogList.add(chat);
 
                 //update the database
-                chat.updateChat(chatlogList, lobbyID, chatlogID);
+                chat.updateChat(chatlogList, lobby.getLobbyID(), lobby.getChatlogID());
 
                 //clear the edit text
                 editView_chatDialog.setText("");
@@ -176,10 +170,13 @@ public class LobbyActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        Intent intent = getIntent();
+        final Lobby lobby = (Lobby) intent.getSerializableExtra(Constants.LOBBY);
+        final User user = (User) intent.getSerializableExtra(Constants.USER);
         listenerRegistration = FirebaseFirestore.getInstance().collection(Constants.LOBBY)
-                .document(lobbyID)
+                .document(lobby.getLobbyID())
                 .collection(Constants.LOBBY_CHATLOG)
-                .document(chatlogID)
+                .document(lobby.getChatlogID())
                 .addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
                     @Override
                     public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
@@ -197,7 +194,7 @@ public class LobbyActivity extends AppCompatActivity {
                 });
 
         lobbyListener = FirebaseFirestore.getInstance().collection(Constants.LOBBY)
-                .document(lobbyID)
+                .document(lobby.getLobbyID())
                 .collection(Constants.LOBBY_GUESTLIST)
                 .addSnapshotListener(this, new EventListener<QuerySnapshot>() {
                     @Override
@@ -210,31 +207,31 @@ public class LobbyActivity extends AppCompatActivity {
                         int size = guestList.size();
                         if(size == 0){
                             //delete lobby
-                            deleteLobby();
+                            deleteLobby(lobby);
                         }
                     }
                 });
     }
 
     //delete lobby function
-    private void deleteLobby(){
+    private void deleteLobby(Lobby lobby){
         FirebaseFirestore.getInstance().collection(Constants.LOBBY)
-                .document(lobbyID)
+                .document(lobby.getLobbyID())
                 .collection(Constants.LOBBY_CHATLOG)
-                .document(chatlogID)
+                .document(lobby.getChatlogID())
                 .delete();
 
         FirebaseFirestore.getInstance().collection(Constants.LOBBY)
-                .document(lobbyID)
+                .document(lobby.getLobbyID())
                 .delete();
     }
 
     //join lobby function
-    private void updateDatabase(User user, String userID) {
+    private void updateDatabase(User user , Lobby lobby) {
         FirebaseFirestore.getInstance().collection(Constants.LOBBY)
-                .document(lobbyID)
+                .document(lobby.getLobbyID())
                 .collection(Constants.LOBBY_GUESTLIST)
-                .document(userID)
+                .document(user.getUserID())
                 .set(user)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -244,12 +241,12 @@ public class LobbyActivity extends AppCompatActivity {
                 });
     }
 
-    private void readData(final FirestoreCallback firestoreCallback) {
+    private void readData(Lobby lobby, final FirestoreCallback firestoreCallback) {
         FirebaseFirestore.getInstance()
                 .collection(Constants.LOBBY)
-                .document(lobbyID)
+                .document(lobby.getLobbyID())
                 .collection(Constants.LOBBY_CHATLOG)
-                .document(chatlogID)
+                .document(lobby.getChatlogID())
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
@@ -269,25 +266,26 @@ public class LobbyActivity extends AppCompatActivity {
     public void onBackPressed() {
         Intent intent = getIntent();
         final User user = (User) intent.getSerializableExtra(Constants.USER);
+        final Lobby lobby = (Lobby) intent.getSerializableExtra(Constants.LOBBY);
         backCounter++;
         if(backCounter == 1) {
             Toast.makeText(getApplicationContext(), "Press back again to leave the room", Toast.LENGTH_SHORT).show();
         } else if (backCounter == 2) {
             //leave room
-            leaveRoom();
+            leaveRoom(user,lobby);
 
             //intent back to home
             Intent intentback = new Intent(getApplicationContext(), HomeActivity.class);
-            intent.putExtra(Constants.USER, user);
+            intentback.putExtra(Constants.USER, user);
             startActivity(intentback);
         }
     }
 
-    private void leaveRoom(){
+    private void leaveRoom(User user, Lobby lobby){
         FirebaseFirestore.getInstance().collection(Constants.LOBBY)
-                .document(lobbyID)
+                .document(lobby.getLobbyID())
                 .collection(Constants.LOBBY_GUESTLIST)
-                .document(userID)
+                .document(user.getUserID())
                 .delete();
     }
 

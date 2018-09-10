@@ -10,7 +10,6 @@ import android.os.Handler;
 import android.os.ResultReceiver;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
-import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -19,28 +18,22 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.protobuf.Any;
 
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.UUID;
 
 public class CreateLobbyActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
@@ -104,9 +97,9 @@ public class CreateLobbyActivity extends AppCompatActivity implements AdapterVie
         setContentView(R.layout.activity_create_lobby);
 
         Intent intent = getIntent();
-        final String userID = intent.getStringExtra(Constants.USER_ID);
+//        final String userID = intent.getStringExtra(Constants.USER_ID);
         final User user = (User) intent.getSerializableExtra(Constants.USER);
-        Log.d(TAG, "CreateLobby - Logged user : " + userID);
+        Log.d(TAG, "CreateLobby - Logged user : " + user.getUserID());
 
         establish();
 
@@ -136,14 +129,14 @@ public class CreateLobbyActivity extends AppCompatActivity implements AdapterVie
                 if (checkIfDataNotBlank(temp_Capacity, description, mAddressOutput)) {
                     final String lobbyID = UUID.randomUUID().toString();
                     final String chatlogID = UUID.randomUUID().toString();
-                    final Lobby lobby = new Lobby(lobbyID, userID, capacity, mAddressOutput, description, activity, guestList, chatlogID);
+                    final Lobby lobby = new Lobby(lobbyID, user.getUserID(), capacity, mAddressOutput, description, activity, guestList, chatlogID);
 
                     FirebaseFirestore.getInstance().collection(Constants.LOBBY)
                             .document(lobbyID)
                             .set(lobby)
-                            .addOnSuccessListener(new OnSuccessListener() {
+                            .addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
-                                public void onSuccess(Object o) {
+                                public void onComplete(@NonNull Task<Void> task) {
                                     //create an empty chat instance
                                     Chat chat = new Chat();
 
@@ -161,19 +154,19 @@ public class CreateLobbyActivity extends AppCompatActivity implements AdapterVie
 
                                     //create the intent along and pass the relevant information
                                     Intent intent = new Intent(getApplicationContext(), LobbyActivity.class);
-                                    intent.putExtra(Constants.USER_ID, userID);
+                                    intent.putExtra(Constants.USER_ID, user.getUserID());
                                     intent.putExtra(Constants.LOBBY_ID, lobbyID);
+                                    intent.putExtra(Constants.LOBBY, lobby);
                                     intent.putExtra(Constants.USER, user);
                                     intent.putExtra(Constants.LOBBY_CHATLOG_ID, chatlogID);
                                     startActivity(intent);
                                 }
-                            })
-                            .addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Log.e(TAG, "onFailure: Could not create lobby " + e);
-                                }
-                            });
+                            }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.e(TAG, "onFailure: Could not create lobby " + e);
+                        }
+                    });
                 }
                 else{
                     clearEditTest();
@@ -189,7 +182,7 @@ public class CreateLobbyActivity extends AppCompatActivity implements AdapterVie
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
-                intent.putExtra(Constants.USER_ID, userID);
+                intent.putExtra(Constants.USER_ID, user.getUserID());
                 startActivity(intent);
             }
         });
