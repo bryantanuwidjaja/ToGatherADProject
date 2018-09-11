@@ -60,6 +60,16 @@ public class LobbyDetailActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        button_returnToLobby.performClick();
+        button_returnToLobby.setPressed(true);
+        button_returnToLobby.invalidate();
+        button_returnToLobby.setPressed(false);
+        button_returnToLobby.invalidate();
+    }
+
     private void queryInformation(final String lobbyID) {
         FirebaseFirestore.getInstance().collection(Constants.LOBBY).document(lobbyID)
                 .get()
