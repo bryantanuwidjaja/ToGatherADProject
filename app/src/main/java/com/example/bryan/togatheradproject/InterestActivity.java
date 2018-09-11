@@ -157,4 +157,9 @@ public class InterestActivity extends AppCompatActivity implements EditProfileDi
             });
             Log.d(TAG, "onCreate: out");
         }
+
+    @Override
+    public void onBackPressed() {
+        Toast.makeText(getApplicationContext(), "You need to finish this registeration", Toast.LENGTH_SHORT).show();
     }
+}
