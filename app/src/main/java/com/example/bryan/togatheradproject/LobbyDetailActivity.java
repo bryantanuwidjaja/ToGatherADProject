@@ -23,8 +23,7 @@ public class LobbyDetailActivity extends AppCompatActivity {
     private TextView textView_description;
     private TextView textView_location;
     private Button button_returnToLobby;
-
-
+    private Button button_editLobby;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -43,11 +42,29 @@ public class LobbyDetailActivity extends AppCompatActivity {
         textView_description = findViewById(R.id.textView_ActivityLobbyDetail_description);
         textView_location = findViewById(R.id.textView_ActivityLobbyDetail_location);
         button_returnToLobby = findViewById(R.id.button_ActivityLobbyDetail_returnToLobby);
+        button_editLobby = findViewById(R.id.button_ActivityLobbyDetail_editLobby);
 
         queryInformation(lobby.getLobbyID());
 
         String hostID = textView_host.getText().toString();
         Log.d(TAG, "hostID : " + hostID);
+
+        if(checkHost(user, lobby)){
+            button_editLobby.setVisibility(View.VISIBLE);
+            button_editLobby.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getApplicationContext(), EditLobbyActivity.class);
+                    intent.putExtra(Constants.LOBBY, lobby);
+                    intent.putExtra(Constants.USER, user);
+                    startActivity(intent);
+                }
+            });
+        }
+        else{
+            button_editLobby.setVisibility(View.INVISIBLE);
+            button_editLobby.setClickable(false);
+        }
 
         button_returnToLobby.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,6 +85,17 @@ public class LobbyDetailActivity extends AppCompatActivity {
         button_returnToLobby.invalidate();
         button_returnToLobby.setPressed(false);
         button_returnToLobby.invalidate();
+    }
+
+    private boolean checkHost(User user, Lobby lobby){
+        String hostID = lobby.getHostID();
+        String userID = user.getUserID();
+        if(hostID.equals(userID)){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 
     private void queryInformation(final String lobbyID) {

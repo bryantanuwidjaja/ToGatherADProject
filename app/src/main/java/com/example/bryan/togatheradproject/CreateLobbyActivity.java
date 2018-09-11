@@ -74,6 +74,7 @@ public class CreateLobbyActivity extends AppCompatActivity implements AdapterVie
         editText_Description = findViewById(R.id.editText_CreateLobbyActivity_description);
         button_Create = findViewById(R.id.button_CreateLobbyActivity_create);
         button_Cancel = findViewById(R.id.button_CreateLobbyActivity_cancel);
+        mFetchAddressButton = findViewById(R.id.button_CreateLobbyActivity_fetch); 
         mLocationAddressTextView = (TextView) findViewById(R.id.textView_CreateLobbyActivity_address);
         radioButton_private = findViewById(R.id.radioButton_CreateLobbyActivity_private);
     }
