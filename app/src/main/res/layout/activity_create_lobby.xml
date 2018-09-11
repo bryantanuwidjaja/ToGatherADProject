@@ -41,6 +41,40 @@
         app:layout_constraintStart_toStartOf="@+id/guideline2"
         app:layout_constraintTop_toBottomOf="@+id/spinnerActivities" />
 
+    <TextView
+        android:id="@+id/textView_CreateLobbyActivity_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Description"
+        android:textColor="@color/buttonTextColor"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="@+id/guideline2"
+        app:layout_constraintTop_toBottomOf="@+id/editText_CreateLobbyActivity_capacity" />
+
+    <TextView
+        android:id="@+id/textView_CreateLobbyActivity_privateTAG"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:text="Private lobby "
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="@+id/guideline2"
+        app:layout_constraintTop_toBottomOf="@+id/textView_CreateLobbyActivity_address" />
+
+    <TextView
+        android:id="@+id/textView_CreateLobbyActivity_address"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline4"
+        app:layout_constraintStart_toStartOf="@+id/guideline2"
+        app:layout_constraintTop_toBottomOf="@+id/button_CreateLobbyActivity_fetch"
+        tools:text="address " />
+
     <EditText
         android:id="@+id/editText_CreateLobbyActivity_capacity"
         android:layout_width="0dp"
@@ -55,22 +89,11 @@
         app:layout_constraintStart_toStartOf="@+id/guideline2"
         app:layout_constraintTop_toBottomOf="@+id/textView_CreateLobbyActivity_capacity" />
 
-    <TextView
-        android:id="@+id/textView_CreateLobbyActivity_description"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Description"
-        android:textColor="@color/buttonTextColor"
-        android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="@+id/guideline2"
-        app:layout_constraintTop_toBottomOf="@+id/editText_CreateLobbyActivity_capacity" />
-
     <EditText
         android:id="@+id/editText_CreateLobbyActivity_description"
         android:layout_width="0dp"
-        android:layout_height="112dp"
-        android:layout_marginTop="16dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:ems="10"
         android:hint="Describe about your activity here"
         android:inputType="textPersonName"
@@ -81,17 +104,51 @@
         app:layout_constraintTop_toBottomOf="@+id/textView_CreateLobbyActivity_description" />
 
     <Button
-        android:id="@+id/button_CreateLobbyActivity_create"
-        android:layout_width="292dp"
+        android:id="@+id/button_CreateLobbyActivity_cancel"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:textSize="16sp"
         android:background="@color/buttonColor"
+
+        android:fontFamily="sans-serif"
+        android:text="Cancel"
+        android:textColor="@color/buttonTextColor"
+        android:textSize="16sp"
+        android:textStyle="bold"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline4"
+        app:layout_constraintStart_toEndOf="@+id/guideline2" />
+
+    <Button
+        android:id="@+id/button_CreateLobbyActivity_fetch"
+        android:layout_width="wrap_content"
+        android:layout_height="49dp"
+        android:layout_marginTop="8dp"
+        android:background="@color/buttonColor"
+        android:fontFamily="sans-serif"
+        android:onClick="fetchAddressButtonHandler"
+        android:text="Fetch Address"
+        android:textColor="@color/buttonTextColor"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/guideline2"
+        app:layout_constraintTop_toBottomOf="@+id/editText_CreateLobbyActivity_description" />
+
+    <Button
+        android:id="@+id/button_CreateLobbyActivity_create"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:background="@color/buttonColor"
+        android:fontFamily="sans-serif"
         android:text="Create"
         android:textColor="@color/buttonTextColor"
-        android:fontFamily="sans-serif"
+        android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/button_CreateLobbyActivity_cancel"
         app:layout_constraintEnd_toStartOf="@+id/guideline4"
@@ -118,48 +175,12 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_begin="485dp" />
 
-    <Button
-        android:id="@+id/button_CreateLobbyActivity_cancel"
-        android:layout_width="292dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:textSize="16sp"
-
-        android:background="@color/buttonColor"
-        android:text="Cancel"
-        android:textColor="@color/buttonTextColor"
-        android:fontFamily="sans-serif"
-        android:textStyle="bold"
-
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/guideline4"
-        app:layout_constraintStart_toEndOf="@+id/guideline2" />
-
-    <Button
-        android:id="@+id/button_CreateLobbyActivity_fetch"
-        android:textSize="16sp"
-        android:layout_width="135dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:background="@color/buttonColor"
-        android:fontFamily="sans-serif"
-        android:onClick="fetchAddressButtonHandler"
-        android:text="Fetch Address"
-        android:textColor="@color/buttonTextColor"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@+id/guideline2"
-        app:layout_constraintTop_toBottomOf="@+id/editText_CreateLobbyActivity_description" />
-
-    <TextView
-        android:id="@+id/textView_CreateLobbyActivity_address"
+    <RadioButton
+        android:id="@+id/radioButton_CreateLobbyActivity_private"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintStart_toEndOf="@+id/button_CreateLobbyActivity_fetch"
-        app:layout_constraintTop_toBottomOf="@+id/editText_CreateLobbyActivity_description" />
+        android:layout_marginStart="24dp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/textView_CreateLobbyActivity_privateTAG"
+        app:layout_constraintStart_toEndOf="@+id/textView_CreateLobbyActivity_privateTAG" />
 
 </android.support.constraint.ConstraintLayout>

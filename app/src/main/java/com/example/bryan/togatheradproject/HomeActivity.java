@@ -167,7 +167,8 @@ public class HomeActivity extends AppCompatActivity {
                             String lobbyDescriptions = lobby.getLobbyDescriptions();
                             String activity = lobby.getActivity();
                             ArrayList<User> guestList = lobby.getGuestList();
-                            Lobby newLobby = new Lobby(lobbyID, hostID, capacity, location, lobbyDescriptions, activity, guestList, chatlogID);
+                            boolean privateLobby = lobby.getPrivateLobby();
+                            Lobby newLobby = new Lobby(lobbyID, hostID, capacity, location, lobbyDescriptions, activity, guestList, chatlogID, privateLobby);
                             lobbyList.add(newLobby);
                         }
                         LobbyList adapter = new LobbyList(HomeActivity.this, lobbyList);
