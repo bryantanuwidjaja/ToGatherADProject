@@ -17,7 +17,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -36,7 +38,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.UUID;
 
-public class CreateLobbyActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+public class CreateLobbyActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
 
     private static final int REQUEST_PERMISSIONS_REQUEST_CODE = 34;
     private static final String TAG = "CreateLobbyActivity";
@@ -53,7 +55,8 @@ public class CreateLobbyActivity extends AppCompatActivity implements AdapterVie
     private EditText editText_Description;
     private Button button_Create;
     private Button button_Cancel;
-
+    private RadioButton radioButton_private;
+    boolean isPrivate = false;
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -72,7 +75,7 @@ public class CreateLobbyActivity extends AppCompatActivity implements AdapterVie
         button_Create = findViewById(R.id.button_CreateLobbyActivity_create);
         button_Cancel = findViewById(R.id.button_CreateLobbyActivity_cancel);
         mLocationAddressTextView = (TextView) findViewById(R.id.textView_CreateLobbyActivity_address);
-        mFetchAddressButton = (Button) findViewById(R.id.button_CreateLobbyActivity_fetch);
+        radioButton_private = findViewById(R.id.radioButton_CreateLobbyActivity_private);
     }
 
     private String whyError = "";
@@ -108,12 +111,15 @@ public class CreateLobbyActivity extends AppCompatActivity implements AdapterVie
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(this);
 
+
         mResultReceiver = new AddressResultReceiver(new Handler());
         mAddressRequested = false;
         mAddressOutput = "";
         updateValuesFromBundle(savedInstanceState);
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         updateUIWidgets();
+
+        fetchAddressButtonHandler2();
 
         button_Create.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -122,13 +128,14 @@ public class CreateLobbyActivity extends AppCompatActivity implements AdapterVie
                 String temp_Capacity = editText_Capacity.getText().toString();
                 int capacity = (Integer.parseInt(temp_Capacity));
                 String activity = spinner.getSelectedItem().toString();
+                isPrivate = getLobbyType();
                 ArrayList<User> guestList = new ArrayList<>();
                 Log.d(TAG, "user = " + guestList);
 
                 if (checkIfDataNotBlank(temp_Capacity, description, mAddressOutput)) {
                     final String lobbyID = UUID.randomUUID().toString();
                     final String chatlogID = UUID.randomUUID().toString();
-                    final Lobby lobby = new Lobby(lobbyID, user.getUserID(), capacity, mAddressOutput, description, activity, guestList, chatlogID);
+                    final Lobby lobby = new Lobby(lobbyID, user.getUserID(), capacity, mAddressOutput, description, activity, guestList, chatlogID, isPrivate);
 
                     FirebaseFirestore.getInstance().collection(Constants.LOBBY)
                             .document(lobbyID)
@@ -207,6 +214,17 @@ public class CreateLobbyActivity extends AppCompatActivity implements AdapterVie
         button_Cancel.invalidate();
     }
 
+    private boolean getLobbyType(){
+        boolean isPrivate;
+        if(radioButton_private.isChecked()){
+            isPrivate = true;
+        }
+        else{
+            isPrivate = false;
+        }
+        return isPrivate;
+    }
+
     private void updateValuesFromBundle(Bundle savedInstanceState) {
         if (savedInstanceState != null) {
             if (savedInstanceState.keySet().contains(ADDRESS_REQUESTED_KEY)) {
@@ -221,6 +239,14 @@ public class CreateLobbyActivity extends AppCompatActivity implements AdapterVie
 
     @SuppressWarnings("unused")
     public void fetchAddressButtonHandler(View view) {
+        if (mLastLocation != null) {
+            startIntentService();
+            return;
+        }
+        mAddressRequested = true;
+        updateUIWidgets();
+    }
+    public void fetchAddressButtonHandler2() {
         if (mLastLocation != null) {
             startIntentService();
             return;

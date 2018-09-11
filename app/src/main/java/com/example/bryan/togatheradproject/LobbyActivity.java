@@ -212,6 +212,48 @@ public class LobbyActivity extends AppCompatActivity {
                 });
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if(clickIndicator == 0) {
+            Intent intent = getIntent();
+            final User user = (User) intent.getSerializableExtra(Constants.USER);
+            final Lobby lobby = (Lobby) intent.getSerializableExtra(Constants.LOBBY);
+            leaveRoom(user, lobby);
+            finish();
+        }
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Intent intent = getIntent();
+        final User user = (User) intent.getSerializableExtra(Constants.USER);
+        Intent restartIntent = new Intent(getApplicationContext(), HomeActivity.class);
+        restartIntent.putExtra(Constants.USER, user );
+        startActivity(restartIntent);
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = getIntent();
+        final User user = (User) intent.getSerializableExtra(Constants.USER);
+        final Lobby lobby = (Lobby) intent.getSerializableExtra(Constants.LOBBY);
+        backCounter++;
+        if (backCounter == 1) {
+            Toast.makeText(getApplicationContext(), "Press back again to leave the room", Toast.LENGTH_SHORT).show();
+        } else if (backCounter == 2) {
+            //leave room
+            onStop();
+            //leaveRoom(user, lobby);
+
+            //intent back to home
+            Intent intentback = new Intent(getApplicationContext(), HomeActivity.class);
+            intentback.putExtra(Constants.USER, user);
+            startActivity(intentback);
+        }
+    }
+
     //delete lobby function
     private void deleteLobby(Lobby lobby) {
         FirebaseFirestore.getInstance().collection(Constants.LOBBY)
@@ -283,47 +325,6 @@ public class LobbyActivity extends AppCompatActivity {
                         }
                     }
                 });
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        if(clickIndicator == 0) {
-            Intent intent = getIntent();
-            final User user = (User) intent.getSerializableExtra(Constants.USER);
-            final Lobby lobby = (Lobby) intent.getSerializableExtra(Constants.LOBBY);
-            leaveRoom(user, lobby);
-            finish();
-        }
-    }
-
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        Intent intent = getIntent();
-        final User user = (User) intent.getSerializableExtra(Constants.USER);
-        Intent restartIntent = new Intent(getApplicationContext(), HomeActivity.class);
-        restartIntent.putExtra(Constants.USER, user );
-        startActivity(restartIntent);
-    }
-
-    @Override
-    public void onBackPressed() {
-        Intent intent = getIntent();
-        final User user = (User) intent.getSerializableExtra(Constants.USER);
-        final Lobby lobby = (Lobby) intent.getSerializableExtra(Constants.LOBBY);
-        backCounter++;
-        if (backCounter == 1) {
-            Toast.makeText(getApplicationContext(), "Press back again to leave the room", Toast.LENGTH_SHORT).show();
-        } else if (backCounter == 2) {
-            //leave room
-            leaveRoom(user, lobby);
-
-            //intent back to home
-            Intent intentback = new Intent(getApplicationContext(), HomeActivity.class);
-            intentback.putExtra(Constants.USER, user);
-            startActivity(intentback);
-        }
     }
 
     private void leaveRoom(User user, final Lobby lobby) {
