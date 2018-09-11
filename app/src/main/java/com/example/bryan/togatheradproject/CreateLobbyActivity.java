@@ -180,6 +180,7 @@ public class CreateLobbyActivity extends AppCompatActivity implements AdapterVie
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
                 intent.putExtra(Constants.USER, user);
+                Toast.makeText(CreateLobbyActivity.this, "Lobby creation cancelled", Toast.LENGTH_SHORT).show();
                 startActivity(intent);
             }
         });
@@ -194,6 +195,16 @@ public class CreateLobbyActivity extends AppCompatActivity implements AdapterVie
         } else {
             getAddress();
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        button_Cancel.performClick();
+        button_Cancel.setPressed(true);
+        button_Cancel.invalidate();
+        button_Cancel.setPressed(false);
+        button_Cancel.invalidate();
     }
 
     private void updateValuesFromBundle(Bundle savedInstanceState) {
