@@ -227,6 +227,16 @@ public class RegistrationActivity extends AppCompatActivity {
         Log.d(TAG, "onCreate: out " + TAG);
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        button_Cancel.performClick();
+        button_Cancel.setPressed(true);
+        button_Cancel.invalidate();
+        button_Cancel.setPressed(false);
+        button_Cancel.invalidate();
+    }
+
     private boolean validate(String regisEmail, String regisName, String regisPassword , String regisRePassword){
         if (checkIfDataNotBlank(regisEmail, regisName, regisPassword, regisRePassword)
                 && checkEmailValidity(regisEmail)
