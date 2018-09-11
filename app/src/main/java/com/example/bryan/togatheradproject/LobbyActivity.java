@@ -293,6 +293,7 @@ public class LobbyActivity extends AppCompatActivity {
             final User user = (User) intent.getSerializableExtra(Constants.USER);
             final Lobby lobby = (Lobby) intent.getSerializableExtra(Constants.LOBBY);
             leaveRoom(user, lobby);
+            finish();
         }
     }
 
