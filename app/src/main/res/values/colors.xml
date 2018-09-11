@@ -1,14 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-<<<<<<< HEAD
-    <color name="colorPrimary">#3b5998</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
     <color name="actionBarColor">#000000</color>
-    <color name="backgroundColor">#B1CCE2</color>
-    <color name="buttonColor">#DFE3EE</color>
     <color name="buttonTextColor">#000000</color>
-=======
     <color name="colorPrimary">#66A5AD</color>
     <color name="colorPrimaryDark">#1E656D</color>
     <color name="colorAccent">#F8672E</color>
@@ -16,5 +9,4 @@
     <color name="buttonColor">#BCBABE</color>
     <color name="blackColor">#000000</color>
     <color name="whiteColor">#ffffff</color>
->>>>>>> fd3347ca25ec3c78bd1782a94c48a7ac537d00d7
 </resources>

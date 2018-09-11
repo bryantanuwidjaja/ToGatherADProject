@@ -266,10 +266,19 @@ public class ProfileActivity extends AppCompatActivity implements EditProfileDia
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext() , HomeActivity.class);
                 intent.putExtra(Constants.USER, loggedUser);
+                Toast.makeText(ProfileActivity.this, "Vacancy creation canceled", Toast.LENGTH_SHORT).show();
                 startActivity(intent);
             }
         });
     }
 
-
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        button_cancel.performClick();
+        button_cancel.setPressed(true);
+        button_cancel.invalidate();
+        button_cancel.setPressed(false);
+        button_cancel.invalidate();
+    }
 }
