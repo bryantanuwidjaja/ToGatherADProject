@@ -14,11 +14,10 @@
         android:layout_height="25dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:fontFamily="@font/cabin"
         android:text="Available Lobby"
         android:textColor="#000000"
-        android:textSize="18sp"
-        android:fontFamily="monospace"
-
+        android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -26,33 +25,33 @@
         android:id="@+id/button_HomeActivity_createLobby"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="24dp"
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
-        android:textSize="16sp"
-        android:background="@color/buttonColor"
+        android:textStyle="bold"
+        android:background="@drawable/round_button"
         android:fontFamily="sans-serif"
         android:text="Create Lobby"
-        android:textColor="@color/buttonTextColor"
-        android:textStyle="bold"
-
+        android:textAllCaps="false"
+        android:textColor="@color/blackColor"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/button_HomeActivity_viewProfile"
-        android:textSize="12sp"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:layout_marginTop="8dp"
-        android:background="@color/buttonColor"
+        android:background="@drawable/round_button2"
         android:fontFamily="sans-serif"
         android:text="View Profile"
-        android:textColor="@color/buttonTextColor"
+        android:textAllCaps="false"
+        android:textColor="@color/blackColor"
+        android:textSize="16sp"
         android:textStyle="bold"
-
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
