@@ -17,10 +17,6 @@ public class LobbyDetailActivity extends AppCompatActivity {
 
     private static final String TAG = "LobbyDetailActivity";
 
-    private String userID;
-    private String lobbyID;
-    private String chatlogID;
-
     private TextView textView_activity;
     private TextView textView_maximumCapacity;
     private TextView textView_host;
@@ -36,13 +32,10 @@ public class LobbyDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_lobby_detail);
 
         Intent intent = getIntent();
-        userID = intent.getStringExtra(Constants.USER_ID);
-        lobbyID = intent.getStringExtra(Constants.LOBBY_ID);
-        chatlogID = intent.getStringExtra(Constants.LOBBY_CHATLOG_ID);
         final Lobby lobby = (Lobby) intent.getSerializableExtra(Constants.LOBBY);
         final User user = (User) intent.getSerializableExtra(Constants.USER);
-        Log.d(TAG, "userID : " + userID);
-        Log.d(TAG, "lobbyID : " + lobbyID);
+        Log.d(TAG, "userID : " + user.getUserID());
+        Log.d(TAG, "lobbyID : " + lobby.getLobbyID());
 
         textView_activity = findViewById(R.id.textView_ActivityLobbyDetail_activity);
         textView_maximumCapacity = findViewById(R.id.textView_ActivityLobbyDetail_maximumCapacity);
@@ -51,7 +44,7 @@ public class LobbyDetailActivity extends AppCompatActivity {
         textView_location = findViewById(R.id.textView_ActivityLobbyDetail_location);
         button_returnToLobby = findViewById(R.id.button_ActivityLobbyDetail_returnToLobby);
 
-        queryInformation(lobbyID);
+        queryInformation(lobby.getLobbyID());
 
         String hostID = textView_host.getText().toString();
         Log.d(TAG, "hostID : " + hostID);
@@ -60,11 +53,8 @@ public class LobbyDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), LobbyActivity.class);
-                intent.putExtra(Constants.USER_ID, userID);
-                intent.putExtra(Constants.LOBBY_ID, lobbyID);
                 intent.putExtra(Constants.USER, user);
                 intent.putExtra(Constants.LOBBY, lobby);
-                intent.putExtra(Constants.LOBBY_CHATLOG_ID, chatlogID);
                 startActivity(intent);
             }
         });

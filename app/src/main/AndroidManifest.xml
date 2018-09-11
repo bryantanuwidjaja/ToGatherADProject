@@ -24,7 +24,6 @@
         <activity android:name=".ProfileActivity" />
         <activity android:name=".InterestActivity" />
         <activity android:name=".LobbyActivity" />
-
         <service
             android:name=".FetchAddressIntentService"
             android:exported="false" />
@@ -32,7 +31,9 @@
         <activity android:name=".LobbyDetailActivity" />
         <activity android:name=".GuestListActivity" />
         <activity android:name=".GuestProfileActivity" />
-        <activity android:name=".ConfirmDeleteDialog"></activity>
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
     </application>
 
 </manifest>
