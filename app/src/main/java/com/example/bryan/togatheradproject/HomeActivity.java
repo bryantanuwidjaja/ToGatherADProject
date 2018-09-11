@@ -42,6 +42,7 @@ public class HomeActivity extends AppCompatActivity {
 
     public static final String TAG = "ToGather";
     List<Lobby> lobbyList;
+    ArrayList<Chat> chatlogList = new ArrayList<>();
     ListView listView_LobbyList;
     TextView textView_Nearbylobby;
     Button button_Createlobby;
@@ -51,34 +52,7 @@ public class HomeActivity extends AppCompatActivity {
     CollectionReference lobbyCollection = firebaseFirestore.collection(Constants.LOBBY);
     String loggedID;
 
-    private void retreivedLobby() {
-        //reset the list
-        lobbyList.clear();
 
-        FirebaseFirestore.getInstance().collection(Constants.LOBBY)
-                .get()
-                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                    @Override
-                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                        for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
-                            Lobby lobby = documentSnapshot.toObject(Lobby.class);
-                            String lobbyID = lobby.getLobbyID();
-                            String hostID = lobby.getHostID();
-                            int capacity = lobby.getCapacity();
-                            String location = lobby.getLocation();
-                            String lobbyDescriptions = lobby.getLobbyDescriptions();
-                            String activity = lobby.getActivity();
-                            ArrayList<User> guestList = lobby.getGuestList();
-                            Lobby newLobby = new Lobby(lobbyID, hostID, capacity, location, lobbyDescriptions, activity, guestList);
-                            lobbyList.add(newLobby);
-                            LobbyList adapter = new LobbyList(HomeActivity.this, lobbyList);
-                            listView_LobbyList.setAdapter(adapter);
-                        }
-                        LobbyList adapter = new LobbyList(HomeActivity.this, lobbyList);
-                        listView_LobbyList.setAdapter(adapter);
-                    }
-                });
-    }
 
     @Override
     protected void onStart() {
@@ -135,20 +109,44 @@ public class HomeActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Lobby lobby = lobbyList.get(position);
                 String lobbyID = lobby.getLobbyID();
-                Intent intent = new Intent(getApplicationContext(), LobbyActivity.class);
-                intent.putExtra(Constants.USER_ID, loggedID);
-                intent.putExtra(Constants.LOBBY_ID, lobbyID);
-                intent.putExtra(Constants.USER, user);
-                intent.putExtra(Constants.LOBBY, lobby);
-                Log.d(TAG, "User: " + user.getUserID());
-                Log.d(TAG, "userID : " + loggedID);
-                Log.d(TAG, "lobbyID : " + lobbyID);
-                startActivity(intent);
+
+                //retrieve the chat log id to refer to the clicked lobby
+                String chatlogID = lobby.getChatlogID();
+
+                //retrieve current chat log
+                retrieveChatLog(lobbyID, chatlogID, user, lobby);
+//                Log.d(TAG, "chatloglist: 1 " + chatlogList);
+
+                //create an empty chat instance
+//                Chat chat = new Chat();
+//
+//                //create the entry message
+//                chat = chat.entryChat(user);
+//
+//                //add the entry message to the array
+//                chatlogList.add(chat);
+//                Log.d(TAG, "chatloglist: 2 " + chatlogList);
+//
+//                //update the database
+//                chat.updateChat(chatlogList, lobbyID, chatlogID);
+//
+//                //create the intent along with the relevant information to be passed
+//                Intent intent = new Intent(getApplicationContext(), LobbyActivity.class);
+//                intent.putExtra(Constants.USER_ID, loggedID);
+//                intent.putExtra(Constants.LOBBY_ID, lobbyID);
+//                intent.putExtra(Constants.LOBBY_CHATLOG_ID ,chatlogID);
+//                intent.putExtra(Constants.USER, user);
+//                intent.putExtra(Constants.LOBBY, lobby);
+//                Log.d(TAG, "User: " + user.getUserID());
+//                Log.d(TAG, "userID : " + loggedID);
+//                Log.d(TAG, "lobbyID : " + lobbyID);
+//                startActivity(intent);
             }
         });
         Log.d(TAG, "onCreate: out");
-
     }
+
+
     public void setListenerRegistration() {
         lobbyCollection.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
@@ -167,5 +165,83 @@ public class HomeActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private void retreivedLobby() {
+        //reset the list
+        lobbyList.clear();
+
+        FirebaseFirestore.getInstance().collection(Constants.LOBBY)
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
+                            Lobby lobby = documentSnapshot.toObject(Lobby.class);
+                            String chatlogID = lobby.getChatlogID();
+                            String lobbyID = lobby.getLobbyID();
+                            String hostID = lobby.getHostID();
+                            int capacity = lobby.getCapacity();
+                            String location = lobby.getLocation();
+                            String lobbyDescriptions = lobby.getLobbyDescriptions();
+                            String activity = lobby.getActivity();
+                            ArrayList<User> guestList = lobby.getGuestList();
+                            Lobby newLobby = new Lobby(lobbyID, hostID, capacity, location, lobbyDescriptions, activity, guestList, chatlogID);
+                            lobbyList.add(newLobby);
+//                            LobbyList adapter = new LobbyList(HomeActivity.this, lobbyList);
+//                            listView_LobbyList.setAdapter(adapter);
+                        }
+                        LobbyList adapter = new LobbyList(HomeActivity.this, lobbyList);
+                        listView_LobbyList.setAdapter(adapter);
+                    }
+                });
+    }
+
+    private void retrieveChatLog(final String lobbyID, final String chatlogID, final User user, final Lobby lobby) {
+        //clear the chat log
+        chatlogList.clear();
+        FirebaseFirestore.getInstance()
+                .collection(Constants.LOBBY)
+                .document(lobbyID)
+                .collection(Constants.LOBBY_CHATLOG)
+                .document(chatlogID)
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        Log.d(TAG, "onSuccess retrievechatlog : in ");
+                        Chatlog chatlog = documentSnapshot.toObject(Chatlog.class);
+                        ArrayList<Chat> chatArray = chatlog.getChatlog();
+                        for (Chat chat : chatArray) {
+                            Log.d(TAG, "chatmes:  retrievechatlog " + chat.getChatMessage());
+                            chatlogList.add(chat);
+                        }
+                        Log.d(TAG, "chatloglist:  retrievechatlog " + chatlogList);
+                        Chat chat = new Chat();
+
+                        //create the entry message
+                        chat = chat.entryChat(user);
+
+                        //add the entry message to the array
+                        chatlogList.add(chat);
+                        Log.d(TAG, "chatloglist: 2 " + chatlogList);
+
+                        //update the database
+                        chat.updateChat(chatlogList, lobbyID, chatlogID);
+
+                        //create the intent along with the relevant information to be passed
+                        Intent intent = new Intent(getApplicationContext(), LobbyActivity.class);
+                        intent.putExtra(Constants.USER_ID, loggedID);
+                        intent.putExtra(Constants.LOBBY_ID, lobbyID);
+                        intent.putExtra(Constants.LOBBY_CHATLOG_ID, chatlogID);
+                        intent.putExtra(Constants.USER, user);
+                        intent.putExtra(Constants.LOBBY, lobby);
+                        Log.d(TAG, "User: " + user.getUserID());
+                        Log.d(TAG, "userID : " + loggedID);
+                        Log.d(TAG, "lobbyID : " + lobbyID);
+                        startActivity(intent);
+                    }
+                });
+        Log.d(TAG, "chatLoglist : 3  " + chatlogList);
     }
 }

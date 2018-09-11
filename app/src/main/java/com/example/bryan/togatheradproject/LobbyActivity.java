@@ -1,6 +1,8 @@
 package com.example.bryan.togatheradproject;
 
 import android.content.Intent;
+import android.net.sip.SipSession;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,8 +13,25 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.ListenerRegistration;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.List;
+
+import javax.annotation.Nullable;
 
 
 public class LobbyActivity extends AppCompatActivity {
@@ -21,7 +40,9 @@ public class LobbyActivity extends AppCompatActivity {
 
     private String userID;
     private String lobbyID;
-
+    private String chatlogID;
+    private ArrayList<Chat> chatlogList = new ArrayList<>();
+    private ListenerRegistration listenerRegistration;
 
     TextView textView_lobbyID;
     EditText editView_chatDialog;
@@ -40,11 +61,12 @@ public class LobbyActivity extends AppCompatActivity {
         Intent intent = getIntent();
         userID = intent.getStringExtra(Constants.USER_ID);
         lobbyID = intent.getStringExtra(Constants.LOBBY_ID);
+        chatlogID = intent.getStringExtra(Constants.LOBBY_CHATLOG_ID);
         final Lobby lobby = (Lobby) intent.getSerializableExtra(Constants.LOBBY);
         final User user = (User) intent.getSerializableExtra(Constants.USER);
         Log.d(TAG, "User: " + user.getUserID());
 
-        //joinLobby(user, lobby);
+        //join lobby
         updateDatabase(user, userID);
 
         Log.d(TAG, "userID : " + userID);
@@ -58,6 +80,39 @@ public class LobbyActivity extends AppCompatActivity {
         button_guestList = findViewById(R.id.button_LobbyActivity_guestList);
         button_lobbyDetail = findViewById(R.id.button_LobbyActivity_lobbyDetail);
 
+        //create a function to get current chat log
+        readData(new FirestoreCallback() {
+            @Override
+            public void onCallBack(Chatlog chatlog) {
+                chatlogList = chatlog.getChatlog();
+                Log.d(TAG, "onCallBack: " + chatlogList.toString());
+            }
+        });
+
+        FirebaseFirestore.getInstance().collection(Constants.LOBBY)
+                .document(lobbyID)
+                .collection(Constants.LOBBY_CHATLOG)
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots,
+                                        @Nullable FirebaseFirestoreException e) {
+                        if (e != null) {
+                            Log.w(TAG, "Listen failed: ", e);
+                            return;
+                        }
+                        if (queryDocumentSnapshots != null && !queryDocumentSnapshots.isEmpty()) {
+                            Log.d(TAG, "current data " + queryDocumentSnapshots.getDocuments());
+                            readData(new FirestoreCallback() {
+                                @Override
+                                public void onCallBack(Chatlog chatlog) {
+                                    chatlogList = chatlog.getChatlog();
+                                    Log.d(TAG, "onCallBack real time: " + chatlogList.toString());
+                                }
+                            });
+                        }
+                    }
+                });
+
         button_lobbyDetail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -66,6 +121,7 @@ public class LobbyActivity extends AppCompatActivity {
                 intent.putExtra(Constants.LOBBY_ID, lobbyID);
                 intent.putExtra(Constants.USER, user);
                 intent.putExtra(Constants.LOBBY, lobby);
+                intent.putExtra(Constants.LOBBY_CHATLOG_ID, chatlogID);
                 startActivity(intent);
             }
         });
@@ -78,17 +134,73 @@ public class LobbyActivity extends AppCompatActivity {
                 intent.putExtra(Constants.LOBBY_ID, lobbyID);
                 intent.putExtra(Constants.LOBBY, lobby);
                 intent.putExtra(Constants.USER, user);
+                intent.putExtra(Constants.LOBBY_CHATLOG_ID, chatlogID);
                 startActivity(intent);
             }
         });
 
+        button_enter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Clear the list
+                //chatlogList.clear();
+
+                //Read the database;
+                readData(new FirestoreCallback() {
+                    @Override
+                    public void onCallBack(Chatlog chatlog) {
+                        chatlogList = chatlog.getChatlog();
+                        Log.d(TAG, "after read data : " + chatlogList);
+                    }
+                });
+
+                //create chat instance
+                Chat chat = new Chat();
+
+                //retrieve input from widget
+                String input = editView_chatDialog.getText().toString();
+
+                //generate the chat object
+                chat = chat.inputChat(user, input);
+
+                //add the chat to the current chat log
+                chatlogList.add(chat);
+
+                //update the database
+                chat.updateChat(chatlogList, lobbyID, chatlogID);
+
+                //clear the edit text
+                editView_chatDialog.setText("");
+            }
+        });
         Log.d(TAG, "onCreate: out");
     }
 
-    private void joinLobby(User user, Lobby lobby) {
-        lobby.addGuest(user);
+    @Override
+    protected void onStart() {
+        super.onStart();
+        listenerRegistration = FirebaseFirestore.getInstance().collection(Constants.LOBBY)
+                .document(lobbyID)
+                .collection(Constants.LOBBY_CHATLOG)
+                .document(chatlogID)
+                .addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
+                        if (e != null) {
+                            Log.d(TAG, "onEvent: error loading data" + e);
+                            return;
+                        }
+                        if (documentSnapshot.exists()) {
+                            Chatlog chatlog = documentSnapshot.toObject(Chatlog.class);
+                            chatlogList = chatlog.getChatlog();
+                            ChatlogList adapter = new ChatlogList(LobbyActivity.this, chatlogList);
+                            listView_chatLog.setAdapter(adapter);
+                        }
+                    }
+                });
     }
 
+    //join lobby function
     private void updateDatabase(User user, String userID) {
         FirebaseFirestore.getInstance().collection(Constants.LOBBY)
                 .document(lobbyID)
@@ -101,5 +213,30 @@ public class LobbyActivity extends AppCompatActivity {
                         Log.d(TAG, "onSuccess: update successful");
                     }
                 });
+    }
+
+    private void readData(final FirestoreCallback firestoreCallback) {
+        FirebaseFirestore.getInstance()
+                .collection(Constants.LOBBY)
+                .document(lobbyID)
+                .collection(Constants.LOBBY_CHATLOG)
+                .document(chatlogID)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot documentSnapshot = task.getResult();
+                            Chatlog chatlog = documentSnapshot.toObject(Chatlog.class);
+                            firestoreCallback.onCallBack(chatlog);
+                        } else {
+                            Log.d(TAG, "Error getting documents ", task.getException());
+                        }
+                    }
+                });
+    }
+
+    private interface FirestoreCallback {
+        void onCallBack(Chatlog chatlog);
     }
 }

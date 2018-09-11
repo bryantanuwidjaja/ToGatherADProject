@@ -33,8 +33,6 @@ public class LoginActivity extends AppCompatActivity {
     ImageView imageView_Image;
     EditText editText_InsertEmail;
     EditText editText_InsertPassword;
-    TextView textView_Email;
-    TextView textView_Password;
     TextView textView_Container;
 
     private FirebaseAuth mAuth;
@@ -48,7 +46,6 @@ public class LoginActivity extends AppCompatActivity {
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-
                         for(QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots){
                             User user = documentSnapshot.toObject(User.class);
                             String userID = user.getUserID();
@@ -67,8 +64,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void Login(final String email, final String password) {
         Log.d(TAG, "Login: in");
-        try{
-            mAuth.signInWithEmailAndPassword(email, password)
+        mAuth.signInWithEmailAndPassword(email, password)
                 .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                     @Override
                     public void onSuccess(AuthResult authResult) {
@@ -86,29 +82,42 @@ public class LoginActivity extends AppCompatActivity {
                 Log.e(TAG, "onFailure: Could not sign in user" + e);
                 Toast.makeText(getApplicationContext(), "Login Failed", Toast.LENGTH_SHORT).show();
             }
-        });}
-        catch (Exception e){
-            Log.d(TAG, "Login: error sign in");
-            Toast.makeText(getApplicationContext(),"error empty field", Toast.LENGTH_SHORT).show();
-        }
+        });
         Log.d(TAG, "Login: out");
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
-        Log.d(TAG, "onCreate: in");
+    private String whyError = "";
 
+    protected boolean checkIfDataNotBlank(String username,String password){
+        boolean result = true;
+        if (username.equals("") || password.equals("")) {
+            whyError = "Please fill all of the fields properly ";
+            result = false;
+        }
+        return result;
+    }
+
+    protected void clearEditTest(){
+        editText_InsertEmail.setText("");
+        editText_InsertPassword.setText("");
+    }
+
+    protected void establish(){
         mAuth = FirebaseAuth.getInstance();
         button_SignIn = findViewById(R.id.button_LoginActivity_signIn);
         button_SignUp = findViewById(R.id.button_LoginActivity_signUp);
         imageView_Image = findViewById(R.id.imageView_LoginActivity_image);
         editText_InsertEmail = findViewById(R.id.editText_LoginActivity_insertEmail);
         editText_InsertPassword = findViewById(R.id.editText_LoginActivity_insertPassword);
-        textView_Email = findViewById(R.id.textView_LoginActivity_email);
-        textView_Password = findViewById(R.id.textView_LoginActivity_password);
         textView_Container = findViewById(R.id.textView_LoginActivity_container);
+    }
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_login);
+        Log.d(TAG, "onCreate: in");
+
+        establish();
 
         button_SignIn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -118,7 +127,13 @@ public class LoginActivity extends AppCompatActivity {
                 String email = editText_InsertEmail.getText().toString();
                 String password = editText_InsertPassword.getText().toString();
                 Log.d(TAG, "onClick: sign in - before login");
+                if (checkIfDataNotBlank(email,password)){
                 Login(email, password);}
+                else{
+                        clearEditTest();
+                        Toast.makeText(LoginActivity.this, whyError, Toast.LENGTH_SHORT).show();
+                        whyError = "";
+                    }}
                 catch (Exception e){
                     Toast.makeText(LoginActivity.this, "Login Failed", Toast.LENGTH_SHORT).show();
                 }

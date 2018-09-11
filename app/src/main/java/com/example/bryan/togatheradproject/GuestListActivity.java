@@ -33,6 +33,7 @@ public class GuestListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_guest_list);
 
         Intent intent = getIntent();
+        final String chatlogID = intent.getStringExtra(Constants.LOBBY_CHATLOG_ID);
         final String lobbyID = intent.getStringExtra(Constants.LOBBY_ID);
         final String userID = intent.getStringExtra(Constants.USER_ID);
         final Lobby lobby = (Lobby) intent.getSerializableExtra(Constants.LOBBY);
@@ -52,6 +53,7 @@ public class GuestListActivity extends AppCompatActivity {
                 intent.putExtra(Constants.LOBBY_ID, lobbyID);
                 intent.putExtra(Constants.LOBBY, lobby);
                 intent.putExtra(Constants.USER, user);
+                intent.putExtra(Constants.LOBBY_CHATLOG_ID, chatlogID);
                 startActivity(intent);
             }
         });
@@ -66,6 +68,7 @@ public class GuestListActivity extends AppCompatActivity {
                 intent.putExtra(Constants.USER, user);
                 intent.putExtra(Constants.CLICKED_USER, clickedUser);
                 intent.putExtra(Constants.LOBBY, lobby);
+                intent.putExtra(Constants.LOBBY_CHATLOG_ID, chatlogID);
                 startActivity(intent);
             }
         });

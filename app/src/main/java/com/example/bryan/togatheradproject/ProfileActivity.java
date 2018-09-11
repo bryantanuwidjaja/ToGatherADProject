@@ -61,8 +61,10 @@ public class ProfileActivity extends AppCompatActivity implements EditProfileDia
     TextView textView_Interest4;
     TextView textView_Interest5;
     TextView textView_Interest6;
+    TextView textView_deleteAccount;
     Button button_save;
     Button button_cancel;
+
 
 
     public void updateInformation(String userID) {
@@ -154,10 +156,23 @@ public class ProfileActivity extends AppCompatActivity implements EditProfileDia
         textView_Interest4 = findViewById(R.id.textView_ProfileScreen_interest4);
         textView_Interest5 = findViewById(R.id.textView_ProfileScreen_interest5);
         textView_Interest6 = findViewById(R.id.textView_ProfileScreen_interest6);
+        textView_deleteAccount = findViewById(R.id.textView_ProfileScreen_deleteAccount); 
         button_cancel = findViewById(R.id.button_ProfileScreen_cancelButton);
         button_save = findViewById(R.id.button_ProfileScreen_saveButton);
 
         updateInformation(userID);
+
+        textView_deleteAccount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //show dialog
+                ConfirmDeleteDialog dialog = new ConfirmDeleteDialog();
+                Bundle bundle = new Bundle();
+                bundle.putSerializable(Constants.USER, loggedUser);
+                dialog.setArguments(bundle);
+                dialog.show(getFragmentManager(), "ConfirmDeleteDialog");
+            }
+        });
 
         textView_Interest1.setOnClickListener(new View.OnClickListener() {
             @Override

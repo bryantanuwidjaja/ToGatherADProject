@@ -9,6 +9,8 @@ public final class Constants {
     static final String LOBBY = "lobby";
     static final String LOBBY_ID = "lobbyID";
     static final String LOBBY_GUESTLIST = "guestList";
+    static final String LOBBY_CHATLOG = "chatLog";
+    static final String LOBBY_CHATLOG_ID = "chatlogID";
 
     static final String PASSWORD = "password";
     static final String USERNAME = "userName";
@@ -26,7 +28,8 @@ public final class Constants {
 
     static final int FAILURE_RESULT = 1;
 
-    private static final String PACKAGE_NAME = "com.example.bryan.togatheradproject";
+    private static final String PACKAGE_NAME =
+            "com.example.bryan.togatheradproject";
 
     static final String RECEIVER = PACKAGE_NAME + ".RECEIVER";
 

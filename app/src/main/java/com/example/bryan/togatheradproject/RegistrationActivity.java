@@ -68,7 +68,7 @@ public class RegistrationActivity extends AppCompatActivity {
                 .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                     @Override
                     public void onSuccess(AuthResult authResult) {
-                        Log.d(TAG, "onSuccess: login successful, signed in" + FirebaseAuth.getInstance().getCurrentUser().getUid());
+                        Log.d(TAG, "onSuccess: login successful, signed in"+ FirebaseAuth.getInstance().getCurrentUser().getUid());
                     }
                 }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -79,52 +79,29 @@ public class RegistrationActivity extends AppCompatActivity {
         Log.d(TAG, "Login: out");
     }
 
-    private void startAsychTask(View v) {
 
-    }
-
-    // private class getUIDAsych extends AsyncTask<String, String, String>
-
-    private String getUID() {
-        String result = null;
-        try {
-            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-            Log.d(TAG, "onClick: success get user" + FirebaseAuth.getInstance().getCurrentUser().getUid());
-            if (user != null) {
-                Log.d(TAG, "onClick: if in");
-                result = user.getUid().toString();
-                if (result == null)
-                    Log.d(TAG, "onClick: " + user.getUid());
-            }
-            Log.d(TAG, "onClick: selamat");
-            Log.d(TAG, "onClick: hadoooh");
-        } catch (NullPointerException e) {
-            Log.d(TAG, "onClick: null buffer");
-        }
-        return result;
-    }
-
-    protected void createUser(final String regisEmail, final String regisPassword) {
+    protected void createUser(final String regisEmail,final String regisPassword) {
         Log.d(TAG, "regisEmail :" + regisEmail);
         Log.d(TAG, "regisPassword: " + regisPassword);
         mAuth.createUserWithEmailAndPassword(regisEmail, regisPassword)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            Log.d(TAG, "createUserWithEmail: success");
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            login(regisEmail, regisPassword);
-                            Log.d(TAG, "onComplete: onclick" + FirebaseAuth.getInstance().getCurrentUser().getUid());
-                            updateUI(user);
-                        } else {
-                            Log.w(TAG, "createUserWithEmail: failure", task.getException());
-                            Toast.makeText(RegistrationActivity.this, "Account creation failed",
-                                    Toast.LENGTH_SHORT).show();
-                            updateUI(null);
-                        }
-                    }
-                });
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                if (task.isSuccessful()) {
+                                    Log.d(TAG, "createUserWithEmail: success");
+                                    FirebaseUser user = mAuth.getCurrentUser();
+                                    login(regisEmail, regisPassword);
+                                    Log.d(TAG, "onComplete: onclick"+ FirebaseAuth.getInstance().getCurrentUser().getUid());
+                                    updateUI(user);
+                                }
+                                else {
+                                    Log.w(TAG, "createUserWithEmail: failure", task.getException());
+                                    Toast.makeText(RegistrationActivity.this, "Account creation failed",
+                                            Toast.LENGTH_SHORT).show();
+                                    updateUI(null);
+                                }
+                            }
+        });
     }
 
     @Override
@@ -137,7 +114,7 @@ public class RegistrationActivity extends AppCompatActivity {
     public boolean checkIfPasswordSame(String password1, String password2) {
         boolean result = true;
         if (!password1.equals(password2)) {
-            whyError = "Passwords are not the same";
+            whyError = "Passwords are not the same ";
             result = false;
         }
         return result;
@@ -146,7 +123,7 @@ public class RegistrationActivity extends AppCompatActivity {
     public boolean checkIfPasswordValid(String password) {
         boolean result = true;
         if (password.length() < 6) {
-            whyError = "Password needs to be more than 6 characters";
+            whyError = "Password needs to be more than 6 characters ";
             result = false;
         }
         return result;
@@ -155,7 +132,7 @@ public class RegistrationActivity extends AppCompatActivity {
     public boolean checkUserValidity(String username) {
         boolean result = true;
         if (username.length() < 4) {
-            whyError = "Username must be 4 or more characters";
+            whyError = "Username must be 4 or more characters ";
             result = false;
         }
         return result;
@@ -172,7 +149,7 @@ public class RegistrationActivity extends AppCompatActivity {
         if (matcher.matches()) {
             isValid = true;
         } else {
-            whyError = "invalid email";
+            whyError = "invalid email ";
         }
         return isValid;
     }
@@ -180,14 +157,13 @@ public class RegistrationActivity extends AppCompatActivity {
     public boolean checkIfDataNotBlank(String email, String name, String password, String rePassword) {
         boolean result = true;
         if (email.equals("") || name.equals("") || password.equals("") || rePassword.equals("")) {
-            whyError = "Please fill all of the fields properly";
+            whyError = "Please fill all of the fields properly ";
             result = false;
         }
         return result;
     }
 
-    public void establish() {
-
+    protected void establish(){
         editText_Email = findViewById(R.id.editText_RegistrationActivity_email);
         editText_Username = findViewById(R.id.editText_RegistrationActivity_username);
         editText_Password = findViewById(R.id.editText_RegistrationActivity_password);
@@ -196,86 +172,71 @@ public class RegistrationActivity extends AppCompatActivity {
         button_Cancel = findViewById(R.id.button_RegistrationActivity_cancel);
     }
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
         Log.d(TAG, "onCreate: in " + TAG);
-
         mAuth = FirebaseAuth.getInstance();
-
         establish();
+        button_Create.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "onClick: create button - in ");
+                //retrieve information from widgets
+                String regisEmail = editText_Email.getText().toString();
+                String regisName = editText_Username.getText().toString();
+                String regisPassword = editText_Password.getText().toString();
+                String regisRePassword = editText_RePassword.getText().toString();
 
-
-        //@Override
-        //protected void onCreate (Bundle savedInstanceState){
-        //    super.onCreate(savedInstanceState);
-        //    setContentView(R.layout.activity_registration);
-        //    Log.d(TAG, "onCreate: in " + TAG);
-        //    mAuth = FirebaseAuth.getInstance();
-        //    establish();
-
-
-
-            button_Create.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Log.d(TAG, "onClick: create button - in ");
-                    //retrieve information from widgets
-                    String regisEmail = editText_Email.getText().toString();
-                    String regisName = editText_Username.getText().toString();
-                    String regisPassword = editText_Password.getText().toString();
-                    String regisRePassword = editText_RePassword.getText().toString();
-
-                    //validating input
-                    if (checkIfDataNotBlank(regisEmail, regisName, regisPassword, regisRePassword)
-                            && checkEmailValidity(regisEmail)
-                            && checkIfPasswordSame(regisPassword, regisRePassword)
-                            && checkIfPasswordValid(regisPassword)
-                            && checkUserValidity(regisName)) {
-                        Log.d(TAG, "onClick: IF - in ");
-                        //register user to the authentication
-                        createUser(regisEmail, regisPassword);
-                        //generate unique id
-                        final String uid = UUID.randomUUID().toString();
-                        ArrayList<String> emptyList = new ArrayList<>();
-                        //create new user object
-                        final User newUser = new User(regisPassword, regisName, regisEmail, 0, emptyList, uid);
-                        //update the database
-                        FirebaseFirestore.getInstance().collection(Constants.USER).document(uid).set(newUser)
-                                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                    @Override
-                                    public void onSuccess(Void aVoid) {
-                                        Log.d(TAG, "onSuccess: Account creation successful");
-                                        Intent intent = new Intent(getApplicationContext(), InterestActivity.class);
-                                        intent.putExtra(Constants.USER_ID, uid);
-                                        intent.putExtra(Constants.USER, newUser);
-                                        startActivity(intent);
-                                    }
-                                })
-                                .addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-                                        Log.d(TAG, "onFailure: Account creation failed");
-                                    }
-                                });
-                    } else {
-                        clearEditText();
-                        Toast.makeText(getApplicationContext(), whyError, Toast.LENGTH_SHORT).show();
-                        whyError = "";
-                    }
-                    Log.d(TAG, "onClick: create button - out");
+                //validating input
+                if (checkIfDataNotBlank(regisEmail, regisName, regisPassword, regisRePassword)
+                        && checkEmailValidity(regisEmail)
+                        && checkIfPasswordSame(regisPassword, regisRePassword)
+                        && checkIfPasswordValid(regisPassword)
+                        && checkUserValidity(regisName)) {
+                    Log.d(TAG, "onClick: IF - in ");
+                    //register user to the authentication
+                    createUser(regisEmail, regisPassword);
+                    //generate unique id
+                    final String uid = UUID.randomUUID().toString();
+                    ArrayList<String> emptyList = new ArrayList<>();
+                    //create new user object
+                    final User newUser = new User(regisPassword, regisName, regisEmail, 0, emptyList,uid);
+                    //update the database
+                    FirebaseFirestore.getInstance().collection(Constants.USER).document(uid).set(newUser)
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    Log.d(TAG, "onSuccess: Account creation successful");
+                                    Intent intent = new Intent(getApplicationContext(), InterestActivity.class);
+                                    intent.putExtra(Constants.USER_ID , uid);
+                                    intent.putExtra(Constants.USER, newUser);
+                                    startActivity(intent);
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Log.d(TAG, "onFailure: Account creation failed");
+                                }
+                            });
+                } else {
+                    clearEditText();
+                    Toast.makeText(getApplicationContext(), whyError, Toast.LENGTH_SHORT).show();
+                    whyError = "";
                 }
-            });
-            button_Cancel.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(getApplicationContext(), "Registration cancelled", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-                    startActivity(intent);
-                }
-            });
-            Log.d(TAG, "onCreate: out " + TAG);
-        }
+                Log.d(TAG, "onClick: create button - out");
+            }
+        });
+        button_Cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(), "Registration cancelled", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                startActivity(intent);
+            }
+        });
+        Log.d(TAG, "onCreate: out " + TAG);
     }
+}
