@@ -24,7 +24,6 @@
         <activity android:name=".ProfileActivity" />
         <activity android:name=".InterestActivity" />
         <activity android:name=".LobbyActivity" />
-
         <service
             android:name=".FetchAddressIntentService"
             android:exported="false" />
@@ -34,12 +33,6 @@
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
         <activity android:name=".GuestProfileActivity" />
-<<<<<<< HEAD
-=======
-        <meta-data
-            android:name="preloaded_fonts"
-            android:resource="@array/preloaded_fonts" />
->>>>>>> LobbyActivity
-    </application>
+</application>
 
 </manifest>
