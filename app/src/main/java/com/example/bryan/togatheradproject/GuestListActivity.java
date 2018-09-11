@@ -63,7 +63,16 @@ public class GuestListActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        button_returnToLobby.performClick();
+        button_returnToLobby.setPressed(true);
+        button_returnToLobby.invalidate();
+        button_returnToLobby.setPressed(false);
+        button_returnToLobby.invalidate();
     }
 
     private void retreiveGuestList(String lobbyID) {

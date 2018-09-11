@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="actionBarColor">#000000</color>
-    <color name="buttonTextColor">#000000</color>
     <color name="colorPrimary">#66A5AD</color>
     <color name="colorPrimaryDark">#1E656D</color>
     <color name="colorAccent">#F8672E</color>
@@ -9,5 +7,6 @@
     <color name="buttonColor">#BCBABE</color>
     <color name="blackColor">#000000</color>
     <color name="whiteColor">#ffffff</color>
-
+    <color name="actionBarColor">#000000</color>
+    <color name="buttonTextColor">#000000</color>
 </resources>

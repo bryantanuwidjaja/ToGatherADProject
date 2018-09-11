@@ -37,6 +37,7 @@ public class HomeActivity extends AppCompatActivity {
     Button button_Viewprofile;
     FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
     ListenerRegistration lobbyListener;
+    ListenerRegistration lobbyCleaner;
     CollectionReference lobbyCollection = firebaseFirestore.collection(Constants.LOBBY);
 
     int backCounter = 0;
@@ -51,6 +52,21 @@ public class HomeActivity extends AppCompatActivity {
                     public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots,
                                         @Nullable FirebaseFirestoreException e) {
                         retreivedLobby();
+                    }
+                });
+
+        lobbyCleaner = FirebaseFirestore.getInstance().collection(Constants.LOBBY)
+                .whereEqualTo(Constants.LOBBY_ID ,null)
+                .addSnapshotListener(this, new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots,
+                                        @Nullable FirebaseFirestoreException e) {
+                        for (Lobby lobby :
+                                queryDocumentSnapshots.toObjects(Lobby.class)) {
+                            FirebaseFirestore.getInstance().collection(Constants.LOBBY)
+                                    .document(lobby.getLobbyID())
+                                    .delete();
+                        }
                     }
                 });
     }
