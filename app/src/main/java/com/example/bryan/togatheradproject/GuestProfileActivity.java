@@ -43,12 +43,9 @@ public class GuestProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_guest_profile);
 
         Intent intent = getIntent();
-        final String userID = intent.getStringExtra(Constants.USER_ID);
-        final String lobbyID = intent.getStringExtra(Constants.LOBBY_ID);
         final User loggeduser = (User) intent.getSerializableExtra(Constants.USER);
         final User clickedUser = (User) intent.getSerializableExtra(Constants.CLICKED_USER);
         final Lobby lobby = (Lobby) intent.getSerializableExtra(Constants.LOBBY);
-        final String chatlogID = intent.getStringExtra(Constants.LOBBY_CHATLOG_ID);
         String clickedID = clickedUser.getUserID();
 
         textView_username = findViewById(R.id.textView_GuestProfileActivity_username);
@@ -73,9 +70,6 @@ public class GuestProfileActivity extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), LobbyActivity.class);
                 intent.putExtra(Constants.USER, loggeduser);
                 intent.putExtra(Constants.LOBBY, lobby);
-                intent.putExtra(Constants.LOBBY_ID, lobbyID);
-                intent.putExtra(Constants.USER_ID, userID);
-                intent.putExtra(Constants.LOBBY_CHATLOG_ID, chatlogID);
                 startActivity(intent);
             }
         });
@@ -91,6 +85,16 @@ public class GuestProfileActivity extends AppCompatActivity {
                 disableRateButton();
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        button_returnToLobby.performClick();
+        button_returnToLobby.setPressed(true);
+        button_returnToLobby.invalidate();
+        button_returnToLobby.setPressed(false);
+        button_returnToLobby.invalidate();
     }
 
     private void disableRateButton() {

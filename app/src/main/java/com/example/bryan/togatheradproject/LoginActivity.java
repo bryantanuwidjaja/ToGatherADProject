@@ -52,7 +52,6 @@ public class LoginActivity extends AppCompatActivity {
                             Log.d(TAG, "userID - login : " + userID);
                             textView_Container.setText(userID);
                             Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
-                            intent.putExtra(Constants.USER_ID, userID );
                             intent.putExtra(Constants.USER, user);
                             Log.d(TAG, "User: " + user.getUserID());
                             Toast.makeText(getApplicationContext(), "Login Successful", Toast.LENGTH_SHORT).show();

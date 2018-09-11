@@ -33,9 +33,6 @@ public class GuestListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_guest_list);
 
         Intent intent = getIntent();
-        final String chatlogID = intent.getStringExtra(Constants.LOBBY_CHATLOG_ID);
-        final String lobbyID = intent.getStringExtra(Constants.LOBBY_ID);
-        final String userID = intent.getStringExtra(Constants.USER_ID);
         final Lobby lobby = (Lobby) intent.getSerializableExtra(Constants.LOBBY);
         final User user = (User) intent.getSerializableExtra(Constants.USER);
 
@@ -43,17 +40,14 @@ public class GuestListActivity extends AppCompatActivity {
         button_returnToLobby = findViewById(R.id.button_GuestListActivity_returnToLobby);
         listView_guestList = findViewById(R.id.listView_GuestListActivity_guestList);
 
-        retreiveGuestList(lobbyID);
+        retreiveGuestList(lobby.getLobbyID());
 
         button_returnToLobby.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), LobbyActivity.class);
-                intent.putExtra(Constants.USER_ID, userID);
-                intent.putExtra(Constants.LOBBY_ID, lobbyID);
                 intent.putExtra(Constants.LOBBY, lobby);
                 intent.putExtra(Constants.USER, user);
-                intent.putExtra(Constants.LOBBY_CHATLOG_ID, chatlogID);
                 startActivity(intent);
             }
         });
@@ -63,16 +57,22 @@ public class GuestListActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 User clickedUser = guestList.get(position);
                 Intent intent = new Intent(getApplicationContext(), GuestProfileActivity.class);
-                intent.putExtra(Constants.USER_ID, userID);
-                intent.putExtra(Constants.LOBBY_ID, lobbyID);
                 intent.putExtra(Constants.USER, user);
                 intent.putExtra(Constants.CLICKED_USER, clickedUser);
                 intent.putExtra(Constants.LOBBY, lobby);
-                intent.putExtra(Constants.LOBBY_CHATLOG_ID, chatlogID);
                 startActivity(intent);
             }
         });
+    }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        button_returnToLobby.performClick();
+        button_returnToLobby.setPressed(true);
+        button_returnToLobby.invalidate();
+        button_returnToLobby.setPressed(false);
+        button_returnToLobby.invalidate();
     }
 
     private void retreiveGuestList(String lobbyID) {

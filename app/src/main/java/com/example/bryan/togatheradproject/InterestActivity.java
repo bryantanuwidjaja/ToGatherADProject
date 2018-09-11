@@ -110,10 +110,9 @@ public class InterestActivity extends AppCompatActivity implements EditProfileDi
             setContentView(R.layout.activity_interest);
             Log.d(TAG, "onCreate: in");
             Intent intent = getIntent();
-            final String userID = intent.getStringExtra(Constants.USER_ID);
-            final User currentUser = (User) intent.getSerializableExtra(Constants.USER);
+            final User user = (User) intent.getSerializableExtra(Constants.USER);
 
-            final DocumentReference userRef = FirebaseFirestore.getInstance().collection(Constants.USER).document(userID);
+            final DocumentReference userRef = FirebaseFirestore.getInstance().collection(Constants.USER).document(user.getUserID());
             button_SaveButton = findViewById(R.id.button_InterestActivity_saveButton);
             button_AddButton = findViewById(R.id.button2_InterestActivity_addButton);
             textView_AddInterest1 = findViewById(R.id.textView_InterestActivity_interest1);
@@ -136,8 +135,7 @@ public class InterestActivity extends AppCompatActivity implements EditProfileDi
                     Log.d(TAG, "onClick: opening dialog");
                     EditProfileDialog dialog = new EditProfileDialog();
                     Bundle bundle = new Bundle();
-                    bundle.putString(Constants.USER_ID, userID);
-                    bundle.putSerializable(Constants.USER, currentUser);
+                    bundle.putSerializable(Constants.USER, user);
                     dialog.setArguments(bundle);
                     dialog.show(getFragmentManager(), "EditProfileDialog");
                     Log.d(TAG, "onClick: out");
@@ -150,7 +148,7 @@ public class InterestActivity extends AppCompatActivity implements EditProfileDi
                     Log.d(TAG, "onClick: in");
                     userRef.update(Constants.USER_INTERESTS, inputContainer);
                     Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
-                    intent.putExtra(Constants.USER_ID, userID);
+                    intent.putExtra(Constants.USER, user);
                     startActivity(intent);
                     Log.d(TAG, "onClick: out");
                 }

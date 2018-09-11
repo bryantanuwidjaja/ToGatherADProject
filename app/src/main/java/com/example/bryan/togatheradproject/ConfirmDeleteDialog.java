@@ -71,7 +71,7 @@ public class ConfirmDeleteDialog extends DialogFragment{
                                     Log.d(TAG, "deletion complete");
                                 }
                             });
-                    FirebaseAuth.getInstance().signOut();
+                    FirebaseAuth.getInstance().getCurrentUser().delete();
                     Toast.makeText(getActivity(), "User Deleted" , Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(getActivity(), LoginActivity.class);
                     startActivity(intent);
@@ -88,7 +88,6 @@ public class ConfirmDeleteDialog extends DialogFragment{
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), ProfileActivity.class);
                 intent.putExtra(Constants.USER, user);
-                intent.putExtra(Constants.USER_ID, user.getUserID());
                 startActivity(intent);
             }
         });
