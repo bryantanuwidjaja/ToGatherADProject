@@ -46,7 +46,6 @@ public class RegistrationActivity extends AppCompatActivity {
     private EditText editText_Password;
     private EditText editText_RePassword;
     private Button button_Create;
-    private Button button_Cancel;
     private FirebaseAuth mAuth;
 
     private void updateUI(FirebaseUser user) {
@@ -170,7 +169,6 @@ public class RegistrationActivity extends AppCompatActivity {
         editText_Password = findViewById(R.id.editText_RegistrationActivity_password);
         editText_RePassword = findViewById(R.id.editText_RegistrationActivity_rePassword);
         button_Create = findViewById(R.id.button_RegistrationActivity_create);
-        button_Cancel = findViewById(R.id.button_RegistrationActivity_cancel);
     }
 
     @Override
@@ -215,26 +213,15 @@ public class RegistrationActivity extends AppCompatActivity {
                 Log.d(TAG, "onClick: create button - out");
             }
         });
-
-        button_Cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "Registration cancelled", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-                startActivity(intent);
-            }
-        });
         Log.d(TAG, "onCreate: out " + TAG);
     }
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        button_Cancel.performClick();
-        button_Cancel.setPressed(true);
-        button_Cancel.invalidate();
-        button_Cancel.setPressed(false);
-        button_Cancel.invalidate();
+        Toast.makeText(getApplicationContext(), "Registration cancelled", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+        startActivity(intent);
     }
 
     private boolean validate(String regisEmail, String regisName, String regisPassword , String regisRePassword){
