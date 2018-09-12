@@ -1,5 +1,6 @@
 package com.example.bryan.togatheradproject;
 
+import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -26,30 +27,34 @@ public class RequestTimerDialog extends DialogFragment {
     private TextView textView_timer;
     private CountDownTimer countDownTimer;
     private long timeLeftInMilisecond = 60000; // a minute
-    private boolean timerRunning;
+    private boolean timerRunning = false;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         final User user = (User) getArguments().getSerializable(Constants.USER);
-        final Lobby lobby = (Lobby) getArguments().getSerializable(Constants.LOBBY_REQUEST);
-        View view = inflater.inflate(R.layout.activity_confirm_delete_dialog, container, false);
-        button_cancelButton = view.findViewById(R.id.button_TimerDialog_cancel);
-        textView_timer = view.findViewById(R.id.textView_TimerDialog_timer);
+        final Lobby lobby = (Lobby) getArguments().getSerializable(Constants.LOBBY);
+        View view = inflater.inflate(R.layout.activity_request_timer_dialog, container, false);
+        Log.d(TAG, "lobby ID = " + lobby.getLobbyID());
+        button_cancelButton = (Button) view.findViewById(R.id.button_TimerDialog_cancel);
+        textView_timer =  (TextView) view.findViewById(R.id.textView_TimerDialog_timer);
 
-        startStop(lobby, user);
+        setCancelable(false);
 
         button_cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "onClick: closing dialog");
-                getDialog().dismiss();
+                button_cancelButton.invalidate();
+                stopTimer();
                 //delete request
                 deleteRequest(lobby ,user);
+                getDialog().dismiss();
                 destroyFragment();
-                button_cancelButton.invalidate();
             }
         });
+        startStop(lobby, user);
+        updateTimer();
         return view;
     }
 
@@ -80,8 +85,8 @@ public class RequestTimerDialog extends DialogFragment {
         countDownTimer = new CountDownTimer(timeLeftInMilisecond, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
-                timeLeftInMilisecond = 1;
-                updateTimer();
+               timeLeftInMilisecond = millisUntilFinished;
+               updateTimer();
             }
 
             @Override
@@ -102,5 +107,47 @@ public class RequestTimerDialog extends DialogFragment {
         String timeLeftText;
         timeLeftText = ""+seconds;
         textView_timer.setText(timeLeftText);
+        Log.d(TAG, "timeleftinmilisecond = " + timeLeftInMilisecond);
+        Log.d(TAG, "current second : " + timeLeftText);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.d(TAG, "onPause: in");
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.d(TAG, "onStop: in");
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        Log.d(TAG, "onDestroyView: in");
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "onDestroy: in");
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        Log.d(TAG, "onDetach: in");
+    }
+
+    @Override
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        return new Dialog(getActivity(), getTheme()){
+            @Override
+            public void onBackPressed() {
+                button_cancelButton.performClick();
+            }
+        };
     }
 }

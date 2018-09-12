@@ -1,5 +1,7 @@
 package com.example.bryan.togatheradproject;
 
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -29,6 +31,10 @@ import javax.annotation.Nullable;
 public class HomeActivity extends AppCompatActivity {
 
     public static final String TAG = "ToGather";
+
+    FragmentManager fragmentManager;
+    FragmentTransaction fragmentTransaction;
+
     List<Lobby> lobbyList;
     ArrayList<Chat> chatlogList = new ArrayList<>();
     ListView listView_LobbyList;
@@ -116,6 +122,7 @@ public class HomeActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Lobby lobby = lobbyList.get(position);
                 String lobbyID = lobby.getLobbyID();
+                Log.d(TAG, "lobby ID = " + lobbyID);
 
                 //retrieve the chat log id to refer to the clicked lobby
                 String chatlogID = lobby.getChatlogID();
@@ -139,7 +146,9 @@ public class HomeActivity extends AppCompatActivity {
                     bundle.putSerializable(Constants.LOBBY, lobby);
                     dialog.setArguments(bundle);
                     dialog.show(getFragmentManager(), "RequestTimerDialog");
-                }else if (lobby.getPrivateLobby()==false){
+
+                    //listen to
+                }else if (lobby.getPrivateLobby()== false){
                     //retrieve current chat log
                     retrieveChatLog(lobbyID, chatlogID, user, lobby);
                 }
