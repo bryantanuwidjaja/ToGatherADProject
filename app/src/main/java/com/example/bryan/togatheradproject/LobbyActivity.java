@@ -37,6 +37,7 @@ public class LobbyActivity extends AppCompatActivity {
     private static final String TAG = "LobbyActivity";
     ListenerRegistration listenerRegistration;
     ListenerRegistration lobbyListener;
+    ListenerRegistration requestListener;
     TextView textView_lobbyID;
     EditText editView_chatDialog;
     ListView listView_chatLog;
@@ -176,6 +177,28 @@ public class LobbyActivity extends AppCompatActivity {
         Intent intent = getIntent();
         final Lobby lobby = (Lobby) intent.getSerializableExtra(Constants.LOBBY);
         final User user = (User) intent.getSerializableExtra(Constants.USER);
+
+        requestListener = FirebaseFirestore.getInstance().collection(Constants.LOBBY)
+                .document(lobby.getLobbyID())
+                .collection(Constants.LOBBY_REQUEST)
+                .addSnapshotListener(this, new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots,
+                                        @Nullable FirebaseFirestoreException e) {
+                        if (lobby.getHostID().equals(user.getUserID())) {
+                            for (Request request : queryDocumentSnapshots.toObjects(Request.class)) {
+                                //inflate dialog fragment
+                                RespondRequestDialog dialog = new RespondRequestDialog();
+                                Bundle bundle = new Bundle();
+                                bundle.putSerializable(Constants.LOBBY_REQUEST, request);
+                                bundle.putSerializable(Constants.LOBBY, lobby);
+                                dialog.setArguments(bundle);
+                                dialog.show(getFragmentManager(), "RespondRequestDialog");
+                            }
+                        }
+                    }
+                });
+
         listenerRegistration = FirebaseFirestore.getInstance().collection(Constants.LOBBY)
                 .document(lobby.getLobbyID())
                 .collection(Constants.LOBBY_CHATLOG)

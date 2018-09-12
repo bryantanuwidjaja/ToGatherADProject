@@ -130,7 +130,8 @@ public class HomeActivity extends AppCompatActivity {
                 //lobby type constraint
                 if(lobby.getPrivateLobby()==true){
                     //create a join request
-                    Request request = new Request(user.getUserID(), user);
+                    String state = Constants.WAITING;
+                    Request request = new Request(user.getUserID(), user, state);
 
                     //send request to lobby collection
                     FirebaseFirestore.getInstance().collection(Constants.LOBBY)
@@ -206,7 +207,7 @@ public class HomeActivity extends AppCompatActivity {
                 });
     }
 
-    private void retrieveChatLog(final String lobbyID, final String chatlogID, final User user, final Lobby lobby) {
+    public void retrieveChatLog(final String lobbyID, final String chatlogID, final User user, final Lobby lobby) {
         //clear the chat log
         chatlogList.clear();
         listView_LobbyList.invalidate();

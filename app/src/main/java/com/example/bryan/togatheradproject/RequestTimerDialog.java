@@ -13,14 +13,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.ListenerRegistration;
 
 public class RequestTimerDialog extends DialogFragment {
     private static final String TAG = "RequestTimerDialog";
 
     FragmentManager fragmentManager;
     FragmentTransaction fragmentTransaction;
+    ListenerRegistration stateListener;
 
     //widgets
     private Button button_cancelButton;
@@ -40,6 +46,7 @@ public class RequestTimerDialog extends DialogFragment {
         textView_timer =  (TextView) view.findViewById(R.id.textView_TimerDialog_timer);
 
         setCancelable(false);
+        setStateListener(lobby, user);
 
         button_cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -149,5 +156,33 @@ public class RequestTimerDialog extends DialogFragment {
                 button_cancelButton.performClick();
             }
         };
+    }
+
+    private void setStateListener(final Lobby lobby, final User user){
+        stateListener = FirebaseFirestore.getInstance().collection(Constants.LOBBY)
+                .document(lobby.getLobbyID())
+                .collection(Constants.LOBBY_REQUEST)
+                .document(user.getUserID())
+                .addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                    @Override
+                    public void onEvent(@javax.annotation.Nullable DocumentSnapshot documentSnapshot,
+                                        @javax.annotation.Nullable FirebaseFirestoreException e) {
+                        Request request = documentSnapshot.toObject(Request.class);
+                        String state = request.getState();
+                        if(state.equals(Constants.ACCEPTED)){
+                            stateListener.remove();
+                            stopTimer();
+                            deleteRequest(lobby, user);
+                            ((HomeActivity)getActivity()).retrieveChatLog(lobby.getLobbyID(), lobby.getChatlogID(), request.getUser(), lobby);
+                            getDialog().dismiss();
+                            destroyFragment();
+                        }
+                        else if(state.equals(Constants.REJECTED)){
+                            stateListener.remove();
+                            Toast.makeText(getContext(), "Request denied" , Toast.LENGTH_SHORT).show();
+                            button_cancelButton.performClick();
+                        }
+                    }
+                });
     }
 }
