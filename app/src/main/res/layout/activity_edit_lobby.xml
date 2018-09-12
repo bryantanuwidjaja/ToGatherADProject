@@ -32,10 +32,11 @@
         android:id="@+id/textView_EditLobbyActivity_privateLobbyTAG"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="32dp"
         android:text="Private Lobby"
         android:textSize="18sp"
-        app:layout_constraintEnd_toStartOf="@+id/guideline20"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editText_EditLobbyActivity_capacity" />
 
     <EditText
@@ -87,14 +88,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline20" />
 
-    <RadioButton
-        android:id="@+id/radioButton_EditLobbyActivity_privateLobby"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/textView_EditLobbyActivity_privateLobbyTAG"
-        app:layout_constraintStart_toEndOf="@+id/textView_EditLobbyActivity_privateLobbyTAG" />
-
     <android.support.constraint.Guideline
         android:id="@+id/guideline20"
         android:layout_width="wrap_content"
@@ -115,4 +108,34 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.9" />
+
+    <RadioGroup
+        android:id="@+id/radioGroup_EditLobbyActivity_lobbyType"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toStartOf="@+id/guideline22"
+        app:layout_constraintStart_toStartOf="@+id/guideline21"
+        app:layout_constraintTop_toBottomOf="@+id/textView_EditLobbyActivity_privateLobbyTAG">
+
+        <RadioButton
+            android:id="@+id/radioButton_EditLobbyActivity_public"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Public" />
+
+        <RadioButton
+            android:id="@+id/radioButton_EditLobbyActivity_privateLobby"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_weight="1"
+            android:text="Private"
+            app:layout_constraintBaseline_toBaselineOf="@+id/textView_EditLobbyActivity_privateLobbyTAG"
+            app:layout_constraintStart_toEndOf="@+id/textView_EditLobbyActivity_privateLobbyTAG" />
+    </RadioGroup>
 </android.support.constraint.ConstraintLayout>

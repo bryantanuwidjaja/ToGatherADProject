@@ -20,6 +20,7 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -55,7 +56,9 @@ public class CreateLobbyActivity extends AppCompatActivity implements AdapterVie
     private EditText editText_Description;
     private Button button_Create;
     private Button button_Cancel;
+    private RadioGroup radioGroup_lobbyType;
     private RadioButton radioButton_private;
+    private RadioButton radioButton_public;
     boolean isPrivate = false;
 
     @Override
@@ -76,7 +79,9 @@ public class CreateLobbyActivity extends AppCompatActivity implements AdapterVie
         button_Cancel = findViewById(R.id.button_CreateLobbyActivity_cancel);
         mFetchAddressButton = findViewById(R.id.button_CreateLobbyActivity_fetch); 
         mLocationAddressTextView = (TextView) findViewById(R.id.textView_CreateLobbyActivity_address);
+        radioGroup_lobbyType = findViewById(R.id.radioGroup_CreateLobbyActivity_lobbyType);
         radioButton_private = findViewById(R.id.radioButton_CreateLobbyActivity_private);
+        radioButton_public = findViewById(R.id.radioButton_CreateLobbyActivity_public);
     }
 
     private String whyError = "";
@@ -216,11 +221,11 @@ public class CreateLobbyActivity extends AppCompatActivity implements AdapterVie
     }
 
     private boolean getLobbyType(){
-        boolean isPrivate;
+        boolean isPrivate = false;
         if(radioButton_private.isChecked()){
             isPrivate = true;
         }
-        else{
+        else if (radioButton_public.isChecked()){
             isPrivate = false;
         }
         return isPrivate;
