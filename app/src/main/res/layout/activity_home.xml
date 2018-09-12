@@ -24,11 +24,11 @@
     <Button
         android:id="@+id/button_HomeActivity_createLobby"
         android:layout_width="200dp"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:layout_marginBottom="24dp"
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
-        android:background="@drawable/round_button"
+        android:background="@color/buttonColor"
         android:fontFamily="sans-serif"
         android:text="Create Lobby"
         android:textAllCaps="false"
@@ -45,12 +45,12 @@
         android:layout_marginEnd="16dp"
         android:layout_marginTop="8dp"
         android:background="@drawable/round_button2"
+        android:backgroundTint="@color/buttonColor"
         android:fontFamily="sans-serif"
         android:text="View Profile"
         android:textAllCaps="false"
         android:textColor="@color/blackColor"
         android:textSize="16sp"
-        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
