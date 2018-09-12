@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -18,7 +19,9 @@ public class EditLobbyActivity extends AppCompatActivity {
     EditText editText_capacity;
     Button button_save;
     Button button_cancel;
+    RadioGroup radioGroup_lobbyType;
     RadioButton radioButton_privateLobby;
+    RadioButton radioButton_publicLobby;
 
     boolean isPrivate;
 
@@ -37,8 +40,9 @@ public class EditLobbyActivity extends AppCompatActivity {
         editText_capacity = findViewById(R.id.editText_EditLobbyActivity_capacity);
         button_save = findViewById(R.id.button_EditLobbyActivity_save);
         button_cancel = findViewById(R.id.button_EditLobbyActivity_cancel);
+        radioGroup_lobbyType = findViewById(R.id.radioGroup_EditLobbyActivity_lobbyType);
         radioButton_privateLobby = findViewById(R.id.radioButton_EditLobbyActivity_privateLobby);
-
+        radioButton_publicLobby = findViewById(R.id.radioButton_EditLobbyActivity_public);
         //set current data
         editText_description.setText(lobby.getLobbyDescriptions());
         editText_capacity.setText(Integer.toString(lobby.getCapacity()));
@@ -52,6 +56,7 @@ public class EditLobbyActivity extends AppCompatActivity {
                 intent.putExtra(Constants.USER, user);
                 intent.putExtra(Constants.LOBBY, lobby);
                 startActivity(intent);
+                finish();
             }
         });
 
@@ -76,6 +81,7 @@ public class EditLobbyActivity extends AppCompatActivity {
                                 intent.putExtra(Constants.USER, user);
                                 intent.putExtra(Constants.LOBBY, lobby);
                                 startActivity(intent);
+                                finish();
                             }
                         });
             }
@@ -97,16 +103,16 @@ public class EditLobbyActivity extends AppCompatActivity {
             radioButton_privateLobby.setChecked(true);
         }
         else{
-            radioButton_privateLobby.setChecked(false);
+            radioButton_publicLobby.setChecked(true);
         }
     }
 
     private boolean getLobbyType(){
-        boolean isPrivate;
+        boolean isPrivate = true;
         if(radioButton_privateLobby.isChecked()){
             isPrivate = true;
         }
-        else{
+        else if(radioButton_publicLobby.isChecked()){
             isPrivate = false;
         }
         return isPrivate;
