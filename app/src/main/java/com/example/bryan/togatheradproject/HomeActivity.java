@@ -120,13 +120,33 @@ public class HomeActivity extends AppCompatActivity {
                 //retrieve the chat log id to refer to the clicked lobby
                 String chatlogID = lobby.getChatlogID();
 
-                //retrieve current chat log
-                retrieveChatLog(lobbyID, chatlogID, user, lobby);
+                //lobby type constraint
+                if(lobby.getPrivateLobby()==true){
+                    //create a join request
+                    Request request = new Request(user.getUserID(), user);
+
+                    //send request to lobby collection
+                    FirebaseFirestore.getInstance().collection(Constants.LOBBY)
+                            .document(lobby.getLobbyID())
+                            .collection(Constants.LOBBY_REQUEST)
+                            .document(user.getUserID())
+                            .set(request);
+
+                    //inflate timer dialog
+                    RequestTimerDialog dialog = new RequestTimerDialog();
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable(Constants.USER, user);
+                    bundle.putSerializable(Constants.LOBBY, lobby);
+                    dialog.setArguments(bundle);
+                    dialog.show(getFragmentManager(), "RequestTimerDialog");
+                }else if (lobby.getPrivateLobby()==false){
+                    //retrieve current chat log
+                    retrieveChatLog(lobbyID, chatlogID, user, lobby);
+                }
             }
         });
         Log.d(TAG, "onCreate: out");
     }
-
 
     public void setListenerRegistration() {
         lobbyCollection.addSnapshotListener(new EventListener<QuerySnapshot>() {

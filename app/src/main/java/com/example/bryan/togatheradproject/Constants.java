@@ -12,6 +12,7 @@ public final class Constants {
     static final String LOBBY_CHATLOG = "chatLog";
     static final String LOBBY_CHATLOG_ID = "chatlogID";
     static final String HOST_ID = "hostID";
+    static final String LOBBY_REQUEST = "request";
 
     static final String PASSWORD = "password";
     static final String USERNAME = "userName";
