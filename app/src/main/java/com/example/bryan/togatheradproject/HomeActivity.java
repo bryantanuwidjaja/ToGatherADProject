@@ -180,6 +180,7 @@ public class HomeActivity extends AppCompatActivity {
     private void retrieveChatLog(final String lobbyID, final String chatlogID, final User user, final Lobby lobby) {
         //clear the chat log
         chatlogList.clear();
+        listView_LobbyList.invalidate();
         FirebaseFirestore.getInstance()
                 .collection(Constants.LOBBY)
                 .document(lobbyID)
@@ -237,6 +238,7 @@ public class HomeActivity extends AppCompatActivity {
             //intent back to login
             Intent intentback = new Intent(getApplicationContext(), LoginActivity.class);
             startActivity(intentback);
+            finish();
         }
     }
 }

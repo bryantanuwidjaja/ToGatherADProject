@@ -114,6 +114,7 @@ public class LobbyActivity extends AppCompatActivity {
                 intent.putExtra(Constants.USER, user);
                 intent.putExtra(Constants.LOBBY, lobby);
                 startActivity(intent);
+                button_lobbyDetail.invalidate();
                 finish();
             }
         });
@@ -126,6 +127,7 @@ public class LobbyActivity extends AppCompatActivity {
                 intent.putExtra(Constants.LOBBY, lobby);
                 intent.putExtra(Constants.USER, user);
                 startActivity(intent);
+                button_guestList.invalidate();
                 finish();
             }
         });

@@ -149,6 +149,7 @@ public class InterestActivity extends AppCompatActivity implements EditProfileDi
                     userRef.update(Constants.USER_INTERESTS, inputContainer);
                     Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
                     intent.putExtra(Constants.USER, user);
+                    button_SaveButton.invalidate();
                     startActivity(intent);
                     Log.d(TAG, "onClick: out");
                 }

@@ -132,7 +132,14 @@ public class CreateLobbyActivity extends AppCompatActivity implements AdapterVie
             public void onClick(View v) {
                 String description = editText_Description.getText().toString();
                 String temp_Capacity = editText_Capacity.getText().toString();
-                int capacity = (Integer.parseInt(temp_Capacity));
+                int capacity = 1;
+                try{
+                    capacity = (Integer.parseInt(temp_Capacity));
+                }
+                catch (NumberFormatException e)
+                {
+                    whyError = "Please fill the fields properly";
+                }
                 String activity = spinner.getSelectedItem().toString();
                 isPrivate = getLobbyType();
                 ArrayList<User> guestList = new ArrayList<>();
@@ -170,6 +177,7 @@ public class CreateLobbyActivity extends AppCompatActivity implements AdapterVie
                                     intent.putExtra(Constants.USER, user);
                                     startActivity(intent);
                                     finish();
+                                    button_Create.invalidate();
                                 }
                             }).addOnFailureListener(new OnFailureListener() {
                         @Override
@@ -218,6 +226,16 @@ public class CreateLobbyActivity extends AppCompatActivity implements AdapterVie
         button_Cancel.invalidate();
         button_Cancel.setPressed(false);
         button_Cancel.invalidate();
+    }
+
+    private boolean validateFields(){
+        if(editText_Capacity.getText().toString().equals("") || editText_Capacity.getText().toString().equals("")){
+            Toast.makeText(getApplicationContext(),"Please fill all of the fields properly" , Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        else{
+            return true;
+        }
     }
 
     private boolean getLobbyType(){
