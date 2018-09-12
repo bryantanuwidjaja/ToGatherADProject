@@ -51,7 +51,6 @@ public class CreateLobbyActivity extends AppCompatActivity implements AdapterVie
     private String mAddressOutput;
     private AddressResultReceiver mResultReceiver;
     private TextView mLocationAddressTextView;
-    private Button mFetchAddressButton;
     private EditText editText_Capacity;
     private EditText editText_Description;
     private Button button_Create;
@@ -77,7 +76,6 @@ public class CreateLobbyActivity extends AppCompatActivity implements AdapterVie
         editText_Description = findViewById(R.id.editText_CreateLobbyActivity_description);
         button_Create = findViewById(R.id.button_CreateLobbyActivity_create);
         button_Cancel = findViewById(R.id.button_CreateLobbyActivity_cancel);
-        mFetchAddressButton = findViewById(R.id.button_CreateLobbyActivity_fetch); 
         mLocationAddressTextView = (TextView) findViewById(R.id.textView_CreateLobbyActivity_address);
         radioGroup_lobbyType = findViewById(R.id.radioGroup_CreateLobbyActivity_lobbyType);
         radioButton_private = findViewById(R.id.radioButton_CreateLobbyActivity_private);
@@ -123,7 +121,6 @@ public class CreateLobbyActivity extends AppCompatActivity implements AdapterVie
         mAddressOutput = "";
         updateValuesFromBundle(savedInstanceState);
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-        updateUIWidgets();
 
         fetchAddressButtonHandler2();
 
@@ -262,21 +259,12 @@ public class CreateLobbyActivity extends AppCompatActivity implements AdapterVie
     }
 
     @SuppressWarnings("unused")
-    public void fetchAddressButtonHandler(View view) {
-        if (mLastLocation != null) {
-            startIntentService();
-            return;
-        }
-        mAddressRequested = true;
-        updateUIWidgets();
-    }
     public void fetchAddressButtonHandler2() {
         if (mLastLocation != null) {
             startIntentService();
             return;
         }
         mAddressRequested = true;
-        updateUIWidgets();
     }
 
     private void startIntentService() {
@@ -318,13 +306,6 @@ public class CreateLobbyActivity extends AppCompatActivity implements AdapterVie
         mLocationAddressTextView.setText(mAddressOutput);
     }
 
-    private void updateUIWidgets() {
-        if (mAddressRequested) {
-            mFetchAddressButton.setEnabled(false);
-        } else {
-            mFetchAddressButton.setEnabled(true);
-        }
-    }
 
     private void showToast(String text) {
         Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
@@ -350,7 +331,6 @@ public class CreateLobbyActivity extends AppCompatActivity implements AdapterVie
                 showToast(getString(R.string.address_found));
             }
             mAddressRequested = false;
-            updateUIWidgets();
         }
     }
 
