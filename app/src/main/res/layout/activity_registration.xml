@@ -115,6 +115,23 @@
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.1" />
 
+    <Button
+        android:id="@+id/button_RegistrationActivity_cancel"
+        android:layout_width="125dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="24dp"
+        android:background="@color/buttonColor"
+        android:fontFamily="sans-serif"
+        android:text="Cancel"
+        android:textColor="@color/buttonTextColor"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline2"
+        app:layout_constraintTop_toTopOf="@+id/guideline17" />
+
     <ImageView
         android:id="@+id/imageView_RegistrationActivity_Email"
         android:layout_width="40dp"
