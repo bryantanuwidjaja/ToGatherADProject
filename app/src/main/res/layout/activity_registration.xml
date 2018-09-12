@@ -4,102 +4,107 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background3"
+    android:background="@color/backgroundColor"
     tools:context=".RegistrationActivity">
 
 
     <EditText
         android:id="@+id/editText_RegistrationActivity_email"
-        android:layout_width="228dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:ems="10"
-        android:hint="Email"
-        android:inputType="textPersonName"
-        android:textColorHint="#000000"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toTopOf="@+id/guideline14"
-        app:layout_constraintEnd_toStartOf="@+id/guideline2"
-        app:layout_constraintStart_toEndOf="@+id/imageView_RegistrationActivity_Email"
-        app:layout_constraintTop_toTopOf="@+id/guideline18" />
-
-    <EditText
-        android:id="@+id/editText_RegistrationActivity_username"
-        android:layout_width="228dp"
-        android:layout_height="wrap_content"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:background="@drawable/edge_shape"
+        android:ems="10"
+        android:hint="Email"
+        android:inputType="textEmailAddress"
+        android:textAlignment="center"
+        android:textColorHint="#000000"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline14"
+        app:layout_constraintEnd_toStartOf="@+id/guideline2"
+        app:layout_constraintStart_toStartOf="@+id/guideline1"
+        app:layout_constraintTop_toTopOf="@+id/guideline18" />
+
+    <EditText
+        android:id="@+id/editText_RegistrationActivity_username"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/edge_shape"
         android:ems="10"
         android:hint="Username"
         android:inputType="textPersonName"
         android:maxLength="20"
+        android:textAlignment="center"
         android:textColorHint="#000000"
         android:textSize="14sp"
         app:layout_constraintBottom_toTopOf="@+id/guideline15"
         app:layout_constraintEnd_toStartOf="@+id/guideline2"
-        app:layout_constraintStart_toEndOf="@+id/imageView3_RegistrationActivity_Username"
-        app:layout_constraintTop_toTopOf="@+id/guideline14"
-        app:layout_constraintVertical_bias="0.51" />
+        app:layout_constraintStart_toStartOf="@+id/guideline1"
+        app:layout_constraintTop_toTopOf="@+id/guideline14" />
 
     <EditText
         android:id="@+id/editText_RegistrationActivity_password"
-        android:layout_width="228dp"
-        android:layout_height="wrap_content"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
         android:layout_marginBottom="8dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:background="@drawable/edge_shape"
         android:ems="10"
         android:hint="Password"
         android:inputType="textPassword"
         android:maxLength="20"
+        android:textAlignment="center"
         android:textColorHint="#000000"
         android:textSize="14sp"
         app:layout_constraintBottom_toTopOf="@+id/guideline16"
         app:layout_constraintEnd_toStartOf="@+id/guideline2"
-        app:layout_constraintStart_toEndOf="@+id/imageView4_RegistrationActivity_Password"
+        app:layout_constraintStart_toStartOf="@+id/guideline1"
         app:layout_constraintTop_toTopOf="@+id/guideline15" />
 
     <EditText
         android:id="@+id/editText_RegistrationActivity_rePassword"
-        android:layout_width="228dp"
-        android:layout_height="wrap_content"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
         android:layout_marginBottom="8dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:background="@drawable/edge_shape"
         android:ems="10"
-        android:hint="Re-enter Password"
+        android:hint="Re-Password"
         android:inputType="textPassword"
         android:maxLength="20"
+        android:textAlignment="center"
         android:textColorHint="#000000"
         android:textSize="14sp"
         app:layout_constraintBottom_toTopOf="@+id/guideline17"
         app:layout_constraintEnd_toStartOf="@+id/guideline2"
-        app:layout_constraintStart_toEndOf="@+id/imageView5_RegistrationActivity_RePassword"
+        app:layout_constraintStart_toStartOf="@+id/guideline1"
         app:layout_constraintTop_toTopOf="@+id/guideline16" />
 
     <Button
         android:id="@+id/button_RegistrationActivity_create"
         android:layout_width="125dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="24dp"
-        android:background="@color/buttonColor"
+        android:backgroundTint="@color/buttonColor"
+        android:background="@drawable/edge_shape"
         android:fontFamily="sans-serif"
-        android:text="Create "
+        android:text="Register"
+        android:textAllCaps="false"
         android:textColor="@color/buttonTextColor"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/guideline1"
-        app:layout_constraintTop_toTopOf="@+id/guideline17" />
+        android:textSize="20sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/button_RegistrationActivity_cancel"
+        app:layout_constraintStart_toStartOf="@+id/guideline1" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline2"
@@ -120,68 +125,69 @@
         android:layout_width="125dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginTop="24dp"
-        android:background="@color/buttonColor"
+        android:layout_marginEnd="12dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/edge_shape"
+        android:backgroundTint="@color/buttonColor"
         android:fontFamily="sans-serif"
         android:text="Cancel"
+        android:textAllCaps="false"
         android:textColor="@color/buttonTextColor"
-        android:textSize="16sp"
-        android:textStyle="bold"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline2"
         app:layout_constraintTop_toTopOf="@+id/guideline17" />
 
     <ImageView
         android:id="@+id/imageView_RegistrationActivity_Email"
-        android:layout_width="40dp"
-        android:layout_height="50dp"
+        android:layout_width="30dp"
+        android:layout_height="35dp"
         android:layout_marginBottom="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:src="@drawable/ic_email"
-        app:layout_constraintBottom_toTopOf="@+id/guideline14"
-        app:layout_constraintStart_toStartOf="@+id/guideline1"
-        app:layout_constraintTop_toTopOf="@+id/guideline18"
+        app:layout_constraintBottom_toBottomOf="@+id/editText_RegistrationActivity_email"
+        app:layout_constraintStart_toStartOf="@+id/editText_RegistrationActivity_email"
+        app:layout_constraintTop_toTopOf="@+id/editText_RegistrationActivity_email"
         app:srcCompat="@mipmap/ic_launcher_round" />
 
     <ImageView
         android:id="@+id/imageView3_RegistrationActivity_Username"
-        android:layout_width="40dp"
-        android:layout_height="50dp"
+        android:layout_width="30dp"
+        android:layout_height="35dp"
         android:layout_marginBottom="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:src="@drawable/ic_person"
-        app:layout_constraintBottom_toTopOf="@+id/guideline15"
-        app:layout_constraintStart_toStartOf="@+id/guideline1"
-        app:layout_constraintTop_toTopOf="@+id/guideline14"
+        app:layout_constraintBottom_toBottomOf="@+id/editText_RegistrationActivity_username"
+        app:layout_constraintStart_toStartOf="@+id/editText_RegistrationActivity_username"
+        app:layout_constraintTop_toTopOf="@+id/editText_RegistrationActivity_username"
         app:srcCompat="@mipmap/ic_launcher_round" />
 
     <ImageView
         android:id="@+id/imageView4_RegistrationActivity_Password"
-        android:layout_width="40dp"
-        android:layout_height="50dp"
+        android:layout_width="30dp"
+        android:layout_height="35dp"
         android:layout_marginBottom="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:src="@drawable/ic_lock_outline"
-        app:layout_constraintBottom_toTopOf="@+id/guideline16"
-        app:layout_constraintStart_toStartOf="@+id/guideline1"
-        app:layout_constraintTop_toTopOf="@+id/guideline15"
+        app:layout_constraintBottom_toBottomOf="@+id/editText_RegistrationActivity_password"
+        app:layout_constraintStart_toStartOf="@+id/editText_RegistrationActivity_password"
+        app:layout_constraintTop_toTopOf="@+id/editText_RegistrationActivity_password"
         app:srcCompat="@mipmap/ic_launcher_round" />
 
     <ImageView
         android:id="@+id/imageView5_RegistrationActivity_RePassword"
-        android:layout_width="40dp"
-        android:layout_height="50dp"
+        android:layout_width="30dp"
+        android:layout_height="35dp"
         android:layout_marginBottom="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:src="@drawable/ic_lock_outline"
-        app:layout_constraintBottom_toTopOf="@+id/guideline17"
-        app:layout_constraintStart_toStartOf="@+id/guideline1"
-        app:layout_constraintTop_toTopOf="@+id/guideline16"
+        app:layout_constraintBottom_toBottomOf="@+id/editText_RegistrationActivity_rePassword"
+        app:layout_constraintStart_toStartOf="@+id/editText_RegistrationActivity_rePassword"
+        app:layout_constraintTop_toTopOf="@+id/editText_RegistrationActivity_rePassword"
         app:srcCompat="@mipmap/ic_launcher_round" />
 
     <android.support.constraint.Guideline
@@ -196,55 +202,61 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.50097847" />
+        app:layout_constraintGuide_percent="0.48" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline16"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.65" />
+        app:layout_constraintGuide_percent="0.63" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline17"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.8" />
+        app:layout_constraintGuide_percent="0.76" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline18"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.20" />
+        app:layout_constraintGuide_percent="0.2" />
 
-    <ImageView
-        android:id="@+id/imageView3_RegistrationActivity_Logo"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginBottom="8dp"
+    <TextView
+        android:id="@+id/textView_RegistrationActivity_CreateAccount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:src="@drawable/logo"
-        app:layout_constraintBottom_toTopOf="@+id/guideline18"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/carrois_gothic_sc"
+        android:text="Create Account"
+        android:textAlignment="center"
+        android:textAllCaps="true"
+        android:textColor="#000000"
+        android:textSize="26sp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline2"
         app:layout_constraintStart_toStartOf="@+id/guideline1"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@mipmap/ic_launcher_round" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="32dp"
-        android:fontFamily="serif-monospace"
-        android:text="ToGather"
-        android:textColor="#000000"
-        android:textSize="26sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView3_RegistrationActivity_Logo"
-        app:layout_constraintStart_toEndOf="@+id/imageView3_RegistrationActivity_Logo"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/carrois_gothic"
+        android:text="Stay connected. Meet new friends"
+        android:textAlignment="center"
+        android:textAllCaps="false"
+        android:textColor="@color/buttonTextColor"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline2"
+        app:layout_constraintStart_toStartOf="@+id/guideline1"
+        app:layout_constraintTop_toBottomOf="@+id/textView_RegistrationActivity_CreateAccount" />
 
 </android.support.constraint.ConstraintLayout>
