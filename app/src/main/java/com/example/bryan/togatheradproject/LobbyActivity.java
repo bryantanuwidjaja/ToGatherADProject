@@ -114,6 +114,7 @@ public class LobbyActivity extends AppCompatActivity {
                 intent.putExtra(Constants.USER, user);
                 intent.putExtra(Constants.LOBBY, lobby);
                 startActivity(intent);
+                finish();
             }
         });
 
@@ -125,6 +126,7 @@ public class LobbyActivity extends AppCompatActivity {
                 intent.putExtra(Constants.LOBBY, lobby);
                 intent.putExtra(Constants.USER, user);
                 startActivity(intent);
+                finish();
             }
         });
 
@@ -245,12 +247,6 @@ public class LobbyActivity extends AppCompatActivity {
         } else if (backCounter == 2) {
             //leave room
             onStop();
-            //leaveRoom(user, lobby);
-
-            //intent back to home
-            Intent intentback = new Intent(getApplicationContext(), HomeActivity.class);
-            intentback.putExtra(Constants.USER, user);
-            startActivity(intentback);
         }
     }
 
