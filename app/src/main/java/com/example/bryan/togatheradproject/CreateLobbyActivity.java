@@ -17,28 +17,29 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.ProgressBar;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.protobuf.Any;
 
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.UUID;
 
-public class CreateLobbyActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+public class CreateLobbyActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
 
     private static final int REQUEST_PERMISSIONS_REQUEST_CODE = 34;
     private static final String TAG = "CreateLobbyActivity";
@@ -55,7 +56,10 @@ public class CreateLobbyActivity extends AppCompatActivity implements AdapterVie
     private EditText editText_Description;
     private Button button_Create;
     private Button button_Cancel;
-
+    private RadioGroup radioGroup_lobbyType;
+    private RadioButton radioButton_private;
+    private RadioButton radioButton_public;
+    boolean isPrivate = false;
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -73,8 +77,27 @@ public class CreateLobbyActivity extends AppCompatActivity implements AdapterVie
         editText_Description = findViewById(R.id.editText_CreateLobbyActivity_description);
         button_Create = findViewById(R.id.button_CreateLobbyActivity_create);
         button_Cancel = findViewById(R.id.button_CreateLobbyActivity_cancel);
+        mFetchAddressButton = findViewById(R.id.button_CreateLobbyActivity_fetch); 
         mLocationAddressTextView = (TextView) findViewById(R.id.textView_CreateLobbyActivity_address);
-        mFetchAddressButton = (Button) findViewById(R.id.button_CreateLobbyActivity_fetch);
+        radioGroup_lobbyType = findViewById(R.id.radioGroup_CreateLobbyActivity_lobbyType);
+        radioButton_private = findViewById(R.id.radioButton_CreateLobbyActivity_private);
+        radioButton_public = findViewById(R.id.radioButton_CreateLobbyActivity_public);
+    }
+
+    private String whyError = "";
+
+    protected boolean checkIfDataNotBlank(String capacity,String description, String location){
+        boolean result = true;
+        if (capacity.equals("") || description.equals("") || location.equals("")) {
+            whyError = "Please fill all of the fields properly ";
+            result = false;
+        }
+        return result;
+    }
+
+    protected void clearEditTest(){
+        editText_Capacity.setText("");
+        editText_Description.setText("");
     }
 
     @Override
@@ -83,9 +106,8 @@ public class CreateLobbyActivity extends AppCompatActivity implements AdapterVie
         setContentView(R.layout.activity_create_lobby);
 
         Intent intent = getIntent();
-        final String userID = intent.getStringExtra(Constants.USER_ID);
         final User user = (User) intent.getSerializableExtra(Constants.USER);
-        Log.d(TAG, "CreateLobby - Logged user : " + userID);
+        Log.d(TAG, "CreateLobby - Logged user : " + user.getUserID());
 
         establish();
 
@@ -95,12 +117,15 @@ public class CreateLobbyActivity extends AppCompatActivity implements AdapterVie
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(this);
 
+
         mResultReceiver = new AddressResultReceiver(new Handler());
         mAddressRequested = false;
         mAddressOutput = "";
         updateValuesFromBundle(savedInstanceState);
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         updateUIWidgets();
+
+        fetchAddressButtonHandler2();
 
         button_Create.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -109,30 +134,56 @@ public class CreateLobbyActivity extends AppCompatActivity implements AdapterVie
                 String temp_Capacity = editText_Capacity.getText().toString();
                 int capacity = (Integer.parseInt(temp_Capacity));
                 String activity = spinner.getSelectedItem().toString();
+                isPrivate = getLobbyType();
                 ArrayList<User> guestList = new ArrayList<>();
                 Log.d(TAG, "user = " + guestList);
-                final String lobbyID = UUID.randomUUID().toString();
-                Lobby lobby = new Lobby(lobbyID, userID, capacity, mAddressOutput, description, activity, guestList);
 
-                FirebaseFirestore.getInstance().collection(Constants.LOBBY)
-                        .document(lobbyID)
-                        .set(lobby)
-                        .addOnSuccessListener(new OnSuccessListener() {
-                            @Override
-                            public void onSuccess(Object o) {
-                                Intent intent = new Intent(getApplicationContext(), LobbyActivity.class);
-                                intent.putExtra(Constants.USER_ID, userID);
-                                intent.putExtra(Constants.LOBBY_ID, lobbyID);
-                                intent.putExtra(Constants.USER, user);
-                                startActivity(intent);
-                            }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Log.e(TAG, "onFailure: Could not create lobby " + e);
-                            }
-                        });
+                if (checkIfDataNotBlank(temp_Capacity, description, mAddressOutput)) {
+                    final String lobbyID = UUID.randomUUID().toString();
+                    final String chatlogID = UUID.randomUUID().toString();
+                    final Lobby lobby = new Lobby(lobbyID, user.getUserID(), capacity, mAddressOutput, description, activity, guestList, chatlogID, isPrivate);
+
+                    FirebaseFirestore.getInstance().collection(Constants.LOBBY)
+                            .document(lobbyID)
+                            .set(lobby)
+                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    //create an empty chat instance
+                                    Chat chat = new Chat();
+
+                                    //create an empty arraylist to contain all of the chat object
+                                    ArrayList<Chat> chatlog = new ArrayList<>();
+
+                                    //generate the creation message
+                                    chat = chat.createEntryChat(user);
+
+                                    //add the message to the empty arraylist
+                                    chatlog.add(chat);
+
+                                    //update the database
+                                    chat.updateChat(chatlog, lobbyID, chatlogID);
+
+                                    //create the intent along and pass the relevant information
+                                    Intent intent = new Intent(getApplicationContext(), LobbyActivity.class);
+                                    intent.putExtra(Constants.LOBBY, lobby);
+                                    intent.putExtra(Constants.USER, user);
+                                    startActivity(intent);
+                                    finish();
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.e(TAG, "onFailure: Could not create lobby " + e);
+                        }
+                    });
+                }
+                else{
+                    clearEditTest();
+                    Toast.makeText(CreateLobbyActivity.this, whyError, Toast.LENGTH_SHORT).show();
+                    whyError = "";
+                }
+
             }
         });
 
@@ -141,7 +192,8 @@ public class CreateLobbyActivity extends AppCompatActivity implements AdapterVie
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
-                intent.putExtra(Constants.USER_ID, userID);
+                intent.putExtra(Constants.USER, user);
+                Toast.makeText(CreateLobbyActivity.this, "Lobby creation cancelled", Toast.LENGTH_SHORT).show();
                 startActivity(intent);
             }
         });
@@ -158,6 +210,27 @@ public class CreateLobbyActivity extends AppCompatActivity implements AdapterVie
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        button_Cancel.performClick();
+        button_Cancel.setPressed(true);
+        button_Cancel.invalidate();
+        button_Cancel.setPressed(false);
+        button_Cancel.invalidate();
+    }
+
+    private boolean getLobbyType(){
+        boolean isPrivate = false;
+        if(radioButton_private.isChecked()){
+            isPrivate = true;
+        }
+        else if (radioButton_public.isChecked()){
+            isPrivate = false;
+        }
+        return isPrivate;
+    }
+
     private void updateValuesFromBundle(Bundle savedInstanceState) {
         if (savedInstanceState != null) {
             if (savedInstanceState.keySet().contains(ADDRESS_REQUESTED_KEY)) {
@@ -172,6 +245,14 @@ public class CreateLobbyActivity extends AppCompatActivity implements AdapterVie
 
     @SuppressWarnings("unused")
     public void fetchAddressButtonHandler(View view) {
+        if (mLastLocation != null) {
+            startIntentService();
+            return;
+        }
+        mAddressRequested = true;
+        updateUIWidgets();
+    }
+    public void fetchAddressButtonHandler2() {
         if (mLastLocation != null) {
             startIntentService();
             return;

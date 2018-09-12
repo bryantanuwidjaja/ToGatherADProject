@@ -12,8 +12,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:text="Enter your interest:"
-        android:textSize="14sp"
+        android:fontFamily="@font/cabin"
+        android:text="Enter your interests:"
+        android:textColor="@color/blackColor"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -38,6 +40,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:text="Save"
+        android:background="@color/buttonColor"
         app:layout_constraintEnd_toStartOf="@+id/guideline5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editText_FragmentEditProfile_interestEditText" />
@@ -49,6 +52,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:text="Cancel"
+        android:background="@color/buttonColor"
         app:layout_constraintBaseline_toBaselineOf="@+id/button_FragmentEditProfile_saveButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline5" />

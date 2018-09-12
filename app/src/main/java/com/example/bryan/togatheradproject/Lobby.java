@@ -1,9 +1,6 @@
 package com.example.bryan.togatheradproject;
 
-import com.google.firebase.firestore.FirebaseFirestore;
-
 import java.io.Serializable;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class Lobby implements Serializable {
@@ -15,8 +12,18 @@ public class Lobby implements Serializable {
     private String lobbyDescriptions;
     private String activity;
     private ArrayList<User> guestList;
+    private String chatlogID;
+    private boolean privateLobby;
 
-    public Lobby(String lobbyID, String hostID, int capacity, String location, String lobbyDescriptions, String activity, ArrayList<User> guestList) {
+    public Lobby(String lobbyID,
+                 String hostID,
+                 int capacity,
+                 String location,
+                 String lobbyDescriptions,
+                 String activity,
+                 ArrayList<User> guestList,
+                 String chatlogID,
+                 boolean privateLobby) {
         this.lobbyID = lobbyID;
         this.hostID = hostID;
         this.capacity = capacity;
@@ -24,10 +31,20 @@ public class Lobby implements Serializable {
         this.lobbyDescriptions = lobbyDescriptions;
         this.activity = activity;
         this.guestList = guestList;
+        this.chatlogID = chatlogID;
+        this.privateLobby = privateLobby;
     }
 
     public Lobby(){
 
+    }
+
+    public String getChatlogID() {
+        return chatlogID;
+    }
+
+    public void setChatlogID(String chatlogID) {
+        this.chatlogID = chatlogID;
     }
 
     public ArrayList<User> getGuestList() {
@@ -92,5 +109,13 @@ public class Lobby implements Serializable {
 
     public void addGuest(User user) {
         guestList.add(user);
+    }
+
+    public boolean getPrivateLobby(){
+        return privateLobby;
+    }
+
+    public void setPrivateLobby(boolean privateLobby) {
+        this.privateLobby = privateLobby;
     }
 }

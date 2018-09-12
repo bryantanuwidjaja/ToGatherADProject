@@ -9,6 +9,9 @@ public final class Constants {
     static final String LOBBY = "lobby";
     static final String LOBBY_ID = "lobbyID";
     static final String LOBBY_GUESTLIST = "guestList";
+    static final String LOBBY_CHATLOG = "chatLog";
+    static final String LOBBY_CHATLOG_ID = "chatlogID";
+    static final String HOST_ID = "hostID";
 
     static final String PASSWORD = "password";
     static final String USERNAME = "userName";
@@ -17,6 +20,7 @@ public final class Constants {
     static final int USER_RATING = 0;
     static final String USER_INTERESTS = "userInterests";
     static final String USER = "user";
+    static final String CLICKED_USER = "clickedUser";
 
     //public static final String chatMessage = "chatMessage";
     //public static final Time time

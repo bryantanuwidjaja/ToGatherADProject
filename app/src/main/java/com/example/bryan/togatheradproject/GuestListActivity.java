@@ -3,7 +3,9 @@ package com.example.bryan.togatheradproject;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -18,6 +20,7 @@ import java.util.List;
 import java.util.concurrent.CompletionService;
 
 public class GuestListActivity extends AppCompatActivity {
+    private static final String TAG = "GuestListActivity";
 
     private ArrayList<User> guestList = new ArrayList<>();
     private TextView textView_guestListTAG;
@@ -30,8 +33,6 @@ public class GuestListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_guest_list);
 
         Intent intent = getIntent();
-        final String lobbyID = intent.getStringExtra(Constants.LOBBY_ID);
-        final String userID = intent.getStringExtra(Constants.USER_ID);
         final Lobby lobby = (Lobby) intent.getSerializableExtra(Constants.LOBBY);
         final User user = (User) intent.getSerializableExtra(Constants.USER);
 
@@ -39,20 +40,41 @@ public class GuestListActivity extends AppCompatActivity {
         button_returnToLobby = findViewById(R.id.button_GuestListActivity_returnToLobby);
         listView_guestList = findViewById(R.id.listView_GuestListActivity_guestList);
 
-        retreiveGuestList(lobbyID);
+        retreiveGuestList(lobby.getLobbyID());
 
         button_returnToLobby.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), LobbyActivity.class);
-                intent.putExtra(Constants.USER_ID, userID);
-                intent.putExtra(Constants.LOBBY_ID, lobbyID);
                 intent.putExtra(Constants.LOBBY, lobby);
                 intent.putExtra(Constants.USER, user);
                 startActivity(intent);
+                finish();
             }
         });
 
+        listView_guestList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                User clickedUser = guestList.get(position);
+                Intent intent = new Intent(getApplicationContext(), GuestProfileActivity.class);
+                intent.putExtra(Constants.USER, user);
+                intent.putExtra(Constants.CLICKED_USER, clickedUser);
+                intent.putExtra(Constants.LOBBY, lobby);
+                startActivity(intent);
+                finish();
+            }
+        });
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        button_returnToLobby.performClick();
+        button_returnToLobby.setPressed(true);
+        button_returnToLobby.invalidate();
+        button_returnToLobby.setPressed(false);
+        button_returnToLobby.invalidate();
     }
 
     private void retreiveGuestList(String lobbyID) {

@@ -30,7 +30,14 @@
             android:exported="false" />
 
         <activity android:name=".LobbyDetailActivity" />
-        <activity android:name=".GuestListActivity"></activity>
+        <activity android:name=".GuestListActivity" />
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
+
+        <activity android:name=".GuestProfileActivity" />
+        <activity android:name=".EditLobbyActivity"></activity>
     </application>
 
 </manifest>
