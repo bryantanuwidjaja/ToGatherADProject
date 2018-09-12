@@ -37,7 +37,8 @@
             android:resource="@array/preloaded_fonts" />
 
         <activity android:name=".GuestProfileActivity" />
-        <activity android:name=".EditLobbyActivity"></activity>
+        <activity android:name=".EditLobbyActivity" />
+        <activity android:name=".RequestTimerDialog"></activity>
     </application>
 
 </manifest>
