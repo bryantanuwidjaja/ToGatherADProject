@@ -43,6 +43,7 @@ public class EditLobbyActivity extends AppCompatActivity {
         radioGroup_lobbyType = findViewById(R.id.radioGroup_EditLobbyActivity_lobbyType);
         radioButton_privateLobby = findViewById(R.id.radioButton_EditLobbyActivity_privateLobby);
         radioButton_publicLobby = findViewById(R.id.radioButton_EditLobbyActivity_public);
+
         //set current data
         editText_description.setText(lobby.getLobbyDescriptions());
         editText_capacity.setText(Integer.toString(lobby.getCapacity()));
@@ -63,27 +64,30 @@ public class EditLobbyActivity extends AppCompatActivity {
         button_save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String newDesc = editText_description.getText().toString();
-                int newCapa = Integer.parseInt(editText_capacity.getText().toString());
-                lobby.setLobbyDescriptions(newDesc);
-                lobby.setCapacity(newCapa);
-                isPrivate = getLobbyType();
-                lobby.setPrivateLobby(isPrivate);
+                if (validate()) {
+                    String newDesc = editText_description.getText().toString();
+                    int newCapa = Integer.parseInt(editText_capacity.getText().toString());
+                    lobby.setLobbyDescriptions(newDesc);
+                    lobby.setCapacity(newCapa);
+                    isPrivate = getLobbyType();
+                    lobby.setPrivateLobby(isPrivate);
+                    button_save.setClickable(false);
 
-                FirebaseFirestore.getInstance().collection(Constants.LOBBY)
-                        .document(lobby.getLobbyID())
-                        .set(lobby)
-                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
-                                Toast.makeText(EditLobbyActivity.this, "Lobby updated", Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(getApplicationContext(), LobbyActivity.class);
-                                intent.putExtra(Constants.USER, user);
-                                intent.putExtra(Constants.LOBBY, lobby);
-                                startActivity(intent);
-                                finish();
-                            }
-                        });
+                    FirebaseFirestore.getInstance().collection(Constants.LOBBY)
+                            .document(lobby.getLobbyID())
+                            .set(lobby)
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    Toast.makeText(EditLobbyActivity.this, "Lobby updated", Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(getApplicationContext(), LobbyActivity.class);
+                                    intent.putExtra(Constants.USER, user);
+                                    intent.putExtra(Constants.LOBBY, lobby);
+                                    startActivity(intent);
+                                    finish();
+                                }
+                            });
+                }
             }
         });
     }
@@ -96,6 +100,18 @@ public class EditLobbyActivity extends AppCompatActivity {
         button_cancel.invalidate();
         button_cancel.setPressed(false);
         button_cancel.invalidate();
+    }
+
+    private boolean validate(){
+        if(editText_capacity.getText().toString().equals("") || editText_description.getText().toString().equals("")) {
+            Toast.makeText(getApplicationContext(), "Please fill the fields properly" , Toast.LENGTH_SHORT).show();
+            editText_description.setText("");
+            editText_capacity.setText("");
+            return false;
+        }
+        else{
+            return true;
+        }
     }
 
     private void setCurrentRadioButton(boolean isPrivate){

@@ -49,6 +49,7 @@ public class GuestListActivity extends AppCompatActivity {
                 intent.putExtra(Constants.LOBBY, lobby);
                 intent.putExtra(Constants.USER, user);
                 startActivity(intent);
+                button_returnToLobby.invalidate();
                 finish();
             }
         });
@@ -61,6 +62,7 @@ public class GuestListActivity extends AppCompatActivity {
                 intent.putExtra(Constants.USER, user);
                 intent.putExtra(Constants.CLICKED_USER, clickedUser);
                 intent.putExtra(Constants.LOBBY, lobby);
+                listView_guestList.invalidate();
                 startActivity(intent);
                 finish();
             }

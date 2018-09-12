@@ -205,6 +205,7 @@ public class RegistrationActivity extends AppCompatActivity {
                     //create new user object
                     final User newUser = new User(regisPassword, regisName, regisEmail, 0, emptyList,uid);
 
+                    button_Create.invalidate();
                     //update the database
                     addUserToDatabase(uid, newUser);
                 } else {

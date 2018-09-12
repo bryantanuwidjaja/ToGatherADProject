@@ -257,6 +257,7 @@ public class ProfileActivity extends AppCompatActivity implements EditProfileDia
                 updateDatabase(loggedUser.getUserID());
                 Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
                 intent.putExtra(Constants.USER, loggedUser);
+                button_save.invalidate();
                 startActivity(intent);
             }
         });

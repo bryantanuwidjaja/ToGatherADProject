@@ -67,10 +67,6 @@ public class EditProfileDialog extends DialogFragment {
         button_saveButton = view.findViewById(R.id.button_FragmentEditProfile_saveButton);
         button_cancelButton = view.findViewById(R.id.button_FragmentEditProfile_cancelButton);
         //get the current interest list
-        //Log.d(TAG, "test1 getemail : " + currentUser.getUserEmail());
-
-        //Log.d(TAG, "current list before addition : " + currentUser.getUserInterests());
-
 
         button_cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,6 +74,7 @@ public class EditProfileDialog extends DialogFragment {
                 Log.d(TAG, "onClick: closing dialog");
                 getDialog().dismiss();
                 destroyFragment();
+                button_cancelButton.invalidate();
             }
         });
 
@@ -89,15 +86,9 @@ public class EditProfileDialog extends DialogFragment {
                 String newInterest = editText_interestEditText.getText().toString();
                 onInputListener.sendInput(newInterest);
 
-                //add the new input to the database
-                //interests = updateInterestList(userRef,newInterest, interests);
-
                 Log.d(TAG, "current list after addition : " + interests);
-                //update database
-                //userRef.update(Constants.USER_INTERESTS, interests);
+                button_saveButton.invalidate();
                 getDialog().dismiss();
-                //destroyFragment();
-                //interests.clear();
             }
         });
         return view;

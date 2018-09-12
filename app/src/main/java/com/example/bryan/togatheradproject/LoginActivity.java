@@ -127,7 +127,9 @@ public class LoginActivity extends AppCompatActivity {
                 String password = editText_InsertPassword.getText().toString();
                 Log.d(TAG, "onClick: sign in - before login");
                 if (checkIfDataNotBlank(email,password)){
-                Login(email, password);}
+                Login(email, password);
+                button_SignIn.invalidate();
+                }
                 else{
                         clearEditTest();
                         Toast.makeText(LoginActivity.this, whyError, Toast.LENGTH_SHORT).show();
@@ -145,6 +147,7 @@ public class LoginActivity extends AppCompatActivity {
                 Log.d(TAG, "onClick: sign up - in");
                 Intent intent = new Intent(getApplicationContext(), RegistrationActivity.class);
                 Log.d(TAG, "onClick: sign up - before intent");
+                button_SignUp.invalidate();
                 startActivity(intent);
             }
         });
