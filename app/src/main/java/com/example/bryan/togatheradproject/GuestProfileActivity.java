@@ -71,6 +71,7 @@ public class GuestProfileActivity extends AppCompatActivity {
                 intent.putExtra(Constants.USER, loggeduser);
                 intent.putExtra(Constants.LOBBY, lobby);
                 startActivity(intent);
+                finish();
             }
         });
 
