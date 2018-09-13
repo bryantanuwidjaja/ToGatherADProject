@@ -15,7 +15,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.ListenerRegistration;
 
 import java.util.ArrayList;
 
@@ -25,6 +29,7 @@ public class RespondRequestDialog extends DialogFragment {
     FragmentManager fragmentManager;
     FragmentTransaction fragmentTransaction;
     ArrayList<String> interests = new ArrayList<>();
+    ListenerRegistration cancelListener;
 
     //widgets
     private TextView textView_username;
@@ -65,6 +70,7 @@ public class RespondRequestDialog extends DialogFragment {
         textView_username.setText(requestUser.getUserName());
 
         setCancelable(false);
+        setCancelListener(lobby,request);
 
         button_accept.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -124,5 +130,26 @@ public class RespondRequestDialog extends DialogFragment {
                 button_reject.performClick();
             }
         };
+    }
+
+    private void setCancelListener(Lobby lobby, Request request){
+        cancelListener = FirebaseFirestore.getInstance().collection(Constants.LOBBY)
+                .document(lobby.getLobbyID())
+                .collection(Constants.LOBBY_REQUEST)
+                .document(request.getRequestID())
+                .addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                    @Override
+                    public void onEvent(@javax.annotation.Nullable DocumentSnapshot documentSnapshot,
+                                        @javax.annotation.Nullable FirebaseFirestoreException e) {
+                        try{
+                            String requestID = documentSnapshot.toObject(Request.class).getRequestID();
+                        }
+                        catch (NullPointerException enull){
+                        Toast.makeText(getActivity(), "Request cancelled" , Toast.LENGTH_SHORT).show();
+                        getDialog().dismiss();
+                        destroyFragment();
+                        }
+                    }
+                });
     }
 }
