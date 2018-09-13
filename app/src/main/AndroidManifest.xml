@@ -37,10 +37,13 @@
             android:resource="@array/preloaded_fonts" />
 
         <activity android:name=".GuestProfileActivity" />
-        <activity android:name=".EditLobbyActivity"></activity>
+        <activity android:name=".EditLobbyActivity" />
+
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
+
+        <activity android:name=".RespondRequestDialog"></activity>
     </application>
 
 </manifest>
