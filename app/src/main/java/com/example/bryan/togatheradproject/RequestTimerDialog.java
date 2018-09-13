@@ -54,8 +54,10 @@ public class RequestTimerDialog extends DialogFragment {
                 Log.d(TAG, "onClick: closing dialog");
                 button_cancelButton.invalidate();
                 stopTimer();
+                //cancel request
+                cancelRequest(lobby,user);
                 //delete request
-                deleteRequest(lobby ,user);
+                //deleteRequest(lobby ,user);
                 getDialog().dismiss();
                 destroyFragment();
             }
@@ -63,6 +65,16 @@ public class RequestTimerDialog extends DialogFragment {
         startStop(lobby, user);
         updateTimer();
         return view;
+    }
+
+    private void cancelRequest(Lobby lobby ,User user){
+        String state = Constants.CANCELLED;
+        Request request = new Request(user.getUserID(), user, state);
+        FirebaseFirestore.getInstance().collection(Constants.LOBBY)
+                .document(lobby.getLobbyID())
+                .collection(Constants.LOBBY_REQUEST)
+                .document(user.getUserID())
+                .set(request);
     }
 
     private void destroyFragment() {

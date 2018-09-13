@@ -30,6 +30,7 @@ public class RespondRequestDialog extends DialogFragment {
     FragmentTransaction fragmentTransaction;
     ArrayList<String> interests = new ArrayList<>();
     ListenerRegistration cancelListener;
+    ListenerRegistration requestExistListener;
 
     //widgets
     private TextView textView_username;
@@ -70,7 +71,6 @@ public class RespondRequestDialog extends DialogFragment {
         textView_username.setText(requestUser.getUserName());
 
         setCancelable(false);
-        setCancelListener(lobby,request);
 
         button_accept.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -132,23 +132,49 @@ public class RespondRequestDialog extends DialogFragment {
         };
     }
 
-    private void setCancelListener(Lobby lobby, Request request){
-        cancelListener = FirebaseFirestore.getInstance().collection(Constants.LOBBY)
+    private void setCancelListener(final Lobby lobby, Request request){
+            cancelListener = FirebaseFirestore.getInstance().collection(Constants.LOBBY)
+                    .document(lobby.getLobbyID())
+                    .collection(Constants.LOBBY_REQUEST)
+                    .document(request.getRequestID())
+                    .addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                        @Override
+                        public void onEvent(@javax.annotation.Nullable DocumentSnapshot documentSnapshot,
+                                            @javax.annotation.Nullable FirebaseFirestoreException e) {
+                            Request request = documentSnapshot.toObject(Request.class);
+                            if (request.getState().equals(Constants.CANCELLED)) {
+                                Toast.makeText(getActivity(), "Request cancelled", Toast.LENGTH_SHORT).show();
+                                deleteRequest(lobby, request.getUser());
+                                getDialog().dismiss();
+                                destroyFragment();
+                                cancelListener.remove();
+                            }
+                        }
+                    });
+    }
+
+    private void deleteRequest(Lobby lobby, User user){
+        FirebaseFirestore.getInstance().collection(Constants.LOBBY)
                 .document(lobby.getLobbyID())
                 .collection(Constants.LOBBY_REQUEST)
-                .document(request.getRequestID())
+                .document(user.getUserID())
+                .delete();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        final Request request = (Request) getArguments().getSerializable(Constants.LOBBY_REQUEST);
+        final Lobby lobby = (Lobby) getArguments().getSerializable(Constants.LOBBY);
+        requestExistListener = FirebaseFirestore.getInstance().collection(Constants.LOBBY)
+                .document(lobby.getLobbyID())
+                .collection(Constants.LOBBY_REQUEST)
+                .document(Constants.LOBBY_REQUEST)
                 .addSnapshotListener(new EventListener<DocumentSnapshot>() {
                     @Override
                     public void onEvent(@javax.annotation.Nullable DocumentSnapshot documentSnapshot,
                                         @javax.annotation.Nullable FirebaseFirestoreException e) {
-                        try{
-                            String requestID = documentSnapshot.toObject(Request.class).getRequestID();
-                        }
-                        catch (NullPointerException enull){
-                        Toast.makeText(getActivity(), "Request cancelled" , Toast.LENGTH_SHORT).show();
-                        getDialog().dismiss();
-                        destroyFragment();
-                        }
+                        setCancelListener(lobby,request);
                     }
                 });
     }

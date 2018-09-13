@@ -16,6 +16,8 @@ public final class Constants {
     static final String ACCEPTED = "accepted";
     static final String REJECTED = "rejected";
     static final String WAITING = "waiting";
+    static final String CANCELLED = "cancelled";
+
 
     static final String PASSWORD = "password";
     static final String USERNAME = "userName";
