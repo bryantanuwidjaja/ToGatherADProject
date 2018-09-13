@@ -1,6 +1,7 @@
 package com.example.bryan.togatheradproject;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -21,7 +22,6 @@ public class GuestProfileActivity extends AppCompatActivity {
     private static final String TAG = "GuestProfileActivity";
 
     TextView textView_username;
-    TextView textView_interestTAG;
     TextView textView_interest1;
     TextView textView_interest2;
     TextView textView_interest3;
@@ -51,7 +51,6 @@ public class GuestProfileActivity extends AppCompatActivity {
         String clickedID = clickedUser.getUserID();
 
         textView_username = findViewById(R.id.textView_GuestProfileActivity_username);
-        textView_interestTAG = findViewById(R.id.textView_GuestProfileActivity_interestTAG);
         textView_interest1 = findViewById(R.id.textView_GuestProfileActivity_interest1);
         textView_interest2 = findViewById(R.id.textView_GuestProfileActivity_interest2);
         textView_interest3 = findViewById(R.id.textView_GuestProfileActivity_interest3);
@@ -81,6 +80,8 @@ public class GuestProfileActivity extends AppCompatActivity {
         button_rateUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                button_rateUp.setBackgroundColor(Color.rgb(248,103,46));
+                button_rateUp.setTextColor(Color.rgb(255,255,255));
                 updateRating(clickedUser);
                 ratingContainer = Integer.toString(clickedUser.getUserRating());
                 Log.d(TAG, "onClick: rating container : " + ratingContainer);
