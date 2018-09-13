@@ -76,7 +76,7 @@ public class CreateLobbyActivity extends AppCompatActivity implements AdapterVie
         editText_Description = findViewById(R.id.editText_CreateLobbyActivity_description);
         button_Create = findViewById(R.id.button_CreateLobbyActivity_create);
         button_Cancel = findViewById(R.id.button_CreateLobbyActivity_cancel);
-        mLocationAddressTextView = (TextView) findViewById(R.id.textView_CreateLobbyActivity_address);
+        mLocationAddressTextView = findViewById(R.id.textView_CreateLobbyActivity_address);
         radioGroup_lobbyType = findViewById(R.id.radioGroup_CreateLobbyActivity_lobbyType);
         radioButton_private = findViewById(R.id.radioButton_CreateLobbyActivity_private);
         radioButton_public = findViewById(R.id.radioButton_CreateLobbyActivity_public);
@@ -84,14 +84,24 @@ public class CreateLobbyActivity extends AppCompatActivity implements AdapterVie
 
     private String whyError = "";
 
-    protected boolean checkIfDataNotBlank(String capacity,String description, String location){
+    protected boolean checkIfDataNotBlank(String capacity, String description) {
         boolean result = true;
-        if (capacity.equals("") || description.equals("") || location.equals("")) {
+        if (capacity.equals("") || description.equals("")) {
             whyError = "Please fill all of the fields properly ";
             result = false;
         }
         return result;
     }
+
+    protected boolean checkIfLocationisThere(String location) {
+        boolean result = true;
+        if (location.equals("")) {
+            whyError = "GPS Error, could not create room";
+            result = false;
+        }
+        return result;
+    }
+
 
     protected void clearEditTest(){
         editText_Capacity.setText("");
@@ -142,10 +152,18 @@ public class CreateLobbyActivity extends AppCompatActivity implements AdapterVie
                 ArrayList<User> guestList = new ArrayList<>();
                 Log.d(TAG, "user = " + guestList);
 
-                if (checkIfDataNotBlank(temp_Capacity, description, mAddressOutput)) {
+                if (checkIfLocationisThere(mAddressOutput) && checkIfDataNotBlank(temp_Capacity, description)) {
                     final String lobbyID = UUID.randomUUID().toString();
                     final String chatlogID = UUID.randomUUID().toString();
-                    final Lobby lobby = new Lobby(lobbyID, user.getUserID(), capacity, mAddressOutput, description, activity, guestList, chatlogID, isPrivate);
+                    final String[] output = mAddressOutput.split(",");
+                    String address = "";
+                    for (int i = 0; i < output.length - 1; i++) {
+                        address += output[i];
+                        if (i < output.length - 2) {
+                            address += ",";
+                        }
+                    }
+                    final Lobby lobby = new Lobby(lobbyID, user.getUserID(), capacity, address, description, activity, guestList, chatlogID, isPrivate);
 
                     FirebaseFirestore.getInstance().collection(Constants.LOBBY)
                             .document(lobbyID)
