@@ -167,21 +167,30 @@ public class RequestTimerDialog extends DialogFragment {
                     @Override
                     public void onEvent(@javax.annotation.Nullable DocumentSnapshot documentSnapshot,
                                         @javax.annotation.Nullable FirebaseFirestoreException e) {
-                        Request request = documentSnapshot.toObject(Request.class);
-                        String state = request.getState();
-                        if(state.equals(Constants.ACCEPTED)){
-                            stateListener.remove();
-                            stopTimer();
-                            deleteRequest(lobby, user);
-                            ((HomeActivity)getActivity()).retrieveChatLog(lobby.getLobbyID(), lobby.getChatlogID(), request.getUser(), lobby);
-                            getDialog().dismiss();
-                            destroyFragment();
+                        Request request;
+                        String state;
+                        try{
+                            request = documentSnapshot.toObject(Request.class);
+                            state = request.getState();
+                            if(state.equals(Constants.ACCEPTED)){
+                                stateListener.remove();
+                                stopTimer();
+                                deleteRequest(lobby, user);
+                                ((HomeActivity)getActivity()).retrieveChatLog(lobby.getLobbyID(), lobby.getChatlogID(), request.getUser(), lobby);
+                                getDialog().dismiss();
+                                destroyFragment();
+                            }
+                            else if(state.equals(Constants.REJECTED)){
+                                stateListener.remove();
+                                Toast.makeText(getContext(), "Request denied" , Toast.LENGTH_SHORT).show();
+                                button_cancelButton.performClick();
+                            }
                         }
-                        else if(state.equals(Constants.REJECTED)){
-                            stateListener.remove();
-                            Toast.makeText(getContext(), "Request denied" , Toast.LENGTH_SHORT).show();
-                            button_cancelButton.performClick();
+                        catch (Exception e1){
+                            return;
                         }
+
+
                     }
                 });
     }

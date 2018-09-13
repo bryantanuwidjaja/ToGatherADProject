@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -69,11 +70,18 @@ public class RespondRequestDialog extends DialogFragment {
             @Override
             public void onClick(View v) {
                 request.setState(Constants.ACCEPTED);
-                FirebaseFirestore.getInstance().collection(Constants.LOBBY)
-                        .document(lobby.getLobbyID())
-                        .collection(Constants.LOBBY_REQUEST)
-                        .document(request.getRequestID())
-                        .set(request);
+                try {
+                    FirebaseFirestore.getInstance().collection(Constants.LOBBY)
+                            .document(lobby.getLobbyID())
+                            .collection(Constants.LOBBY_REQUEST)
+                            .document(request.getRequestID())
+                            .set(request);
+                }
+                catch (Exception e){
+                    Toast.makeText(getActivity(), "Request cancelled" , Toast.LENGTH_SHORT).show();
+                    getDialog().dismiss();
+                    destroyFragment();
+                }
                 getDialog().dismiss();
                 destroyFragment();
             }
@@ -83,11 +91,18 @@ public class RespondRequestDialog extends DialogFragment {
             @Override
             public void onClick(View v) {
                 request.setState(Constants.REJECTED);
-                FirebaseFirestore.getInstance().collection(Constants.LOBBY)
-                        .document(lobby.getLobbyID())
-                        .collection(Constants.LOBBY_REQUEST)
-                        .document(request.getRequestID())
-                        .set(request);
+                try {
+                    FirebaseFirestore.getInstance().collection(Constants.LOBBY)
+                            .document(lobby.getLobbyID())
+                            .collection(Constants.LOBBY_REQUEST)
+                            .document(request.getRequestID())
+                            .set(request);
+                }
+                catch (Exception e){
+                    Toast.makeText(getActivity(), "Request cancelled" , Toast.LENGTH_SHORT).show();
+                    getDialog().dismiss();
+                    destroyFragment();
+                }
                 getDialog().dismiss();
                 destroyFragment();
             }
