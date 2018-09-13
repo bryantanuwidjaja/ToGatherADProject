@@ -15,28 +15,33 @@ public class CreateLobbyTest {
 
     @Test
     public void registerWithCorrectInformation(){
-        Assert.assertEquals(check.checkIfDataNotBlank(capacity, description, location), true);
+        Assert.assertEquals(check.checkIfDataNotBlank(capacity, description), true);
     }
 
     @Test
     public void registerWithBlankCapacity(){
-        Assert.assertEquals(check.checkIfDataNotBlank(blank, description, location), false);
+        Assert.assertEquals(check.checkIfDataNotBlank(blank, description), false);
     }
 
     @Test
     public void registerWithBlankDescription(){
-        Assert.assertEquals(check.checkIfDataNotBlank(capacity, blank, location), false);
-    }
-    @Test
-    public void registerWithBlankLocation(){
-        Assert.assertEquals(check.checkIfDataNotBlank(capacity, description, blank), false);
+        Assert.assertEquals(check.checkIfDataNotBlank(capacity, blank), false);
     }
 
     @Test
     public void registerWithBlankInformation(){
-        Assert.assertEquals(check.checkIfDataNotBlank(blank, blank, blank), false);
+        Assert.assertEquals(check.checkIfDataNotBlank(blank, blank), false);
     }
 
+    @Test
+    public void registerWithLocation() {
+        Assert.assertEquals(check.checkIfLocationisThere(location), false);
+    }
+
+    @Test
+    public void registerWithBlankLocation() {
+        Assert.assertEquals(check.checkIfLocationisThere(blank), false);
+    }
 
 
 }

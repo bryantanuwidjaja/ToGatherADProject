@@ -67,12 +67,14 @@
         android:id="@+id/textView_CreateLobbyActivity_address"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/button_CreateLobbyActivity_create"
         app:layout_constraintEnd_toStartOf="@+id/guideline4"
         app:layout_constraintStart_toStartOf="@+id/guideline2"
-        app:layout_constraintTop_toBottomOf="@+id/button_CreateLobbyActivity_fetch"
+        app:layout_constraintTop_toBottomOf="@+id/editText_CreateLobbyActivity_description"
         tools:text="address " />
 
     <EditText
@@ -121,21 +123,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline4"
         app:layout_constraintStart_toEndOf="@+id/guideline2" />
-
-    <Button
-        android:id="@+id/button_CreateLobbyActivity_fetch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:background="@color/buttonColor"
-        android:fontFamily="sans-serif"
-        android:onClick="fetchAddressButtonHandler"
-        android:text="Fetch Address"
-        android:textColor="@color/buttonTextColor"
-        android:textSize="12sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@+id/guideline2"
-        app:layout_constraintTop_toBottomOf="@+id/editText_CreateLobbyActivity_description" />
 
     <Button
         android:id="@+id/button_CreateLobbyActivity_create"
