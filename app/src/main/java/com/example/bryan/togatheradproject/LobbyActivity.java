@@ -1,5 +1,6 @@
 package com.example.bryan.togatheradproject;
 
+import android.app.FragmentManager;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -185,17 +186,22 @@ public class LobbyActivity extends AppCompatActivity {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots,
                                         @Nullable FirebaseFirestoreException e) {
-                        if (lobby.getHostID().equals(user.getUserID())) {
                             for (Request request : queryDocumentSnapshots.toObjects(Request.class)) {
-                                //inflate dialog fragment
-                                RespondRequestDialog dialog = new RespondRequestDialog();
-                                Bundle bundle = new Bundle();
-                                bundle.putSerializable(Constants.LOBBY_REQUEST, request);
-                                bundle.putSerializable(Constants.LOBBY, lobby);
-                                dialog.setArguments(bundle);
-                                dialog.show(getFragmentManager(), "RespondRequestDialog");
+                                Log.d(TAG, "for in ");
+                                if (lobby.getHostID().equals(user.getUserID()) && request.getState().equals(Constants.WAITING)) {
+                                    //inflate dialog fragment
+                                    Log.d(TAG, "if - in ");
+                                    RespondRequestDialog dialog = new RespondRequestDialog();
+                                    Bundle bundle = new Bundle();
+                                    bundle.putSerializable(Constants.LOBBY_REQUEST, request);
+                                    bundle.putSerializable(Constants.LOBBY, lobby);
+                                    dialog.setArguments(bundle);
+                                    dialog.show(getFragmentManager(), "RespondRequestDialog");
+                                }
+                                else{
+                                    Log.d(TAG, "buffer");
+                                }
                             }
-                        }
                     }
                 });
 
