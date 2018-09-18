@@ -20,6 +20,10 @@ public final class Constants {
     static final String USER = "user";
     static final String CLICKED_USER = "clickedUser";
 
+    static final String PROMOTION_NAME = "promotionName";
+    static final String PROMOTION_ID = "promotionID";
+    static final String PROMOTION_DESCRIPTION = "promotionDesc";
+
     //public static final String chatMessage = "chatMessage";
     //public static final Time time
 
