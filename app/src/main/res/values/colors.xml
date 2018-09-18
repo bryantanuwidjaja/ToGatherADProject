@@ -7,6 +7,5 @@
     <color name="buttonColor">#BCBABE</color>
     <color name="blackColor">#000000</color>
     <color name="whiteColor">#ffffff</color>
-    <color name="actionBarColor">#000000</color>
-    <color name="buttonTextColor">#000000</color>
+    <color name="greyColor">#DCDCDC</color>
 </resources>

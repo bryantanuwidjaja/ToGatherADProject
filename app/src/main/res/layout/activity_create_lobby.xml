@@ -23,7 +23,7 @@
         android:layout_height="27dp"
         android:layout_marginTop="8dp"
         android:text="Activity"
-        android:textColor="@color/buttonTextColor"
+        android:textColor="@color/blackColor"
 
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="@+id/guideline2"
@@ -35,7 +35,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="Capacity"
-        android:textColor="@color/buttonTextColor"
+        android:textColor="@color/blackColor"
 
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="@+id/guideline2"
@@ -47,7 +47,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="Description"
-        android:textColor="@color/buttonTextColor"
+        android:textColor="@color/blackColor"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="@+id/guideline2"
         app:layout_constraintTop_toBottomOf="@+id/editText_CreateLobbyActivity_capacity" />
@@ -113,13 +113,11 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:background="@color/buttonColor"
-
         android:fontFamily="sans-serif"
         android:text="Cancel"
-        android:textColor="@color/buttonTextColor"
+        android:textColor="@color/blackColor"
         android:textSize="16sp"
         android:textStyle="bold"
-
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline4"
         app:layout_constraintStart_toEndOf="@+id/guideline2" />
@@ -134,7 +132,7 @@
         android:background="@color/buttonColor"
         android:fontFamily="sans-serif"
         android:text="Create"
-        android:textColor="@color/buttonTextColor"
+        android:textColor="@color/blackColor"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/button_CreateLobbyActivity_cancel"

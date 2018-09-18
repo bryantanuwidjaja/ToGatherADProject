@@ -13,10 +13,8 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-
         android:layout_marginTop="16dp"
         android:src="@drawable/account"
-
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -41,8 +39,7 @@
         android:layout_marginTop="24dp"
         android:text="TextView"
         android:textSize="16sp"
-
-        android:textColor="#000000"
+        android:textColor="@color/blackColor"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView_GuestProfileActivity_profilepicture" />
@@ -55,9 +52,8 @@
         android:layout_marginTop="32dp"
         android:fontFamily="monospace"
         android:text="Interests:"
-
         android:textStyle="bold"
-        android:textColor="@color/buttonTextColor"
+        android:textColor="@color/blackColor"
         android:textSize="22sp"
 
         app:layout_constraintStart_toStartOf="@+id/guideline12"
@@ -68,7 +64,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="TextView"
-        android:textColor="#000000"
+        android:textColor="@color/blackColor"
         android:textSize="16sp"
         tools:layout_editor_absoluteX="46dp"
         tools:layout_editor_absoluteY="212dp"
@@ -160,7 +156,7 @@
         android:background="@color/buttonColor"
         android:fontFamily="sans-serif"
         android:text="Like"
-        android:textColor="@color/buttonTextColor"
+        android:textColor="@color/blackColor"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/button_GuestProfileActivity_returnToLobby"
@@ -178,7 +174,7 @@
         android:background="@color/buttonColor"
         android:fontFamily="sans-serif"
         android:text="Return to lobby"
-        android:textColor="@color/buttonTextColor"
+        android:textColor="@color/blackColor"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
