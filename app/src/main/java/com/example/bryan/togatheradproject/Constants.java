@@ -13,6 +13,11 @@ public final class Constants {
     static final String LOBBY_CHATLOG_ID = "chatlogID";
     static final String HOST_ID = "hostID";
     static final String LOBBY_REQUEST = "request";
+    static final String ACCEPTED = "accepted";
+    static final String REJECTED = "rejected";
+    static final String WAITING = "waiting";
+    static final String CANCELLED = "cancelled";
+
 
     static final String PASSWORD = "password";
     static final String USERNAME = "userName";
@@ -22,6 +27,10 @@ public final class Constants {
     static final String USER_INTERESTS = "userInterests";
     static final String USER = "user";
     static final String CLICKED_USER = "clickedUser";
+
+    static final String PROMOTION_NAME = "promotionName";
+    static final String PROMOTION_ID = "promotionID";
+    static final String PROMOTION_DESCRIPTION = "promotionDesc";
 
     //public static final String chatMessage = "chatMessage";
     //public static final Time time

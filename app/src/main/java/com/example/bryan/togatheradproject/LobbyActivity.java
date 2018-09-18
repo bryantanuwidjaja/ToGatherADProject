@@ -1,5 +1,6 @@
 package com.example.bryan.togatheradproject;
 
+import android.app.FragmentManager;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -37,6 +38,7 @@ public class LobbyActivity extends AppCompatActivity {
     private static final String TAG = "LobbyActivity";
     ListenerRegistration listenerRegistration;
     ListenerRegistration lobbyListener;
+    ListenerRegistration requestListener;
     TextView textView_lobbyID;
     EditText editView_chatDialog;
     ListView listView_chatLog;
@@ -176,6 +178,33 @@ public class LobbyActivity extends AppCompatActivity {
         Intent intent = getIntent();
         final Lobby lobby = (Lobby) intent.getSerializableExtra(Constants.LOBBY);
         final User user = (User) intent.getSerializableExtra(Constants.USER);
+
+        requestListener = FirebaseFirestore.getInstance().collection(Constants.LOBBY)
+                .document(lobby.getLobbyID())
+                .collection(Constants.LOBBY_REQUEST)
+                .addSnapshotListener(this, new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots,
+                                        @Nullable FirebaseFirestoreException e) {
+                            for (Request request : queryDocumentSnapshots.toObjects(Request.class)) {
+                                Log.d(TAG, "for in ");
+                                if (lobby.getHostID().equals(user.getUserID()) && request.getState().equals(Constants.WAITING)) {
+                                    //inflate dialog fragment
+                                    Log.d(TAG, "if - in ");
+                                    RespondRequestDialog dialog = new RespondRequestDialog();
+                                    Bundle bundle = new Bundle();
+                                    bundle.putSerializable(Constants.LOBBY_REQUEST, request);
+                                    bundle.putSerializable(Constants.LOBBY, lobby);
+                                    dialog.setArguments(bundle);
+                                    dialog.show(getFragmentManager(), "RespondRequestDialog");
+                                }
+                                else{
+                                    Log.d(TAG, "buffer");
+                                }
+                            }
+                    }
+                });
+
         listenerRegistration = FirebaseFirestore.getInstance().collection(Constants.LOBBY)
                 .document(lobby.getLobbyID())
                 .collection(Constants.LOBBY_CHATLOG)

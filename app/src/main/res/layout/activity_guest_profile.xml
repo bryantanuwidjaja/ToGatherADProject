@@ -9,28 +9,33 @@
 
     <ImageView
         android:id="@+id/imageView_GuestProfileActivity_profilepicture"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
 
         android:layout_marginTop="16dp"
         android:src="@drawable/account"
+        app:layout_constraintEnd_toStartOf="@+id/guideline13"
+        app:layout_constraintStart_toStartOf="@+id/guideline12"
 
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@mipmap/ic_launcher_round" />
 
     <ImageView
         android:id="@+id/imageView_GuestProfileActivity_thumbsup"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginTop="24dp"
-        app:layout_constraintEnd_toStartOf="@+id/textView_GuestProfileActivity_currentRating"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="40dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:src="@drawable/ic_filled_like"
+        app:layout_constraintBottom_toTopOf="@+id/guideline17"
+        app:layout_constraintEnd_toStartOf="@+id/guideline13"
+        app:layout_constraintStart_toStartOf="@+id/guideline12"
         app:layout_constraintTop_toBottomOf="@+id/textView_GuestProfileActivity_username"
-        app:srcCompat="@android:drawable/star_big_on" />
+        app:srcCompat="@mipmap/ic_launcher_round" />
 
     <TextView
         android:id="@+id/textView_GuestProfileActivity_username"
@@ -38,42 +43,31 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="24dp"
+        android:fontFamily="@font/cabin"
+
+
         android:text="TextView"
-        android:textSize="16sp"
-
         android:textColor="#000000"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView_GuestProfileActivity_profilepicture" />
 
-    <TextView
-        android:id="@+id/textView_GuestProfileActivity_interestTAG"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="32dp"
-        android:fontFamily="monospace"
-        android:text="Interests:"
-
-        android:textStyle="bold"
-        android:textColor="@color/buttonTextColor"
-        android:textSize="22sp"
-
+        android:textSize="20sp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline13"
         app:layout_constraintStart_toStartOf="@+id/guideline12"
-        app:layout_constraintTop_toBottomOf="@+id/textView_GuestProfileActivity_username" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView_GuestProfileActivity_profilepicture" />
 
     <TextView
         android:id="@+id/textView_GuestProfileActivity_interest1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="24dp"
+        android:fontFamily="@font/cabin"
         android:text="TextView"
         android:textColor="#000000"
         android:textSize="16sp"
         tools:layout_editor_absoluteX="46dp"
         tools:layout_editor_absoluteY="212dp"
         app:layout_constraintStart_toStartOf="@+id/guideline12"
-        app:layout_constraintTop_toBottomOf="@+id/textView_GuestProfileActivity_interestTAG" />
+        app:layout_constraintTop_toTopOf="@+id/guideline17" />
 
     <TextView
         android:id="@+id/textView_GuestProfileActivity_interest2"
@@ -81,6 +75,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="32dp"
+        android:fontFamily="@font/cabin"
         android:text="TextView"
         android:textColor="#000000"
 
@@ -95,6 +90,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="32dp"
+        android:fontFamily="@font/cabin"
         android:text="TextView"
         android:textColor="#000000"
 
@@ -108,6 +104,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
+        android:fontFamily="@font/cabin"
         android:text="TextView"
         android:textColor="#000000"
 
@@ -121,6 +118,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
+        android:fontFamily="@font/cabin"
         android:text="TextView"
         android:textColor="#000000"
         android:textSize="16sp"
@@ -133,6 +131,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
+        android:fontFamily="@font/cabin"
         android:text="TextView"
         android:textColor="#000000"
 
@@ -145,46 +144,50 @@
         android:id="@+id/textView_GuestProfileActivity_currentRating"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginTop="32dp"
-        app:layout_constraintEnd_toStartOf="@+id/guideline13"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:textColor="@android:color/black"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline17"
+        app:layout_constraintStart_toEndOf="@+id/imageView_GuestProfileActivity_thumbsup"
         app:layout_constraintTop_toBottomOf="@+id/textView_GuestProfileActivity_username" />
 
     <Button
         android:id="@+id/button_GuestProfileActivity_rateUp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:background="@color/buttonColor"
+        android:layout_marginTop="25dp"
+        android:background="@drawable/edge_button"
         android:fontFamily="sans-serif"
         android:text="Like"
         android:textColor="@color/buttonTextColor"
         android:textSize="16sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/button_GuestProfileActivity_returnToLobby"
         app:layout_constraintEnd_toStartOf="@+id/guideline13"
         app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="@+id/guideline12" />
+        app:layout_constraintStart_toStartOf="@+id/guideline12"
+        app:layout_constraintTop_toTopOf="@+id/guideline18" />
 
     <Button
         android:id="@+id/button_GuestProfileActivity_returnToLobby"
         android:layout_width="180dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="24dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
         android:background="@color/buttonColor"
         android:fontFamily="sans-serif"
         android:text="Return to lobby"
         android:textColor="@color/buttonTextColor"
         android:textSize="16sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline13"
         app:layout_constraintHorizontal_bias="0.495"
-        app:layout_constraintStart_toStartOf="@+id/guideline12" />
+        app:layout_constraintStart_toStartOf="@+id/guideline12"
+        app:layout_constraintTop_toBottomOf="@+id/button_GuestProfileActivity_rateUp" />
 
 
     <android.support.constraint.Guideline
@@ -199,5 +202,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.1" />
+        app:layout_constraintGuide_percent="0.1015625" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline17"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.35" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline18"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.65" />
 </android.support.constraint.ConstraintLayout>
