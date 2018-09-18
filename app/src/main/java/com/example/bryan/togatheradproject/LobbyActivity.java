@@ -38,6 +38,7 @@ public class LobbyActivity extends AppCompatActivity {
     Button button_enter;
     Button button_guestList;
     Button button_lobbyDetail;
+    Button button_promotion;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +54,7 @@ public class LobbyActivity extends AppCompatActivity {
         Log.d(TAG, "User: " + user.getUserID());
 
         //joinLobby(user, lobby);
-        updateDatabase(user, userID);
+        updateDatabase(user, lobby);
 
         Log.d(TAG, "userID : " + userID);
         Log.d(TAG, "lobbyID : " + lobbyID);
@@ -65,9 +66,19 @@ public class LobbyActivity extends AppCompatActivity {
         button_enter = findViewById(R.id.button_LobbyActivity_enter);
         button_guestList = findViewById(R.id.button_LobbyActivity_guestList);
         button_lobbyDetail = findViewById(R.id.button_LobbyActivity_lobbyDetail);
+        button_promotion = findViewById(R.id.button_LobbyActivity_promotion);
 
         //create a function to get current chat log
 
+        button_promotion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), PromotionActivity.class);
+                intent.putExtra(Constants.LOBBY, lobby);
+                intent.putExtra(Constants.USER, user);
+                startActivity(intent);
+            }
+        });
 
         button_lobbyDetail.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -114,11 +125,11 @@ public class LobbyActivity extends AppCompatActivity {
         lobby.addGuest(user);
     }
 
-    private void updateDatabase(User user, String userID) {
+    private void updateDatabase(User user, Lobby lobby) {
         FirebaseFirestore.getInstance().collection(Constants.LOBBY)
-                .document(lobbyID)
+                .document(lobby.getLobbyID())
                 .collection(Constants.LOBBY_GUESTLIST)
-                .document(userID)
+                .document(user.getUserID())
                 .set(user)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override

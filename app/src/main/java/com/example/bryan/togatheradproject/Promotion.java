@@ -1,27 +1,21 @@
 package com.example.bryan.togatheradproject;
 
+import android.graphics.drawable.Drawable;
+
 import java.util.Date;
 
 public class Promotion {
-    private String location;
     private String detail;
-    private Date date;
+    private String activity;
+    private int drawable;
 
     public Promotion() {
     }
 
-    public Promotion(String location, String detail, Date date) {
-        this.location = location;
+    public Promotion(String detail, String activity, int drawable) {
         this.detail = detail;
-        this.date = date;
-    }
-
-    public String getLocation() {
-        return location;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
+        this.activity = activity;
+        this.drawable = drawable;
     }
 
     public String getDetail() {
@@ -32,11 +26,20 @@ public class Promotion {
         this.detail = detail;
     }
 
-    public Date getDate() {
-        return date;
+
+    public String getActivity() {
+        return activity;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setActivity(String activity) {
+        this.activity = activity;
+    }
+
+    public int getDrawable() {
+        return drawable;
+    }
+
+    public void setDrawable(int drawable) {
+        this.drawable = drawable;
     }
 }
