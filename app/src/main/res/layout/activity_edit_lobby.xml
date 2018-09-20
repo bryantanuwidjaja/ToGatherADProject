@@ -4,8 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/backgroundColor"
+    android:background="@color/colorPrimary"
     tools:context=".EditLobbyActivity">
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/backgroundColor"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline33" />
 
     <TextView
         android:id="@+id/textView_EditLobbyActivity_descTAG"
@@ -13,9 +22,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
+        android:fontFamily="@font/cabin"
         android:text="Description"
         android:textColor="@color/blackColor"
-        android:textSize="18sp"
+        android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline33" />
 
@@ -24,12 +34,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/cabin"
         android:text="Capacity"
         android:textColor="@color/blackColor"
-        android:textSize="18sp"
+        android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/guideline44" />
 
     <TextView
         android:id="@+id/textView_EditLobbyActivity_privateLobbyTAG"
@@ -37,9 +48,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
+        android:fontFamily="@font/cabin"
         android:text="Lobby Status"
         android:textColor="@color/blackColor"
-        android:textSize="18sp"
+        android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline32" />
 
@@ -48,7 +60,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="32dp"
         android:ems="10"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toStartOf="@+id/guideline22"
@@ -77,6 +89,11 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="Save"
+        android:fontFamily="sans-serif"
+        android:textAllCaps="false"
+        android:textColor="@color/blackColor"
+        android:textSize="16sp"
+        android:textStyle="bold"
         android:background="@color/buttonColor"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline20"
@@ -92,6 +109,11 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="Cancel"
+        android:fontFamily="sans-serif"
+        android:textAllCaps="false"
+        android:textColor="@color/blackColor"
+        android:textSize="16sp"
+        android:textStyle="bold"
         android:background="@color/buttonColor"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -125,7 +147,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="22dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toStartOf="@+id/guideline22"
         app:layout_constraintHorizontal_bias="1.0"
@@ -137,8 +159,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:fontFamily="@font/cabin"
             android:text="Public"
-            android:textColor="@color/blackColor" />
+            android:textColor="@color/blackColor"
+            android:textSize="16sp" />
 
         <RadioButton
             android:id="@+id/radioButton_EditLobbyActivity_privateLobby"
@@ -146,7 +170,9 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_weight="1"
+            android:fontFamily="@font/cabin"
             android:text="Private"
+            android:textSize="16sp"
             app:layout_constraintBaseline_toBaselineOf="@+id/textView_EditLobbyActivity_privateLobbyTAG"
             app:layout_constraintStart_toEndOf="@+id/textView_EditLobbyActivity_privateLobbyTAG" />
     </RadioGroup>
@@ -163,7 +189,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.15" />
+        app:layout_constraintGuide_percent="0.2" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline33"
@@ -171,4 +197,12 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.4" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline44"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.1" />
+
 </android.support.constraint.ConstraintLayout>

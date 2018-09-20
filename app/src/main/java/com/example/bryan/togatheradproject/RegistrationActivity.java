@@ -183,7 +183,7 @@ public class RegistrationActivity extends AppCompatActivity {
         //initialise widget
         establish();
 
-        button_Create.setOnClickListener(new View.OnClickListener() {
+        button_Create.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //retrieve information from widgets
