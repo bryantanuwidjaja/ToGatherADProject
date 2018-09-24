@@ -3,6 +3,7 @@ package com.example.bryan.togatheradproject;
 import android.app.FragmentManager;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -59,10 +60,21 @@ public class LobbyActivity extends AppCompatActivity {
         Intent intent = getIntent();
         final Lobby lobby = (Lobby) intent.getSerializableExtra(Constants.LOBBY);
         final User user = (User) intent.getSerializableExtra(Constants.USER);
+
+        //use the rating field as container for the index
+        getGuestList(lobby, new GuestListCallback() {
+            @Override
+            public void onCallBack(ArrayList<User> guestList) {
+                int index = guestList.size();
+                Log.d(TAG, "color index : " + index);
+                user.setIndex(index);
+            }
+        });
         Log.d(TAG, "User: " + user.getUserID());
 
         //join lobby
         updateDatabase(user, lobby);
+        Log.d(TAG, "color index 2 : " + user.getIndex());
 
         Log.d(TAG, "userID : " + user.getUserID());
         Log.d(TAG, "lobbyID : " + lobby.getLobbyID());
@@ -150,23 +162,30 @@ public class LobbyActivity extends AppCompatActivity {
                     }
                 });
 
-                //create chat instance
-                Chat chat = new Chat();
+                //get user index from the guest list to assign color
+                getGuestList(lobby, new GuestListCallback() {
+                    @Override
+                    public void onCallBack(ArrayList<User> guestList) {
+                        //create chat instance
+                        Chat chat = new Chat();
 
-                //retrieve input from widget
-                String input = editView_chatDialog.getText().toString();
+                        //retrieve input from widget
+                        String input = editView_chatDialog.getText().toString();
 
-                //generate the chat object
-                chat = chat.inputChat(user, input);
+                        Log.d(TAG, "index: " + user.getIndex());
+                        //generate the chat object
+                        chat = chat.inputChat(user, input);
 
-                //add the chat to the current chat log
-                chatlogList.add(chat);
+                        //add the chat to the current chat log
+                        chatlogList.add(chat);
 
-                //update the database
-                chat.updateChat(chatlogList, lobby.getLobbyID(), lobby.getChatlogID());
+                        //update the database
+                        chat.updateChat(chatlogList, lobby.getLobbyID(), lobby.getChatlogID());
 
-                //clear the edit text
-                editView_chatDialog.setText("");
+                        //clear the edit text
+                        editView_chatDialog.setText("");
+                    }
+                });
             }
         });
         Log.d(TAG, "onCreate: out");
@@ -277,7 +296,8 @@ public class LobbyActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Press back again to leave the room", Toast.LENGTH_SHORT).show();
         } else if (backCounter == 2) {
             //leave room
-            onStop();
+            leaveRoom(user, lobby);
+            finish();
         }
     }
 
@@ -439,11 +459,34 @@ public class LobbyActivity extends AppCompatActivity {
                 });
     }
 
+    private void getGuestList(Lobby lobby, final GuestListCallback guestListCallback){
+        FirebaseFirestore.getInstance().collection(Constants.LOBBY)
+                .document(lobby.getLobbyID())
+                .collection(Constants.LOBBY_GUESTLIST)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (!task.getResult().isEmpty()) {
+                            ArrayList<User> guestList = new ArrayList<>();
+                            for (User user : task.getResult().toObjects(User.class)) {
+                                guestList.add(user);
+                            }
+                            guestListCallback.onCallBack(guestList);
+                        }
+                    }
+                });
+    }
+
     private interface BooleanCallback {
         void onCallBack(Boolean isEmpty);
     }
 
     private interface FirestoreCallback {
         void onCallBack(Chatlog chatlog);
+    }
+
+    private interface GuestListCallback{
+        void onCallBack(ArrayList<User> guestList);
     }
 }

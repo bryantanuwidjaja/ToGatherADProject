@@ -20,6 +20,7 @@ public class Chat {
     private String username;
     private String chatMessage;
     private String time;
+    private int colorindex;
 
     public Chat(String username, String chatMessage, String time) {
         this.username = username;
@@ -27,7 +28,24 @@ public class Chat {
         this.time = time;
     }
 
+    public Chat(String username, String chatMessage, String time, int colorindex) {
+        this.username = username;
+        this.chatMessage = chatMessage;
+        this.time = time;
+        this.colorindex = colorindex;
+    }
+
+
+
     public Chat() {
+    }
+
+    public int getColorindex() {
+        return colorindex;
+    }
+
+    public void setColorindex(int colorindex) {
+        this.colorindex = colorindex;
     }
 
     public String getUsername() {
@@ -126,6 +144,7 @@ public class Chat {
         String stringTime = stringHour + ":" + stringMinute;
         String username = user.getUserName();
         Chat chat = new Chat(username, formattedInput, stringTime);
+        chat.setColorindex(user.getIndex());
         return chat;
     }
 

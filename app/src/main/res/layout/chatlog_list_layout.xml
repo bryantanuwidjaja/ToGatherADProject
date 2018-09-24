@@ -34,4 +34,5 @@
         android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView_ChatlogListLayout_chatmessage" />
+
 </android.support.constraint.ConstraintLayout>

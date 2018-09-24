@@ -16,7 +16,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="12dp"
         android:textAlignment="textStart"
-        android:textColor="@color/greyColor"
+        android:textColor="@color/darkGreyColor"
         android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/guideline38"
         app:layout_constraintEnd_toStartOf="@+id/guideline35"
@@ -38,12 +38,12 @@
     <TextView
         android:id="@+id/textView_ActivityLobbyDetail_activity"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="38dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="12dp"
-        android:textColor="@color/greyColor"
+        android:textColor="@color/darkGreyColor"
         android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/guideline37"
         app:layout_constraintEnd_toStartOf="@+id/guideline35"
@@ -58,7 +58,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:textColor="@color/greyColor"
+        android:textColor="@color/darkGreyColor"
         android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/guideline39"
         app:layout_constraintEnd_toStartOf="@+id/guideline35"
@@ -156,12 +156,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.75" />
+        app:layout_constraintGuide_percent="0.8" />
 
     <View
         android:id="@+id/view2"
-        android:layout_width="383dp"
-        android:layout_height="341dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:background="@color/backgroundColor"
         android:paddingTop="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -178,7 +178,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:textColor="@color/greyColor"
+        android:textColor="@color/darkGreyColor"
         android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/guideline41"
         app:layout_constraintEnd_toStartOf="@+id/guideline35"
@@ -193,7 +193,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="40dp"
         android:textAlignment="textStart"
-        android:textColor="@color/greyColor"
+        android:textColor="@color/darkGreyColor"
         android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/guideline40"
         app:layout_constraintStart_toStartOf="@+id/guideline36"
@@ -224,31 +224,28 @@
 
     <Button
         android:id="@+id/button_ActivityLobbyDetail_editLobby"
-        android:layout_width="0dp"
+        android:layout_width="177dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:backgroundTint="@color/buttonColor"
         android:fontFamily="sans-serif"
         android:text="Edit Lobby"
         android:textAllCaps="false"
-        android:textColor="@android:color/black"
+        android:textColor="@color/blackColor"
         android:textSize="16sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/guideline34"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/button_ActivityLobbyDetail_returnToLobby"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline41" />
 
     <Button
         android:id="@+id/button_ActivityLobbyDetail_returnToLobby"
-        android:layout_width="0dp"
+        android:layout_width="175dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginTop="8dp"
         android:backgroundTint="@color/buttonColor"
         android:fontFamily="sans-serif"
         android:text="Return to lobby"
@@ -256,11 +253,10 @@
         android:textColor="@color/blackColor"
         android:textSize="16sp"
         android:textStyle="bold"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/guideline34"
-        app:layout_constraintTop_toTopOf="@+id/guideline41" />
-
+        app:layout_constraintStart_toStartOf="parent" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline42"

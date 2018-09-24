@@ -8,4 +8,22 @@
     <color name="blackColor">#000000</color>
     <color name="whiteColor">#ffffff</color>
     <color name="greyColor">#DCDCDC</color>
+    <color name="darkGreyColor">#2F4F4F</color>
+
+    <color name="color1">#000000</color>
+    <color name="color2">#44BFC7</color>
+    <color name="color3">#FFC206</color>
+    <color name="color4">#F63E4C</color>
+    <color name="color5">#D496BB</color>
+    <color name="color6">#659ACC</color>
+    <color name="color7">#14CE13</color>
+    <color name="color8">#FF7E2A</color>
+    <color name="color9">#E88486</color>
+    <color name="color10">#7646FE</color>
+    <color name="color11">#20CDF7</color>
+    <color name="color12">#67B968</color>
+    <color name="color13">#D5A889</color>
+    <color name="color14">#FF5CA1</color>
+    <color name="color15">#A795C9</color>
+    <color name="color16">#1375D3</color>
 </resources>
