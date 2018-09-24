@@ -49,6 +49,7 @@ public class LobbyActivity extends AppCompatActivity {
     private int backCounter;
     private int clickIndicator = 0;
     private ArrayList<Chat> chatlogList = new ArrayList<>();
+    Button button_promotion;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +62,8 @@ public class LobbyActivity extends AppCompatActivity {
         final User user = (User) intent.getSerializableExtra(Constants.USER);
         Log.d(TAG, "User: " + user.getUserID());
 
-        //join lobby
+        //joinLobby(user, lobby);
+
         updateDatabase(user, lobby);
 
         Log.d(TAG, "userID : " + user.getUserID());
@@ -74,6 +76,7 @@ public class LobbyActivity extends AppCompatActivity {
         button_enter = findViewById(R.id.button_LobbyActivity_enter);
         button_guestList = findViewById(R.id.button_LobbyActivity_guestList);
         button_lobbyDetail = findViewById(R.id.button_LobbyActivity_lobbyDetail);
+        button_promotion = findViewById(R.id.button_LobbyActivity_promotion);
 
         //create a function to get current chat log
         readData(lobby, new FirestoreCallback() {
@@ -83,6 +86,7 @@ public class LobbyActivity extends AppCompatActivity {
                 Log.d(TAG, "onCallBack: " + chatlogList.toString());
             }
         });
+
 
         FirebaseFirestore.getInstance().collection(Constants.LOBBY)
                 .document(lobby.getLobbyID())
@@ -107,6 +111,17 @@ public class LobbyActivity extends AppCompatActivity {
                         }
                     }
                 });
+
+        button_promotion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), PromotionActivity.class);
+                intent.putExtra(Constants.LOBBY, lobby);
+                intent.putExtra(Constants.USER, user);
+                startActivity(intent);
+            }
+        });
+
 
         button_lobbyDetail.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -317,8 +332,7 @@ public class LobbyActivity extends AppCompatActivity {
                     }
                 });
     }
-
-    //join lobby function
+    
     private void updateDatabase(User user, Lobby lobby) {
         FirebaseFirestore.getInstance().collection(Constants.LOBBY)
                 .document(lobby.getLobbyID())
