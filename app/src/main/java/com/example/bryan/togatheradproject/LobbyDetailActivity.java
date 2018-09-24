@@ -126,5 +126,3 @@ public class LobbyDetailActivity extends AppCompatActivity {
                 });
     }
 }
-
-

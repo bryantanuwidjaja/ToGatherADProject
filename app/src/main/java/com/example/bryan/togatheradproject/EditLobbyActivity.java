@@ -25,6 +25,10 @@ public class EditLobbyActivity extends AppCompatActivity {
 
     boolean isPrivate;
 
+    protected boolean checkCorrectCapacity(int a) {
+        return 2 <= a && a <= 15;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,7 +68,7 @@ public class EditLobbyActivity extends AppCompatActivity {
         button_save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (validate()) {
+                if (validate() && checkCorrectCapacity(Integer.parseInt(editText_capacity.getText().toString()))) {
                     String newDesc = editText_description.getText().toString();
                     int newCapa = Integer.parseInt(editText_capacity.getText().toString());
                     lobby.setLobbyDescriptions(newDesc);
@@ -87,6 +91,8 @@ public class EditLobbyActivity extends AppCompatActivity {
                                     finish();
                                 }
                             });
+                } else {
+                    Toast.makeText(EditLobbyActivity.this, "Could not edit room", Toast.LENGTH_SHORT).show();
                 }
             }
         });

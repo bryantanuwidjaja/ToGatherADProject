@@ -102,6 +102,15 @@ public class CreateLobbyActivity extends AppCompatActivity implements AdapterVie
         return result;
     }
 
+    protected boolean checkCorrectCapacity(int a) {
+        boolean result = true;
+        if (!(2 <= a && a <= 15)) {
+            whyError = "Capacity Error, could not create room";
+            result = false;
+        }
+        return result;
+    }
+
 
     protected void clearEditTest(){
         editText_Capacity.setText("");
@@ -152,7 +161,7 @@ public class CreateLobbyActivity extends AppCompatActivity implements AdapterVie
                 ArrayList<User> guestList = new ArrayList<>();
                 Log.d(TAG, "user = " + guestList);
 
-                if (checkIfLocationisThere(mAddressOutput) && checkIfDataNotBlank(temp_Capacity, description)) {
+                if (checkCorrectCapacity(capacity) && checkIfLocationisThere(mAddressOutput) && checkIfDataNotBlank(temp_Capacity, description)) {
                     final String lobbyID = UUID.randomUUID().toString();
                     final String chatlogID = UUID.randomUUID().toString();
                     final String[] output = mAddressOutput.split(",");
@@ -243,15 +252,6 @@ public class CreateLobbyActivity extends AppCompatActivity implements AdapterVie
         button_Cancel.invalidate();
     }
 
-    private boolean validateFields(){
-        if(editText_Capacity.getText().toString().equals("") || editText_Capacity.getText().toString().equals("")){
-            Toast.makeText(getApplicationContext(),"Please fill all of the fields properly" , Toast.LENGTH_SHORT).show();
-            return false;
-        }
-        else{
-            return true;
-        }
-    }
 
     private boolean getLobbyType(){
         boolean isPrivate = false;
