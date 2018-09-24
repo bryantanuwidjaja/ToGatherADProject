@@ -99,7 +99,7 @@
         android:ems="10"
         android:hint="Describe about your activity here"
         android:inputType="textPersonName"
-        android:maxLength="25"
+        android:maxLength="180"
         android:textSize="14sp"
         app:layout_constraintEnd_toStartOf="@+id/guideline4"
         app:layout_constraintStart_toStartOf="@+id/guideline2"

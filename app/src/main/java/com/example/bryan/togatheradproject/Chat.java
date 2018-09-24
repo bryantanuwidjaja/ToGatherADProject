@@ -134,7 +134,7 @@ public class Chat {
 
     protected Chat inputChat(User user, String input) {
         Date date = new Date();
-        String formattedInput = ": " + input;
+        String formattedInput = input;
         Calendar calendar = GregorianCalendar.getInstance();
         calendar.setTime(date);
         int hour = calendar.get(Calendar.HOUR);
