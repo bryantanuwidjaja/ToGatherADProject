@@ -37,17 +37,7 @@ public class GuestProfileActivity extends AppCompatActivity {
     private String ratingContainer;
     private ArrayList<String> interestList = new ArrayList<>();
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_guest_profile);
-
-        Intent intent = getIntent();
-        final User loggeduser = (User) intent.getSerializableExtra(Constants.USER);
-        final User clickedUser = (User) intent.getSerializableExtra(Constants.CLICKED_USER);
-        final Lobby lobby = (Lobby) intent.getSerializableExtra(Constants.LOBBY);
-        String clickedID = clickedUser.getUserID();
-
+    protected void establish() {
         textView_username = findViewById(R.id.textView_GuestProfileActivity_username);
         textView_interest1 = findViewById(R.id.textView_GuestProfileActivity_interest1);
         textView_interest2 = findViewById(R.id.textView_GuestProfileActivity_interest2);
@@ -60,6 +50,20 @@ public class GuestProfileActivity extends AppCompatActivity {
         button_returnToLobby = findViewById(R.id.button_GuestProfileActivity_returnToLobby);
         imageView_profilePic = findViewById(R.id.imageView_GuestProfileActivity_profilepicture);
         imageView_thumbsUp = findViewById(R.id.imageView_GuestProfileActivity_thumbsup);
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_guest_profile);
+
+        Intent intent = getIntent();
+        final User loggeduser = (User) intent.getSerializableExtra(Constants.USER);
+        final User clickedUser = (User) intent.getSerializableExtra(Constants.CLICKED_USER);
+        final Lobby lobby = (Lobby) intent.getSerializableExtra(Constants.LOBBY);
+        String clickedID = clickedUser.getUserID();
+
+        establish();
 
         retrieveInformation(clickedID);
 
