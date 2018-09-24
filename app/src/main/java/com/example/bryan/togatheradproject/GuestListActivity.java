@@ -1,6 +1,7 @@
 package com.example.bryan.togatheradproject;
 
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,7 +11,9 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -39,8 +42,7 @@ public class GuestListActivity extends AppCompatActivity {
         textView_guestListTAG = findViewById(R.id.textView_GuestListActivity_guestListTAG);
         button_returnToLobby = findViewById(R.id.button_GuestListActivity_returnToLobby);
         listView_guestList = findViewById(R.id.listView_GuestListActivity_guestList);
-
-        retreiveGuestList(lobby.getLobbyID());
+        retreiveGuestList(lobby, user);
 
         button_returnToLobby.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,12 +81,12 @@ public class GuestListActivity extends AppCompatActivity {
         button_returnToLobby.invalidate();
     }
 
-    private void retreiveGuestList(String lobbyID) {
+    private void retreiveGuestList(final Lobby lobby, final User currentuser ) {
         //reset the list
         guestList.clear();
 
         FirebaseFirestore.getInstance().collection(Constants.LOBBY)
-                .document(lobbyID)
+                .document(lobby.getLobbyID())
                 .collection(Constants.LOBBY_GUESTLIST)
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
@@ -92,10 +94,10 @@ public class GuestListActivity extends AppCompatActivity {
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                         for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
                             User user = documentSnapshot.toObject(User.class);
-                            guestList.add(user);
-                            GuestList adapter = new GuestList(GuestListActivity.this, guestList);
-                            listView_guestList.setAdapter(adapter);
-                        }
+                            if(!user.getUserID().equals(currentuser.getUserID())) {
+                                guestList.add(user);
+                            }
+                    }
                         GuestList adapter = new GuestList(GuestListActivity.this, guestList);
                         listView_guestList.setAdapter(adapter);
                     }
