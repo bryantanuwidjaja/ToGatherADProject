@@ -63,11 +63,10 @@
         android:id="@+id/textView_GuestProfileActivity_interest1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:text="TextView"
         android:textColor="@color/blackColor"
         android:textSize="16sp"
-        tools:layout_editor_absoluteX="46dp"
-        tools:layout_editor_absoluteY="212dp"
         app:layout_constraintStart_toStartOf="@+id/guideline12"
         app:layout_constraintTop_toBottomOf="@+id/textView_GuestProfileActivity_interestTAG" />
 
