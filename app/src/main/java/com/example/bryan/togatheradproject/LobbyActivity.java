@@ -111,17 +111,22 @@ public class LobbyActivity extends AppCompatActivity {
                             Log.w(TAG, "Listen failed: ", e);
                             return;
                         }
-                        if (queryDocumentSnapshots != null && !queryDocumentSnapshots.isEmpty()) {
-                            Log.d(TAG, "current data " + queryDocumentSnapshots.getDocuments());
-                            readData(lobby, new FirestoreCallback() {
-                                @Override
-                                public void onCallBack(Chatlog chatlog) {
-                                    chatlogList = chatlog.getChatlog();
-                                    Log.d(TAG, "onCallBack real time: " + chatlogList.toString());
-                                }
-                            });
+                            if (queryDocumentSnapshots != null && !queryDocumentSnapshots.isEmpty()) {
+                                Log.d(TAG, "current data " + queryDocumentSnapshots.getDocuments());
+                                readData(lobby, new FirestoreCallback() {
+                                    @Override
+                                    public void onCallBack(Chatlog chatlog) {
+                                        try {
+                                            chatlogList = chatlog.getChatlog();
+                                            Log.d(TAG, "onCallBack real time: " + chatlogList.toString());
+                                        }
+                                        catch (NullPointerException e1){
+                                            Log.d(TAG, "null chatlog");
+                                        }
+                                    }
+                                });
+                            }
                         }
-                    }
                 });
 
         button_promotion.setOnClickListener(new View.OnClickListener() {
@@ -317,7 +322,7 @@ public class LobbyActivity extends AppCompatActivity {
     }
 
     //delete lobby function
-    private void deleteLobby(Lobby lobby) {
+    private void deleteLobby(final Lobby lobby) {
         FirebaseFirestore.getInstance().collection(Constants.LOBBY)
                 .document(lobby.getLobbyID())
                 .collection(Constants.LOBBY_CHATLOG)
@@ -333,12 +338,18 @@ public class LobbyActivity extends AppCompatActivity {
         FirebaseFirestore.getInstance().collection(Constants.LOBBY)
                 .document(lobby.getLobbyID())
                 .collection(Constants.LOBBY_GUESTLIST)
-                .document()
-                .delete()
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        Log.d(TAG, "onComplete: Guestlist deletion complete");
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        for (User user :
+                                task.getResult().toObjects(User.class)) {
+                            FirebaseFirestore.getInstance().collection(Constants.LOBBY)
+                                    .document(lobby.getLobbyID())
+                                    .collection(Constants.LOBBY_GUESTLIST)
+                                    .document(user.getUserID())
+                                    .delete();
+                        }
                     }
                 });
 
@@ -389,16 +400,18 @@ public class LobbyActivity extends AppCompatActivity {
     }
 
     private void leaveRoom(User user, final Lobby lobby) {
+        Chat chat = new Chat();
+        chat = chat.leaveEntryChat(user);
+        chatlogList.add(chat);
+        chat.updateChat(chatlogList, lobby.getLobbyID(), lobby.getChatlogID());
+
         FirebaseFirestore.getInstance().collection(Constants.LOBBY)
                 .document(lobby.getLobbyID())
                 .collection(Constants.LOBBY_GUESTLIST)
                 .document(user.getUserID())
                 .delete();
+
         hostConstraint(user, lobby);
-        Chat chat = new Chat();
-        chat = chat.leaveEntryChat(user);
-        chatlogList.add(chat);
-        chat.updateChat(chatlogList, lobby.getLobbyID(), lobby.getChatlogID());
         isEmpty(lobby, new BooleanCallback() {
             @Override
             public void onCallBack(Boolean isEmpty) {

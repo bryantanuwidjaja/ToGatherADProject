@@ -53,18 +53,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-<<<<<<< HEAD
         android:text="TextView"
         android:textColor="@color/blackColor"
         android:textSize="16sp"
-=======
         android:layout_marginTop="24dp"
         android:fontFamily="@font/cabin"
-        android:text="TextView"
-        android:textColor="@color/blackColor"
-        android:textSize="16sp"
         android:visibility="visible"
->>>>>>> master
         app:layout_constraintStart_toStartOf="@+id/guideline12"
         app:layout_constraintTop_toTopOf="@+id/guideline17" />
 
