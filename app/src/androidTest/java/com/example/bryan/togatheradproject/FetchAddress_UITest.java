@@ -75,7 +75,7 @@ public class FetchAddress_UITest {
         onView(withId(R.id.spinnerActivities))
                 .perform(click());
         onView(isRoot()).perform(idleFor(100));
-        onData(allOf(is(instanceOf(String.class)), is("Coffee")))
+        onData(allOf(is(instanceOf(String.class)), is("coffee")))
                 .perform(click());
         onView(withId(R.id.editText_CreateLobbyActivity_capacity))
                 .perform(typeText("20"));

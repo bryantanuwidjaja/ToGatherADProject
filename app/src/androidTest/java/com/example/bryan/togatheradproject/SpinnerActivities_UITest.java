@@ -66,10 +66,10 @@ public class SpinnerActivities_UITest {
         onView(withId(R.id.spinnerActivities))
                 .perform(click());
         onView(isRoot()).perform(idleFor(500));
-        onData(allOf(is(instanceOf(String.class)), is("Games")))
+        onData(allOf(is(instanceOf(String.class)), is("games")))
                 .perform(click());
         onView(withId(R.id.spinnerActivities))
-                .check(matches(withSpinnerText(containsString("Games"))));
+                .check(matches(withSpinnerText(containsString("games"))));
     }
 }
 
