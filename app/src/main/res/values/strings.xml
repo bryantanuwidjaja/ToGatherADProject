@@ -49,4 +49,6 @@
     <string name="toast_invalidNameRegistration">Username must be 4 or more characters</string>
     <string name="toast_invalidEmailRegistration">invalid email</string>
     <string name="toast_rateUp">Liked</string>
+    <string name="toast_invalidConfirm">Please enter the confirmation properly</string>
+
 </resources>

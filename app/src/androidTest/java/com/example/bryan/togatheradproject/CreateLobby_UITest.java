@@ -50,8 +50,8 @@ public class CreateLobby_UITest {
                 .perform(typeText(capacity)).perform(ViewActions.closeSoftKeyboard());
         onView(withId(R.id.editText_CreateLobbyActivity_description))
                 .perform(typeText(description)).perform(ViewActions.closeSoftKeyboard());
-        onView(withId(R.id.button_CreateLobbyActivity_fetch))
-                .perform(click());
+//        onView(withId(R.id.button_CreateLobbyActivity_fetch))
+//                .perform(click());
         onView(isRoot()).perform(idleFor(1000));
         onView(withId(R.id.button_CreateLobbyActivity_create))
                 .perform(click());
