@@ -53,6 +53,17 @@ public class LobbyActivity extends AppCompatActivity {
     private ArrayList<Chat> chatlogList = new ArrayList<>();
     Button button_promotion;
 
+    protected void establish() {
+        textView_lobbyID = findViewById(R.id.textView_LobbyActivity_lobbyID);
+        editView_chatDialog = findViewById(R.id.editText_LobbyActivity_chatDialog);
+        listView_chatLog = findViewById(R.id.listView_LobbyActivity_chatLog);
+        imageView_activityIcon = findViewById(R.id.imageView_LobbyActivity_activityIcon);
+        button_enter = findViewById(R.id.button_LobbyActivity_enter);
+        button_guestList = findViewById(R.id.button_LobbyActivity_guestList);
+        button_lobbyDetail = findViewById(R.id.button_LobbyActivity_lobbyDetail);
+        button_promotion = findViewById(R.id.button_LobbyActivity_promotion);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,14 +93,7 @@ public class LobbyActivity extends AppCompatActivity {
         Log.d(TAG, "userID : " + user.getUserID());
         Log.d(TAG, "lobbyID : " + lobby.getLobbyID());
 
-        textView_lobbyID = findViewById(R.id.textView_LobbyActivity_lobbyID);
-        editView_chatDialog = findViewById(R.id.editText_LobbyActivity_chatDialog);
-        listView_chatLog = findViewById(R.id.listView_LobbyActivity_chatLog);
-        imageView_activityIcon = findViewById(R.id.imageView_LobbyActivity_activityIcon);
-        button_enter = findViewById(R.id.button_LobbyActivity_enter);
-        button_guestList = findViewById(R.id.button_LobbyActivity_guestList);
-        button_lobbyDetail = findViewById(R.id.button_LobbyActivity_lobbyDetail);
-        button_promotion = findViewById(R.id.button_LobbyActivity_promotion);
+        establish();
 
         //assign the proper icon for the activity
         switch (activity){
@@ -166,11 +170,15 @@ public class LobbyActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 clickIndicator = 1;
+                button_promotion.setEnabled(false);
+
                 Intent intent = new Intent(getApplicationContext(), PromotionActivity.class);
                 intent.putExtra(Constants.LOBBY, lobby);
                 intent.putExtra(Constants.USER, user);
                 startActivity(intent);
+
                 button_promotion.invalidate();
+
                 finish();
             }
         });
@@ -179,12 +187,12 @@ public class LobbyActivity extends AppCompatActivity {
         button_lobbyDetail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                button_lobbyDetail.setEnabled(false);
                 clickIndicator = 1;
                 Intent intent = new Intent(getApplicationContext(), LobbyDetailActivity.class);
                 intent.putExtra(Constants.USER, user);
                 intent.putExtra(Constants.LOBBY, lobby);
                 startActivity(intent);
-                button_lobbyDetail.invalidate();
                 finish();
             }
         });
@@ -192,12 +200,12 @@ public class LobbyActivity extends AppCompatActivity {
         button_guestList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                button_guestList.setEnabled(false);
                 clickIndicator = 1;
                 Intent intent = new Intent(getApplicationContext(), GuestListActivity.class);
                 intent.putExtra(Constants.LOBBY, lobby);
                 intent.putExtra(Constants.USER, user);
                 startActivity(intent);
-                button_guestList.invalidate();
                 finish();
             }
         });
@@ -205,6 +213,7 @@ public class LobbyActivity extends AppCompatActivity {
         button_enter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                button_enter.setEnabled(false);
                 clickIndicator = 1;
                 //Clear the list
                 //chatlogList.clear();
@@ -240,6 +249,7 @@ public class LobbyActivity extends AppCompatActivity {
 
                         //clear the edit text
                         editView_chatDialog.setText("");
+                        button_enter.setEnabled(true);
                     }
                 });
             }
