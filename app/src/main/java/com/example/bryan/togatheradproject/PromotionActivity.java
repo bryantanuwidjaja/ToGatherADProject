@@ -90,12 +90,19 @@ public class PromotionActivity extends AppCompatActivity{
         button_Return.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                button_Return.setEnabled(false);
                 Intent intent = new Intent(getApplicationContext(), LobbyActivity.class);
                 intent.putExtra(Constants.USER, user);
                 intent.putExtra(Constants.LOBBY, lobby);
                 startActivity(intent);
+                finish();
             }
         });
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        button_Return.performClick();
+    }
 }
