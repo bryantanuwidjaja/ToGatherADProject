@@ -136,6 +136,21 @@ public class ProfileActivity extends AppCompatActivity implements EditProfileDia
                 .update(Constants.USER_INTERESTS, interestList);
     }
 
+    protected void establish() {
+        imageView_Image = findViewById(R.id.imageView_ProfileScreen_image);
+        textView_Username = findViewById(R.id.textView_ProfileScreen_username);
+
+        textView_Interest1 = findViewById(R.id.textView_ProfileScreen_interest1);
+        textView_Interest2 = findViewById(R.id.textView_ProfileScreen_interest2);
+        textView_Interest3 = findViewById(R.id.textView_ProfileScreen_interest3);
+        textView_Interest4 = findViewById(R.id.textView_ProfileScreen_interest4);
+        textView_Interest5 = findViewById(R.id.textView_ProfileScreen_interest5);
+        textView_Interest6 = findViewById(R.id.textView_ProfileScreen_interest6);
+        textView_deleteAccount = findViewById(R.id.textView_ProfileScreen_deleteAccount);
+        button_cancel = findViewById(R.id.button_ProfileScreen_cancelButton);
+        button_save = findViewById(R.id.button_ProfileScreen_saveButton);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -146,18 +161,7 @@ public class ProfileActivity extends AppCompatActivity implements EditProfileDia
         FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
         DocumentReference userRef = firebaseFirestore.collection(Constants.USER).document(loggedUser.getUserID());
 
-        imageView_Image = findViewById(R.id.imageView_ProfileScreen_image);
-        textView_Username = findViewById(R.id.textView_ProfileScreen_username);
-
-        textView_Interest1 = findViewById(R.id.textView_ProfileScreen_interest1);
-        textView_Interest2 = findViewById(R.id.textView_ProfileScreen_interest2);
-        textView_Interest3 = findViewById(R.id.textView_ProfileScreen_interest3);
-        textView_Interest4 = findViewById(R.id.textView_ProfileScreen_interest4);
-        textView_Interest5 = findViewById(R.id.textView_ProfileScreen_interest5);
-        textView_Interest6 = findViewById(R.id.textView_ProfileScreen_interest6);
-        textView_deleteAccount = findViewById(R.id.textView_ProfileScreen_deleteAccount); 
-        button_cancel = findViewById(R.id.button_ProfileScreen_cancelButton);
-        button_save = findViewById(R.id.button_ProfileScreen_saveButton);
+        establish();
 
         updateInformation(loggedUser.getUserID());
 
@@ -254,20 +258,24 @@ public class ProfileActivity extends AppCompatActivity implements EditProfileDia
         button_save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                button_save.setEnabled(false);
                 updateDatabase(loggedUser.getUserID());
                 Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
                 intent.putExtra(Constants.USER, loggedUser);
                 button_save.invalidate();
                 startActivity(intent);
+                finish();
             }
         });
 
         button_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                button_cancel.setEnabled(false);
                 Intent intent = new Intent(getApplicationContext() , HomeActivity.class);
                 intent.putExtra(Constants.USER, loggedUser);
                 startActivity(intent);
+                finish();
             }
         });
     }
@@ -276,9 +284,5 @@ public class ProfileActivity extends AppCompatActivity implements EditProfileDia
     public void onBackPressed() {
         super.onBackPressed();
         button_cancel.performClick();
-        button_cancel.setPressed(true);
-        button_cancel.invalidate();
-        button_cancel.setPressed(false);
-        button_cancel.invalidate();
     }
 }
