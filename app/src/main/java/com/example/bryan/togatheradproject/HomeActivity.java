@@ -102,24 +102,29 @@ public class HomeActivity extends AppCompatActivity {
         button_Createlobby.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                button_Createlobby.setEnabled(false);
                 Intent intent = new Intent(getApplicationContext(), CreateLobbyActivity.class);
                 intent.putExtra(Constants.USER, user);
                 startActivity(intent);
+                finish();
             }
         });
 
         button_Viewprofile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                button_Viewprofile.setEnabled(false);
                 Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
                 intent.putExtra(Constants.USER, user);
                 startActivity(intent);
+                finish();
             }
         });
 
         listView_LobbyList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                listView_LobbyList.setEnabled(false);
                 Lobby lobby = lobbyList.get(position);
                 String lobbyID = lobby.getLobbyID();
                 Log.d(TAG, "lobby ID = " + lobbyID);
@@ -248,6 +253,7 @@ public class HomeActivity extends AppCompatActivity {
                         Log.d(TAG, "userID : " + user.getUserID());
                         Log.d(TAG, "lobbyID : " + lobbyID);
                         startActivity(intent);
+                        finish();
                     }
                 });
         Log.d(TAG, "chatLoglist : 3  " + chatlogList);

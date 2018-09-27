@@ -94,8 +94,14 @@ public class PromotionActivity extends AppCompatActivity{
                 intent.putExtra(Constants.USER, user);
                 intent.putExtra(Constants.LOBBY, lobby);
                 startActivity(intent);
+                finish();
             }
         });
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        button_Return.performClick();
+    }
 }
