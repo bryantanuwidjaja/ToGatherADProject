@@ -29,10 +29,8 @@ public class GuestList extends ArrayAdapter {
 
         View listViewItem = inflater.inflate(R.layout.guest_list_layout, null, true);
         TextView textView_userName = listViewItem.findViewById(R.id.textView_GuestList_userName);
-        TextView textView_userID = listViewItem.findViewById(R.id.textView_GuestList_userID);
 
         User user = guestList.get(position);
-        textView_userID.setText(user.getUserID().toString());
         textView_userName.setText(user.getUserName().toString());
 
         return listViewItem;

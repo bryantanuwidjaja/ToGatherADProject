@@ -47,9 +47,11 @@ public class LobbyActivity extends AppCompatActivity {
     Button button_enter;
     Button button_guestList;
     Button button_lobbyDetail;
+    private String activity;
     private int backCounter;
     private int clickIndicator = 0;
     private ArrayList<Chat> chatlogList = new ArrayList<>();
+    Button button_promotion;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,7 +74,8 @@ public class LobbyActivity extends AppCompatActivity {
         });
         Log.d(TAG, "User: " + user.getUserID());
 
-        //join lobby
+        activity = lobby.getActivity();
+
         updateDatabase(user, lobby);
         Log.d(TAG, "color index 2 : " + user.getIndex());
 
@@ -86,6 +89,35 @@ public class LobbyActivity extends AppCompatActivity {
         button_enter = findViewById(R.id.button_LobbyActivity_enter);
         button_guestList = findViewById(R.id.button_LobbyActivity_guestList);
         button_lobbyDetail = findViewById(R.id.button_LobbyActivity_lobbyDetail);
+        button_promotion = findViewById(R.id.button_LobbyActivity_promotion);
+
+        //assign the proper icon for the activity
+        switch (activity){
+            case "Coffee":
+                imageView_activityIcon.setImageResource(R.drawable.ic_activity_coffee);
+                break;
+            case "Eat out":
+                imageView_activityIcon.setImageResource(R.drawable.ic_action_eat_out);
+                break;
+            case "Hang out":
+                imageView_activityIcon.setImageResource(R.drawable.ic_action_hang_out);
+                break;
+            case "Movies":
+                imageView_activityIcon.setImageResource(R.drawable.ic_action_movies);
+                break;
+            case "Games":
+                imageView_activityIcon.setImageResource(R.drawable.ic_action_games);
+                break;
+            case "Sports":
+                imageView_activityIcon.setImageResource(R.drawable.ic_action_sports);
+                break;
+            case "Study":
+                imageView_activityIcon.setImageResource(R.drawable.ic_action_study);
+                break;
+            case "Outdoor":
+                imageView_activityIcon.setImageResource(R.drawable.ic_action_outdoor);
+                break;
+        }
 
         //create a function to get current chat log
         readData(lobby, new FirestoreCallback() {
@@ -95,6 +127,11 @@ public class LobbyActivity extends AppCompatActivity {
                 Log.d(TAG, "onCallBack: " + chatlogList.toString());
             }
         });
+
+        textView_lobbyID.setText(lobby.getActivity());
+
+
+
 
         FirebaseFirestore.getInstance().collection(Constants.LOBBY)
                 .document(lobby.getLobbyID())
@@ -119,6 +156,17 @@ public class LobbyActivity extends AppCompatActivity {
                         }
                     }
                 });
+
+        button_promotion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), PromotionActivity.class);
+                intent.putExtra(Constants.LOBBY, lobby);
+                intent.putExtra(Constants.USER, user);
+                startActivity(intent);
+            }
+        });
+
 
         button_lobbyDetail.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -337,8 +385,7 @@ public class LobbyActivity extends AppCompatActivity {
                     }
                 });
     }
-
-    //join lobby function
+    
     private void updateDatabase(User user, Lobby lobby) {
         FirebaseFirestore.getInstance().collection(Constants.LOBBY)
                 .document(lobby.getLobbyID())
