@@ -169,11 +169,16 @@ public class LobbyActivity extends AppCompatActivity {
         button_promotion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                clickIndicator = 1;
                 button_promotion.setEnabled(false);
+
                 Intent intent = new Intent(getApplicationContext(), PromotionActivity.class);
                 intent.putExtra(Constants.LOBBY, lobby);
                 intent.putExtra(Constants.USER, user);
                 startActivity(intent);
+
+                button_promotion.invalidate();
+
                 finish();
             }
         });
