@@ -52,6 +52,7 @@ public class LobbyActivity extends AppCompatActivity {
     private int clickIndicator = 0;
     private ArrayList<Chat> chatlogList = new ArrayList<>();
     Button button_promotion;
+    boolean inLobby = true;
 
     protected void establish() {
         textView_lobbyID = findViewById(R.id.textView_LobbyActivity_lobbyID);
@@ -335,6 +336,7 @@ public class LobbyActivity extends AppCompatActivity {
             final User user = (User) intent.getSerializableExtra(Constants.USER);
             final Lobby lobby = (Lobby) intent.getSerializableExtra(Constants.LOBBY);
             leaveRoom(user, lobby);
+            inLobby = false;
             finish();
         }
     }
@@ -449,16 +451,18 @@ public class LobbyActivity extends AppCompatActivity {
     }
 
     private void leaveRoom(final User user, final Lobby lobby) {
-        Chat chat = new Chat();
-        chat = chat.leaveEntryChat(user);
-        chatlogList.add(chat);
-        chat.updateChat(chatlogList, lobby.getLobbyID(), lobby.getChatlogID());
-
         FirebaseFirestore.getInstance().collection(Constants.LOBBY)
                 .document(lobby.getLobbyID())
                 .collection(Constants.LOBBY_GUESTLIST)
                 .document(user.getUserID())
                 .delete();
+
+        if(inLobby) {
+            Chat chat = new Chat();
+            chat = chat.leaveEntryChat(user);
+            chatlogList.add(chat);
+            chat.updateChat(chatlogList, lobby.getLobbyID(), lobby.getChatlogID());
+        }
 
         hostConstraint(user, lobby);
         isEmpty(lobby, new BooleanCallback() {
