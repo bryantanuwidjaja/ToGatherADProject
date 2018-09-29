@@ -134,9 +134,6 @@ public class LobbyActivity extends AppCompatActivity {
 
         textView_lobbyID.setText(lobby.getActivity());
 
-
-
-
         FirebaseFirestore.getInstance().collection(Constants.LOBBY)
                 .document(lobby.getLobbyID())
                 .collection(Constants.LOBBY_CHATLOG)
@@ -361,8 +358,10 @@ public class LobbyActivity extends AppCompatActivity {
         if (backCounter == 1) {
             Toast.makeText(getApplicationContext(), "Press back again to leave the room", Toast.LENGTH_SHORT).show();
         } else if (backCounter == 2) {
+            Log.d(TAG, "backCounter : " + backCounter);
             //leave room
-            leaveRoom(user, lobby);
+            onStop();
+            //leaveRoom(user, lobby);
         }
     }
 
@@ -411,6 +410,7 @@ public class LobbyActivity extends AppCompatActivity {
         Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
         intent.putExtra(Constants.USER, user);
         startActivity(intent);
+        finish();
     }
     
     private void updateDatabase(User user, Lobby lobby) {
