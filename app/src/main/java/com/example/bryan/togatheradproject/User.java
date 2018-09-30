@@ -12,6 +12,7 @@ public class User implements Serializable{
     //private userProfilepic;
     private ArrayList<String> userInterests;
     private String userID;
+    private int index;
 
     public User() {
     }
@@ -28,6 +29,14 @@ public class User implements Serializable{
     public ArrayList<String> addInterest(String newInterest){
         userInterests.add(newInterest);
         return new ArrayList<String>(userInterests);
+    }
+
+    public int getIndex() {
+        return index;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
     }
 
     public String getUserID() {

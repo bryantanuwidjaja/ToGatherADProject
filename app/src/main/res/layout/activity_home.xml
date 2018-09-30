@@ -4,27 +4,35 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/backgroundColor"
     tools:context=".HomeActivity"
     tools:layout_editor_absoluteY="81dp">
 
     <TextView
         android:id="@+id/textView_HomeActivity_nearbyLobby"
-        android:layout_width="wrap_content"
-        android:layout_height="19dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:fontFamily="@font/cabin"
         android:text="Available Lobby"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:textColor="#000000"
+        android:textSize="24sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/button_HomeActivity_viewProfile"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/button_HomeActivity_createLobby"
-        android:layout_width="200dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
+        android:layout_marginEnd="80dp"
+        android:layout_marginStart="80dp"
+        android:background="@drawable/round_button"
+        android:fontFamily="sans-serif"
         android:text="Create Lobby"
+        android:textAllCaps="false"
+        android:textColor="@color/whiteColor"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -32,10 +40,15 @@
     <Button
         android:id="@+id/button_HomeActivity_viewProfile"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_marginEnd="16dp"
         android:layout_marginTop="8dp"
-        android:text="View Profile"
+        android:background="@color/buttonColor"
+        android:fontFamily="sans-serif"
+        android:text="Profile"
+        android:textAllCaps="false"
+        android:textColor="@color/blackColor"
+        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

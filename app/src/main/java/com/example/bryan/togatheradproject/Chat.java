@@ -20,6 +20,7 @@ public class Chat {
     private String username;
     private String chatMessage;
     private String time;
+    private int colorindex;
 
     public Chat(String username, String chatMessage, String time) {
         this.username = username;
@@ -27,7 +28,24 @@ public class Chat {
         this.time = time;
     }
 
+    public Chat(String username, String chatMessage, String time, int colorindex) {
+        this.username = username;
+        this.chatMessage = chatMessage;
+        this.time = time;
+        this.colorindex = colorindex;
+    }
+
+
+
     public Chat() {
+    }
+
+    public int getColorindex() {
+        return colorindex;
+    }
+
+    public void setColorindex(int colorindex) {
+        this.colorindex = colorindex;
     }
 
     public String getUsername() {
@@ -54,8 +72,38 @@ public class Chat {
         this.time = time;
     }
 
+    protected Chat rehostChat(User user){
+        String chatMessage = " is the new host";
+        Date date = new Date();
+        Calendar calendar = GregorianCalendar.getInstance();
+        calendar.setTime(date);
+        int hour = calendar.get(Calendar.HOUR);
+        int minute = calendar.get(Calendar.MINUTE);
+        String stringHour = Integer.toString(hour);
+        String stringMinute = Integer.toString(minute);
+        String stringTime = stringHour + ":" + stringMinute;
+        String username = user.getUserName();
+        Chat chat = new Chat(username, chatMessage, stringTime);
+        return chat;
+    }
+
     protected Chat entryChat(User user) {
         String chatMessage = " entered the room";
+        Date date = new Date();
+        Calendar calendar = GregorianCalendar.getInstance();
+        calendar.setTime(date);
+        int hour = calendar.get(Calendar.HOUR);
+        int minute = calendar.get(Calendar.MINUTE);
+        String stringHour = Integer.toString(hour);
+        String stringMinute = Integer.toString(minute);
+        String stringTime = stringHour + ":" + stringMinute;
+        String username = user.getUserName();
+        Chat chat = new Chat(username, chatMessage, stringTime);
+        return chat;
+    }
+
+    protected Chat leaveEntryChat(User user) {
+        String chatMessage = " left the room";
         Date date = new Date();
         Calendar calendar = GregorianCalendar.getInstance();
         calendar.setTime(date);
@@ -86,7 +134,7 @@ public class Chat {
 
     protected Chat inputChat(User user, String input) {
         Date date = new Date();
-        String formattedInput = ": " + input;
+        String formattedInput = input;
         Calendar calendar = GregorianCalendar.getInstance();
         calendar.setTime(date);
         int hour = calendar.get(Calendar.HOUR);
@@ -96,6 +144,7 @@ public class Chat {
         String stringTime = stringHour + ":" + stringMinute;
         String username = user.getUserName();
         Chat chat = new Chat(username, formattedInput, stringTime);
+        chat.setColorindex(user.getIndex());
         return chat;
     }
 

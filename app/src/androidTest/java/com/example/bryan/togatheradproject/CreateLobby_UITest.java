@@ -30,7 +30,7 @@ import static org.hamcrest.Matchers.not;
 
 public class CreateLobby_UITest {
 
-    public void createLobbyUI(String activity, String capacity, String description) {
+    public static void createLobbyUI(String activity, String capacity, String description) {
         onView(withId(R.id.editText_LoginActivity_insertEmail))
                 .perform(typeText("sukiliong@yahoo.com")).perform(ViewActions.closeSoftKeyboard());
         onView(withId(R.id.editText_LoginActivity_insertPassword))
@@ -50,12 +50,12 @@ public class CreateLobby_UITest {
                 .perform(typeText(capacity)).perform(ViewActions.closeSoftKeyboard());
         onView(withId(R.id.editText_CreateLobbyActivity_description))
                 .perform(typeText(description)).perform(ViewActions.closeSoftKeyboard());
-        onView(withId(R.id.button_CreateLobbyActivity_fetch))
-                .perform(click());
+//        onView(withId(R.id.button_CreateLobbyActivity_fetch))
+//                .perform(click());
         onView(isRoot()).perform(idleFor(1000));
         onView(withId(R.id.button_CreateLobbyActivity_create))
                 .perform(click());
-        onView(isRoot()).perform(idleFor(200));
+        onView(isRoot()).perform(idleFor(3000));
     }
 
 

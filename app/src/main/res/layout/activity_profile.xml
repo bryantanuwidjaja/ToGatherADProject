@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/backgroundColor"
     tools:context=".ProfileActivity">
 
     <ImageView
@@ -13,6 +14,8 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="24dp"
+        android:src="@drawable/account"
+        app:layout_constraintBottom_toTopOf="@+id/textView_ProfileScreen_username"
         app:layout_constraintEnd_toStartOf="@+id/guideline2"
         app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintTop_toTopOf="parent"
@@ -24,90 +27,82 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
+        android:fontFamily="sans-serif-condensed"
         android:text="Username"
+        android:textColor="@color/colorAccent"
+        android:textSize="20sp"
         app:layout_constraintEnd_toStartOf="@+id/guideline2"
         app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintTop_toBottomOf="@+id/imageView_ProfileScreen_image" />
-
-
-    <TextView
-        android:id="@+id/textView_ProfileScreen_interestTAG"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
-        android:layout_marginStart="8dp"
-        android:text="Interest: "
-        app:layout_constraintBottom_toTopOf="@+id/textView_ProfileScreen_interest1"
-        app:layout_constraintStart_toStartOf="@+id/guideline" />
-
-    <TextView
-        android:id="@+id/textView_ProfileScreen_interest4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
-        android:layout_marginEnd="16dp"
-        android:text="TextView"
-        app:layout_constraintBottom_toTopOf="@+id/textView_ProfileScreen_interest5"
-        app:layout_constraintEnd_toStartOf="@+id/guideline2" />
-
-
-    <TextView
-        android:id="@+id/textView_ProfileScreen_interest5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
-        android:layout_marginEnd="16dp"
-        android:text="TextView"
-        app:layout_constraintBottom_toTopOf="@+id/textView_ProfileScreen_interest6"
-        app:layout_constraintEnd_toStartOf="@+id/guideline2" />
-
-
-    <TextView
-        android:id="@+id/textView_ProfileScreen_interest6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-
-        android:text="TextView"
-        app:layout_constraintBaseline_toBaselineOf="@+id/textView_ProfileScreen_interest3"
-        app:layout_constraintEnd_toStartOf="@+id/guideline2" />
-
 
     <TextView
         android:id="@+id/textView_ProfileScreen_interest1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
-        android:layout_marginBottom="32dp"
         android:layout_marginStart="16dp"
         android:text="TextView"
-        app:layout_constraintBottom_toTopOf="@+id/textView_ProfileScreen_interest2"
+        android:textColor="@color/blackColor"
+        android:textSize="18sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/textView_ProfileScreen_interest4"
         app:layout_constraintStart_toStartOf="@+id/guideline" />
-
 
     <TextView
         android:id="@+id/textView_ProfileScreen_interest2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
-        android:layout_marginBottom="32dp"
         android:layout_marginStart="16dp"
         android:text="TextView"
-        app:layout_constraintBottom_toTopOf="@+id/textView_ProfileScreen_interest3"
+        android:textColor="@color/blackColor"
+        android:textSize="18sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/textView_ProfileScreen_interest5"
         app:layout_constraintStart_toStartOf="@+id/guideline" />
 
     <TextView
         android:id="@+id/textView_ProfileScreen_interest3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
-        android:layout_marginBottom="64dp"
         android:layout_marginStart="16dp"
         android:text="TextView"
-        app:layout_constraintBottom_toTopOf="@+id/guideline3"
+        android:textColor="@color/blackColor"
+        android:textSize="18sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/textView_ProfileScreen_interest6"
         app:layout_constraintStart_toStartOf="@+id/guideline" />
 
+    <TextView
+        android:id="@+id/textView_ProfileScreen_interest4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="8dp"
+        android:text="TextView"
+        android:textColor="@color/blackColor"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline2"
+        app:layout_constraintTop_toTopOf="@+id/guideline27" />
+
+    <TextView
+        android:id="@+id/textView_ProfileScreen_interest5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="40dp"
+        android:text="TextView"
+        android:textColor="@color/blackColor"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline2"
+        app:layout_constraintTop_toBottomOf="@+id/textView_ProfileScreen_interest4" />
+
+    <TextView
+        android:id="@+id/textView_ProfileScreen_interest6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="40dp"
+        android:text="TextView"
+        android:textColor="@color/blackColor"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline2"
+        app:layout_constraintTop_toBottomOf="@+id/textView_ProfileScreen_interest5" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline"
@@ -136,7 +131,11 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="24dp"
+        android:background="@color/buttonColor"
         android:text="Save"
+        android:fontFamily="sans-serif"
+        android:textStyle="bold"
+        android:textColor="@color/blackColor"
         app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintTop_toTopOf="@+id/guideline3" />
 
@@ -146,8 +145,31 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="32dp"
         android:layout_marginTop="24dp"
+        android:background="@color/buttonColor"
         android:text="Cancel"
+        android:fontFamily="sans-serif"
+        android:textStyle="bold"
+        android:textColor="@color/blackColor"
         app:layout_constraintEnd_toStartOf="@+id/guideline2"
         app:layout_constraintTop_toTopOf="@+id/guideline3" />
+
+    <TextView
+        android:id="@+id/textView_ProfileScreen_deleteAccount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:text="Delete Account"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline2"
+        app:layout_constraintStart_toStartOf="@+id/guideline" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline27"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="173dp" />
 
 </android.support.constraint.ConstraintLayout>

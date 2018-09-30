@@ -37,11 +37,13 @@ public class CreateUser_UITest {
         onView(withId(R.id.editText_RegistrationActivity_password))
                 .perform(typeText(password));
         onView(withId(R.id.editText_RegistrationActivity_rePassword))
-                .perform(typeText(rePassword))
-                .perform(ViewActions.closeSoftKeyboard());
+                .perform(ViewActions.closeSoftKeyboard())
+                .perform(typeText(rePassword));
         onView(withId(R.id.button_RegistrationActivity_create))
+                .perform(ViewActions.closeSoftKeyboard())
                 .perform(click());
-        onView(isRoot()).perform(idleFor(100));
+        onView(isRoot()).perform(idleFor(5000));
+        onView(withId(R.id.button_InterestActivity_saveButton)).perform(click());
     }
 
     public static ViewAction idleFor(final long millisec) {
@@ -71,7 +73,7 @@ public class CreateUser_UITest {
     public void successUserCreate() throws Exception {
         passUserRegistrationUI("naufaladi10@gmail.com", "naufalAdi", "kappa123", "kappa123");
         onView(isRoot()).perform(idleFor(7000));
-        onView(withId(R.id.textView_InterestActivity_interest1))
+        onView(withId(R.id.button_HomeActivity_viewProfile))
                 .check(matches(isDisplayed()));
     }
 

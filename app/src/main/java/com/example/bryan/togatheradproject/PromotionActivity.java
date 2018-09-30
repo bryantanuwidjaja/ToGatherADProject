@@ -10,8 +10,8 @@ import android.content.Intent;
 
 import java.util.ArrayList;
 
-public class PromotionActivity extends AppCompatActivity {
-    private static final String TAG = "PromotionActivity";
+public class PromotionActivity extends AppCompatActivity{
+    private static final String TAG ="PromotionActivity";
     TextView textView_promotion;
     Button button_Return;
     ListView listView_promotion;
@@ -32,11 +32,11 @@ public class PromotionActivity extends AppCompatActivity {
         final Lobby lobby = (Lobby) intent.getSerializableExtra(Constants.LOBBY);
         final User user = (User) intent.getSerializableExtra(Constants.USER);
 
-        Promotion coffee1 = new Promotion("desc", "coffee", R.drawable.coffee);
+        Promotion coffee1 = new Promotion("desc" , "coffee", R.drawable.coffee);
         Promotion coffee2 = new Promotion("desc", "coffee", R.drawable.coffee2);
         Promotion hangout1 = new Promotion("desc", "Hang out", R.drawable.hangout);
-        Promotion hangout2 = new Promotion("desc", "Hang out", R.drawable.hangout2);
-        Promotion eatout1 = new Promotion("desc", "Eat out", R.drawable.eatout);
+        Promotion hangout2= new Promotion("desc" , "Hang out", R.drawable.hangout2);
+        Promotion eatout1 = new Promotion("desc", "Eat out" , R.drawable.eatout);
         Promotion eatout2 = new Promotion("desc", "Eat out", R.drawable.eatout2);
         Promotion study1 = new Promotion("desc", "study", R.drawable.study);
         Promotion study2 = new Promotion("desc", "study", R.drawable.study2);
@@ -50,7 +50,7 @@ public class PromotionActivity extends AppCompatActivity {
         Promotion sport2 = new Promotion("desc", "sports", R.drawable.sports2);
 
         String lobbyActivity = lobby.getActivity();
-        switch (lobbyActivity) {
+        switch(lobbyActivity){
             case "coffee":
                 promotionArrayList.add(coffee1);
                 promotionArrayList.add(coffee2);
@@ -90,12 +90,19 @@ public class PromotionActivity extends AppCompatActivity {
         button_Return.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                button_Return.setEnabled(false);
                 Intent intent = new Intent(getApplicationContext(), LobbyActivity.class);
                 intent.putExtra(Constants.USER, user);
                 intent.putExtra(Constants.LOBBY, lobby);
                 startActivity(intent);
+                finish();
             }
         });
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        button_Return.performClick();
+    }
 }

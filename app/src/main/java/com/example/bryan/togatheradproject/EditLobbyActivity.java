@@ -29,16 +29,7 @@ public class EditLobbyActivity extends AppCompatActivity {
         return 2 <= a && a <= 15;
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit_lobby);
-
-        //get intent
-        Intent intent = getIntent();
-        final User user = (User) intent.getSerializableExtra(Constants.USER);
-        final Lobby lobby = (Lobby) intent.getSerializableExtra(Constants.LOBBY);
-
+    protected void establish() {
         //initialise widget
         editText_description = findViewById(R.id.editText_EditLobbyActivity_description);
         editText_capacity = findViewById(R.id.editText_EditLobbyActivity_capacity);
@@ -47,6 +38,19 @@ public class EditLobbyActivity extends AppCompatActivity {
         radioGroup_lobbyType = findViewById(R.id.radioGroup_EditLobbyActivity_lobbyType);
         radioButton_privateLobby = findViewById(R.id.radioButton_EditLobbyActivity_privateLobby);
         radioButton_publicLobby = findViewById(R.id.radioButton_EditLobbyActivity_public);
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_edit_lobby);
+
+        //get intent
+        Intent intent = getIntent();
+        final User user =(User) intent.getSerializableExtra(Constants.USER);
+        final Lobby lobby = (Lobby) intent.getSerializableExtra(Constants.LOBBY);
+
+        establish();
 
         //set current data
         editText_description.setText(lobby.getLobbyDescriptions());
@@ -57,6 +61,7 @@ public class EditLobbyActivity extends AppCompatActivity {
         button_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                button_cancel.setEnabled(false);
                 Intent intent = new Intent(getApplicationContext(), LobbyActivity.class);
                 intent.putExtra(Constants.USER, user);
                 intent.putExtra(Constants.LOBBY, lobby);
@@ -68,6 +73,7 @@ public class EditLobbyActivity extends AppCompatActivity {
         button_save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                button_save.setEnabled(false);
                 if (validate() && checkCorrectCapacity(Integer.parseInt(editText_capacity.getText().toString()))) {
                     String newDesc = editText_description.getText().toString();
                     int newCapa = Integer.parseInt(editText_capacity.getText().toString());
@@ -92,6 +98,7 @@ public class EditLobbyActivity extends AppCompatActivity {
                                 }
                             });
                 } else {
+                    button_save.setEnabled(true);
                     Toast.makeText(EditLobbyActivity.this, "Could not edit room", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -102,36 +109,36 @@ public class EditLobbyActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         button_cancel.performClick();
-        button_cancel.setPressed(true);
-        button_cancel.invalidate();
-        button_cancel.setPressed(false);
-        button_cancel.invalidate();
+
     }
 
-    private boolean validate() {
-        if (editText_capacity.getText().toString().equals("") || editText_description.getText().toString().equals("")) {
-            Toast.makeText(getApplicationContext(), "Please fill the fields properly", Toast.LENGTH_SHORT).show();
+    private boolean validate(){
+        if(editText_capacity.getText().toString().equals("") || editText_description.getText().toString().equals("")) {
+            Toast.makeText(getApplicationContext(), "Please fill the fields properly" , Toast.LENGTH_SHORT).show();
             editText_description.setText("");
             editText_capacity.setText("");
             return false;
-        } else {
+        }
+        else{
             return true;
         }
     }
 
-    private void setCurrentRadioButton(boolean isPrivate) {
-        if (isPrivate) {
+    private void setCurrentRadioButton(boolean isPrivate){
+        if(isPrivate){
             radioButton_privateLobby.setChecked(true);
-        } else {
+        }
+        else{
             radioButton_publicLobby.setChecked(true);
         }
     }
 
-    private boolean getLobbyType() {
+    private boolean getLobbyType(){
         boolean isPrivate = true;
-        if (radioButton_privateLobby.isChecked()) {
+        if(radioButton_privateLobby.isChecked()){
             isPrivate = true;
-        } else if (radioButton_publicLobby.isChecked()) {
+        }
+        else if(radioButton_publicLobby.isChecked()){
             isPrivate = false;
         }
         return isPrivate;

@@ -13,6 +13,7 @@ public class Lobby implements Serializable {
     private String activity;
     private ArrayList<User> guestList;
     private String chatlogID;
+    private boolean privateLobby;
 
     public Lobby(String lobbyID,
                  String hostID,
@@ -21,7 +22,8 @@ public class Lobby implements Serializable {
                  String lobbyDescriptions,
                  String activity,
                  ArrayList<User> guestList,
-                 String chatlogID) {
+                 String chatlogID,
+                 boolean privateLobby) {
         this.lobbyID = lobbyID;
         this.hostID = hostID;
         this.capacity = capacity;
@@ -30,6 +32,7 @@ public class Lobby implements Serializable {
         this.activity = activity;
         this.guestList = guestList;
         this.chatlogID = chatlogID;
+        this.privateLobby = privateLobby;
     }
 
     public Lobby(){
@@ -106,5 +109,13 @@ public class Lobby implements Serializable {
 
     public void addGuest(User user) {
         guestList.add(user);
+    }
+
+    public boolean getPrivateLobby(){
+        return privateLobby;
+    }
+
+    public void setPrivateLobby(boolean privateLobby) {
+        this.privateLobby = privateLobby;
     }
 }

@@ -61,8 +61,10 @@ public class ProfileActivity extends AppCompatActivity implements EditProfileDia
     TextView textView_Interest4;
     TextView textView_Interest5;
     TextView textView_Interest6;
+    TextView textView_deleteAccount;
     Button button_save;
     Button button_cancel;
+
 
 
     public void updateInformation(String userID) {
@@ -134,17 +136,7 @@ public class ProfileActivity extends AppCompatActivity implements EditProfileDia
                 .update(Constants.USER_INTERESTS, interestList);
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_profile);
-
-        Intent intent = getIntent();
-        final String userID = intent.getStringExtra(Constants.USER_ID);
-        final User loggedUser = (User) intent.getSerializableExtra(Constants.USER);
-        FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
-        DocumentReference userRef = firebaseFirestore.collection(Constants.USER).document(userID);
-
+    protected void establish() {
         imageView_Image = findViewById(R.id.imageView_ProfileScreen_image);
         textView_Username = findViewById(R.id.textView_ProfileScreen_username);
 
@@ -154,10 +146,36 @@ public class ProfileActivity extends AppCompatActivity implements EditProfileDia
         textView_Interest4 = findViewById(R.id.textView_ProfileScreen_interest4);
         textView_Interest5 = findViewById(R.id.textView_ProfileScreen_interest5);
         textView_Interest6 = findViewById(R.id.textView_ProfileScreen_interest6);
+        textView_deleteAccount = findViewById(R.id.textView_ProfileScreen_deleteAccount);
         button_cancel = findViewById(R.id.button_ProfileScreen_cancelButton);
         button_save = findViewById(R.id.button_ProfileScreen_saveButton);
+    }
 
-        updateInformation(userID);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_profile);
+
+        Intent intent = getIntent();
+        final User loggedUser = (User) intent.getSerializableExtra(Constants.USER);
+        FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
+        DocumentReference userRef = firebaseFirestore.collection(Constants.USER).document(loggedUser.getUserID());
+
+        establish();
+
+        updateInformation(loggedUser.getUserID());
+
+        textView_deleteAccount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //show dialog
+                ConfirmDeleteDialog dialog = new ConfirmDeleteDialog();
+                Bundle bundle = new Bundle();
+                bundle.putSerializable(Constants.USER, loggedUser);
+                dialog.setArguments(bundle);
+                dialog.show(getFragmentManager(), "ConfirmDeleteDialog");
+            }
+        });
 
         textView_Interest1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -166,7 +184,7 @@ public class ProfileActivity extends AppCompatActivity implements EditProfileDia
                 pointer = 1;
                 EditProfileDialog dialog = new EditProfileDialog();
                 Bundle bundle = new Bundle();
-                bundle.putString(Constants.USER_ID, userID);
+                bundle.putSerializable(Constants.USER, loggedUser);
                 dialog.setArguments(bundle);
                 dialog.show(getFragmentManager(), "EditProfileDialog");
             }
@@ -179,7 +197,7 @@ public class ProfileActivity extends AppCompatActivity implements EditProfileDia
                 pointer = 2;
                 EditProfileDialog dialog = new EditProfileDialog();
                 Bundle bundle = new Bundle();
-                bundle.putString(Constants.USER_ID, userID);
+                bundle.putSerializable(Constants.USER, loggedUser);
                 dialog.setArguments(bundle);
                 dialog.show(getFragmentManager(), "EditProfileDialog");
             }
@@ -192,7 +210,7 @@ public class ProfileActivity extends AppCompatActivity implements EditProfileDia
                 pointer = 3;
                 EditProfileDialog dialog = new EditProfileDialog();
                 Bundle bundle = new Bundle();
-                bundle.putString(Constants.USER_ID, userID);
+                bundle.putSerializable(Constants.USER, loggedUser);
                 dialog.setArguments(bundle);
                 dialog.show(getFragmentManager(), "EditProfileDialog");
             }
@@ -205,7 +223,7 @@ public class ProfileActivity extends AppCompatActivity implements EditProfileDia
                 pointer = 4;
                 EditProfileDialog dialog = new EditProfileDialog();
                 Bundle bundle = new Bundle();
-                bundle.putString(Constants.USER_ID, userID);
+                bundle.putSerializable(Constants.USER, loggedUser);
                 dialog.setArguments(bundle);
                 dialog.show(getFragmentManager(), "EditProfileDialog");
             }
@@ -218,7 +236,7 @@ public class ProfileActivity extends AppCompatActivity implements EditProfileDia
                 pointer = 5;
                 EditProfileDialog dialog = new EditProfileDialog();
                 Bundle bundle = new Bundle();
-                bundle.putString(Constants.USER_ID, userID);
+                bundle.putSerializable(Constants.USER, loggedUser);
                 dialog.setArguments(bundle);
                 dialog.show(getFragmentManager(), "EditProfileDialog");
             }
@@ -231,7 +249,7 @@ public class ProfileActivity extends AppCompatActivity implements EditProfileDia
                 pointer = 6;
                 EditProfileDialog dialog = new EditProfileDialog();
                 Bundle bundle = new Bundle();
-                bundle.putString(Constants.USER_ID, userID);
+                bundle.putSerializable(Constants.USER, loggedUser);
                 dialog.setArguments(bundle);
                 dialog.show(getFragmentManager(), "EditProfileDialog");
             }
@@ -240,23 +258,31 @@ public class ProfileActivity extends AppCompatActivity implements EditProfileDia
         button_save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                updateDatabase(userID);
+                button_save.setEnabled(false);
+                updateDatabase(loggedUser.getUserID());
                 Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
-                intent.putExtra(Constants.USER_ID , userID);
+                intent.putExtra(Constants.USER, loggedUser);
+                button_save.invalidate();
                 startActivity(intent);
+                finish();
             }
         });
 
         button_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                button_cancel.setEnabled(false);
                 Intent intent = new Intent(getApplicationContext() , HomeActivity.class);
-                intent.putExtra(Constants.USER_ID, userID);
                 intent.putExtra(Constants.USER, loggedUser);
                 startActivity(intent);
+                finish();
             }
         });
     }
 
-
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        button_cancel.performClick();
+    }
 }

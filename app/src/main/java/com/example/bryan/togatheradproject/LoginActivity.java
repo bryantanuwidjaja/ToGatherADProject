@@ -33,8 +33,6 @@ public class LoginActivity extends AppCompatActivity {
     ImageView imageView_Image;
     EditText editText_InsertEmail;
     EditText editText_InsertPassword;
-    TextView textView_Email;
-    TextView textView_Password;
     TextView textView_Container;
 
     private FirebaseAuth mAuth;
@@ -54,11 +52,11 @@ public class LoginActivity extends AppCompatActivity {
                             Log.d(TAG, "userID - login : " + userID);
                             textView_Container.setText(userID);
                             Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
-                            intent.putExtra(Constants.USER_ID, userID );
                             intent.putExtra(Constants.USER, user);
                             Log.d(TAG, "User: " + user.getUserID());
                             Toast.makeText(getApplicationContext(), "Login Successful", Toast.LENGTH_SHORT).show();
                             startActivity(intent);
+                            finish();
                         }
                     }
                 });
@@ -81,6 +79,7 @@ public class LoginActivity extends AppCompatActivity {
                 }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
+                button_SignIn.setEnabled(true);
                 Log.e(TAG, "onFailure: Could not sign in user" + e);
                 Toast.makeText(getApplicationContext(), "Login Failed", Toast.LENGTH_SHORT).show();
             }
@@ -111,8 +110,6 @@ public class LoginActivity extends AppCompatActivity {
         imageView_Image = findViewById(R.id.imageView_LoginActivity_image);
         editText_InsertEmail = findViewById(R.id.editText_LoginActivity_insertEmail);
         editText_InsertPassword = findViewById(R.id.editText_LoginActivity_insertPassword);
-        textView_Email = findViewById(R.id.textView_LoginActivity_email);
-        textView_Password = findViewById(R.id.textView_LoginActivity_password);
         textView_Container = findViewById(R.id.textView_LoginActivity_container);
     }
     @Override
@@ -126,19 +123,24 @@ public class LoginActivity extends AppCompatActivity {
         button_SignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                button_SignIn.setEnabled(false);
                 try{
                 Log.d(TAG, "onClick: sign in - in ");
                 String email = editText_InsertEmail.getText().toString();
                 String password = editText_InsertPassword.getText().toString();
                 Log.d(TAG, "onClick: sign in - before login");
                 if (checkIfDataNotBlank(email,password)){
-                Login(email, password);}
+                Login(email, password);
+                button_SignIn.invalidate();
+                }
                 else{
                         clearEditTest();
                         Toast.makeText(LoginActivity.this, whyError, Toast.LENGTH_SHORT).show();
                         whyError = "";
+                    button_SignIn.setEnabled(true);
                     }}
                 catch (Exception e){
+                    button_SignIn.setEnabled(true);
                     Toast.makeText(LoginActivity.this, "Login Failed", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -147,10 +149,13 @@ public class LoginActivity extends AppCompatActivity {
         button_SignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                button_SignUp.setEnabled(false);
                 Log.d(TAG, "onClick: sign up - in");
                 Intent intent = new Intent(getApplicationContext(), RegistrationActivity.class);
                 Log.d(TAG, "onClick: sign up - before intent");
+                button_SignUp.invalidate();
                 startActivity(intent);
+                finish();
             }
         });
         Log.d(TAG, "onCreate: out");
@@ -166,5 +171,11 @@ public class LoginActivity extends AppCompatActivity {
         } else {
             Log.d(TAG, "onStart: current user = " + currentUser);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
     }
 }

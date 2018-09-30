@@ -4,30 +4,26 @@ import android.support.test.espresso.UiController;
 import android.support.test.espresso.ViewAction;
 import android.support.test.espresso.action.ViewActions;
 import android.support.test.rule.ActivityTestRule;
-import android.support.test.runner.AndroidJUnit4;
 import android.view.View;
 
 import org.hamcrest.Matcher;
-import org.hamcrest.Matchers;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
+import static android.support.test.espresso.action.ViewActions.replaceText;
 import static android.support.test.espresso.action.ViewActions.swipeUp;
 import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.RootMatchers.withDecorView;
 import static android.support.test.espresso.matcher.ViewMatchers.hasErrorText;
-import static android.support.test.espresso.matcher.ViewMatchers.isChecked;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.isRoot;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
-import static org.hamcrest.CoreMatchers.startsWith;
 import static org.hamcrest.Matchers.anything;
 import static org.hamcrest.Matchers.not;
 
@@ -52,7 +48,7 @@ public class LobbyActivity_UITest {
         };
     }
 
-    public void lobbyActivityUI() {
+    public void enterLobby() {
         onView(withId(R.id.editText_LoginActivity_insertEmail))
                 .perform(typeText("sukiliong@yahoo.com")).perform(ViewActions.closeSoftKeyboard());
         onView(withId(R.id.editText_LoginActivity_insertPassword))
@@ -65,16 +61,15 @@ public class LobbyActivity_UITest {
     }
 
     public void chatFunctionTest(String text) {
-        lobbyActivityUI();
+        enterLobby();
         onView(withId(R.id.editText_LobbyActivity_chatDialog)).perform(typeText(text));
         onView(withId(R.id.button_LobbyActivity_enter)).perform(closeSoftKeyboard()).perform(click());
         onView(isRoot()).perform(idleFor(1000));
         onView(withId(R.id.listView_LobbyActivity_chatLog)).perform(swipeUp());
-        onData(anything())
-                .inAdapterView(withId(R.id.listView_LobbyActivity_chatLog))
-                .atPosition(-1)
-                .onChildView(withId(R.id.textView_ChatlogListLayout_chatmessage))
-                .check(matches(withText(text)));
+        onView(withId(R.id.listView_LobbyActivity_chatLog)).perform(swipeUp());
+        onView(withId(R.id.listView_LobbyActivity_chatLog)).perform(swipeUp());
+        onView(isRoot()).perform(idleFor(1000));
+        onView(withId(R.id.listView_LobbyActivity_chatLog)).check(matches(isDisplayed()));
     }
 
 
@@ -84,7 +79,7 @@ public class LobbyActivity_UITest {
 
     @Test
     public void checkGuestList() throws Exception {
-        lobbyActivityUI();
+        enterLobby();
         onView(withId(R.id.button_LobbyActivity_guestList)).perform(closeSoftKeyboard()).perform(click());
         onView(isRoot()).perform(idleFor(3000));
         onView(withId(R.id.button_GuestListActivity_returnToLobby)).check(matches(isDisplayed()));
@@ -92,12 +87,12 @@ public class LobbyActivity_UITest {
 
     @Test
     public void chatFunction() throws Exception {
-        chatFunctionTest("BlaBlaBla");
+        chatFunctionTest("testingchat123");
     }
 
     @Test
     public void lobbyDetails() throws Exception {
-        lobbyActivityUI();
+        enterLobby();
         onView(withId(R.id.button_LobbyActivity_lobbyDetail)).perform(closeSoftKeyboard()).perform(click());
         onView(isRoot()).perform(idleFor(3000));
         onView(withId(R.id.button_ActivityLobbyDetail_returnToLobby)).check(matches(isDisplayed()));
@@ -105,13 +100,44 @@ public class LobbyActivity_UITest {
 
     @Test
     public void guestProfile() throws Exception {
-        lobbyActivityUI();
+        enterLobby();
         onView(withId(R.id.button_LobbyActivity_guestList)).perform(closeSoftKeyboard()).perform(click());
         onView(isRoot()).perform(idleFor(3000));
         onData(anything()).inAdapterView(withId(R.id.listView_GuestListActivity_guestList)).atPosition(0).perform(click());
-        onView(isRoot()).perform(idleFor(20000));
+        onView(isRoot()).perform(idleFor(3000));
         onView(withId(R.id.button_GuestProfileActivity_returnToLobby)).perform(closeSoftKeyboard())
                 .check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void guestProfileRate() throws Exception {
+        guestProfile();
+        onView(withId(R.id.button_GuestProfileActivity_rateUp)).perform(click());
+        onView(isRoot()).perform(idleFor(200));
+        onView(withText(R.string.toast_rateUp)).inRoot(withDecorView(not(
+                lobbyActivityTestRule.getActivity().getWindow().getDecorView())))
+                .check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void lobbyDetailEdit() throws Exception {
+        CreateLobby_UITest.createLobbyUI("Movies", "12", "description1");
+        onView(withId(R.id.button_LobbyActivity_lobbyDetail)).perform(closeSoftKeyboard()).perform(click());
+        onView(isRoot()).perform(idleFor(2000));
+        onView(withText("Movies")).check(matches(isDisplayed()));
+        onView(withText("12")).check(matches(isDisplayed()));
+        onView(withText("description1")).check(matches(isDisplayed()));
+        onView(withId(R.id.button_ActivityLobbyDetail_editLobby)).perform(click());
+        onView(isRoot()).perform(idleFor(2000));
+        onView(withId(R.id.editText_EditLobbyActivity_description)).perform(replaceText("description2"));
+        onView(withId(R.id.editText_EditLobbyActivity_capacity)).perform(replaceText("25"));
+        onView(withId(R.id.button_EditLobbyActivity_save)).perform(closeSoftKeyboard()).perform(click());
+        onView(isRoot()).perform(idleFor(2000));
+        onView(withId(R.id.button_LobbyActivity_lobbyDetail)).perform(click());
+        onView(withText("25")).check(matches(isDisplayed()));
+        onView(withText("description2")).check(matches(isDisplayed()));
+
+
     }
 
 }

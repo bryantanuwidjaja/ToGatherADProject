@@ -17,18 +17,23 @@ public class LobbyDetailActivity extends AppCompatActivity {
 
     private static final String TAG = "LobbyDetailActivity";
 
-    private String userID;
-    private String lobbyID;
-    private String chatlogID;
-
     private TextView textView_activity;
     private TextView textView_maximumCapacity;
     private TextView textView_host;
     private TextView textView_description;
     private TextView textView_location;
     private Button button_returnToLobby;
+    private Button button_editLobby;
 
-
+    protected void establish() {
+        textView_activity = findViewById(R.id.textView_ActivityLobbyDetail_activity);
+        textView_maximumCapacity = findViewById(R.id.textView_ActivityLobbyDetail_maximumCapacity);
+        textView_host = findViewById(R.id.textView_ActivityLobbyDetail_host);
+        textView_description = findViewById(R.id.textView_ActivityLobbyDetail_description);
+        textView_location = findViewById(R.id.textView_ActivityLobbyDetail_location);
+        button_returnToLobby = findViewById(R.id.button_ActivityLobbyDetail_returnToLobby);
+        button_editLobby = findViewById(R.id.button_ActivityLobbyDetail_editLobby);
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -36,38 +41,65 @@ public class LobbyDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_lobby_detail);
 
         Intent intent = getIntent();
-        userID = intent.getStringExtra(Constants.USER_ID);
-        lobbyID = intent.getStringExtra(Constants.LOBBY_ID);
-        chatlogID = intent.getStringExtra(Constants.LOBBY_CHATLOG_ID);
         final Lobby lobby = (Lobby) intent.getSerializableExtra(Constants.LOBBY);
         final User user = (User) intent.getSerializableExtra(Constants.USER);
-        Log.d(TAG, "userID : " + userID);
-        Log.d(TAG, "lobbyID : " + lobbyID);
+        Log.d(TAG, "userID : " + user.getUserID());
+        Log.d(TAG, "lobbyID : " + lobby.getLobbyID());
 
-        textView_activity = findViewById(R.id.textView_ActivityLobbyDetail_activity);
-        textView_maximumCapacity = findViewById(R.id.textView_ActivityLobbyDetail_maximumCapacity);
-        textView_host = findViewById(R.id.textView_ActivityLobbyDetail_host);
-        textView_description = findViewById(R.id.textView_ActivityLobbyDetail_description);
-        textView_location = findViewById(R.id.textView_ActivityLobbyDetail_location);
-        button_returnToLobby = findViewById(R.id.button_ActivityLobbyDetail_returnToLobby);
+        establish();
 
-        queryInformation(lobbyID);
+        queryInformation(lobby.getLobbyID());
 
         String hostID = textView_host.getText().toString();
         Log.d(TAG, "hostID : " + hostID);
 
+        if(checkHost(user, lobby)){
+            button_editLobby.setVisibility(View.VISIBLE);
+            button_editLobby.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    button_editLobby.setEnabled(false);
+                    Intent intent = new Intent(getApplicationContext(), EditLobbyActivity.class);
+                    intent.putExtra(Constants.LOBBY, lobby);
+                    intent.putExtra(Constants.USER, user);
+                    startActivity(intent);
+                    finish();
+                }
+            });
+        }
+        else{
+            button_editLobby.setVisibility(View.INVISIBLE);
+            button_editLobby.setClickable(false);
+        }
+
         button_returnToLobby.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                button_returnToLobby.setEnabled(false);
                 Intent intent = new Intent(getApplicationContext(), LobbyActivity.class);
-                intent.putExtra(Constants.USER_ID, userID);
-                intent.putExtra(Constants.LOBBY_ID, lobbyID);
                 intent.putExtra(Constants.USER, user);
                 intent.putExtra(Constants.LOBBY, lobby);
-                intent.putExtra(Constants.LOBBY_CHATLOG_ID, chatlogID);
                 startActivity(intent);
+                finish();
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        button_returnToLobby.performClick();
+    }
+
+    private boolean checkHost(User user, Lobby lobby){
+        String hostID = lobby.getHostID();
+        String userID = user.getUserID();
+        if(hostID.equals(userID)){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 
     private void queryInformation(final String lobbyID) {
@@ -96,5 +128,3 @@ public class LobbyDetailActivity extends AppCompatActivity {
                 });
     }
 }
-
-

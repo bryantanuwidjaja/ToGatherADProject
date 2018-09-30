@@ -10,7 +10,6 @@ import android.os.Handler;
 import android.os.ResultReceiver;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
-import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -18,32 +17,29 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.ProgressBar;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.protobuf.Any;
 
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.UUID;
 
-public class CreateLobbyActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+public class CreateLobbyActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
 
     private static final int REQUEST_PERMISSIONS_REQUEST_CODE = 34;
     private static final String TAG = "CreateLobbyActivity";
@@ -55,12 +51,14 @@ public class CreateLobbyActivity extends AppCompatActivity implements AdapterVie
     private String mAddressOutput;
     private AddressResultReceiver mResultReceiver;
     private TextView mLocationAddressTextView;
-    private Button mFetchAddressButton;
     private EditText editText_Capacity;
     private EditText editText_Description;
     private Button button_Create;
     private Button button_Cancel;
-
+    private RadioGroup radioGroup_lobbyType;
+    private RadioButton radioButton_private;
+    private RadioButton radioButton_public;
+    boolean isPrivate = false;
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -78,20 +76,41 @@ public class CreateLobbyActivity extends AppCompatActivity implements AdapterVie
         editText_Description = findViewById(R.id.editText_CreateLobbyActivity_description);
         button_Create = findViewById(R.id.button_CreateLobbyActivity_create);
         button_Cancel = findViewById(R.id.button_CreateLobbyActivity_cancel);
-        mLocationAddressTextView = (TextView) findViewById(R.id.textView_CreateLobbyActivity_address);
-        mFetchAddressButton = (Button) findViewById(R.id.button_CreateLobbyActivity_fetch);
+        mLocationAddressTextView = findViewById(R.id.textView_CreateLobbyActivity_address);
+        radioGroup_lobbyType = findViewById(R.id.radioGroup_CreateLobbyActivity_lobbyType);
+        radioButton_private = findViewById(R.id.radioButton_CreateLobbyActivity_private);
+        radioButton_public = findViewById(R.id.radioButton_CreateLobbyActivity_public);
     }
 
     private String whyError = "";
 
-    protected boolean checkIfDataNotBlank(String capacity,String description, String location){
+    protected boolean checkIfDataNotBlank(String capacity, String description) {
         boolean result = true;
-        if (capacity.equals("") || description.equals("") || location.equals("")) {
+        if (capacity.equals("") || description.equals("")) {
             whyError = "Please fill all of the fields properly ";
             result = false;
         }
         return result;
     }
+
+    protected boolean checkIfLocationisThere(String location) {
+        boolean result = true;
+        if (location.equals("")) {
+            whyError = "GPS Error, could not create room";
+            result = false;
+        }
+        return result;
+    }
+
+    protected boolean checkCorrectCapacity(int a) {
+        boolean result = true;
+        if (!(2 <= a && a <= 15)) {
+            whyError = "Capacity Error, could not create room";
+            result = false;
+        }
+        return result;
+    }
+
 
     protected void clearEditTest(){
         editText_Capacity.setText("");
@@ -104,9 +123,8 @@ public class CreateLobbyActivity extends AppCompatActivity implements AdapterVie
         setContentView(R.layout.activity_create_lobby);
 
         Intent intent = getIntent();
-        final String userID = intent.getStringExtra(Constants.USER_ID);
         final User user = (User) intent.getSerializableExtra(Constants.USER);
-        Log.d(TAG, "CreateLobby - Logged user : " + userID);
+        Log.d(TAG, "CreateLobby - Logged user : " + user.getUserID());
 
         establish();
 
@@ -116,35 +134,53 @@ public class CreateLobbyActivity extends AppCompatActivity implements AdapterVie
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(this);
 
+
         mResultReceiver = new AddressResultReceiver(new Handler());
         mAddressRequested = false;
         mAddressOutput = "";
         updateValuesFromBundle(savedInstanceState);
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-        updateUIWidgets();
 
+        fetchAddressButtonHandler2();
 
         button_Create.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                button_Create.setEnabled(false);
                 String description = editText_Description.getText().toString();
                 String temp_Capacity = editText_Capacity.getText().toString();
+                int capacity = 1;
+                try{
+                    capacity = (Integer.parseInt(temp_Capacity));
+                }
+                catch (NumberFormatException e)
+                {
+                    whyError = "Please fill the fields properly";
+                }
                 String activity = spinner.getSelectedItem().toString();
+                isPrivate = getLobbyType();
                 ArrayList<User> guestList = new ArrayList<>();
                 Log.d(TAG, "user = " + guestList);
 
-                if (checkIfDataNotBlank(temp_Capacity, description, mAddressOutput)) {
+                if (checkCorrectCapacity(capacity) && checkIfLocationisThere(mAddressOutput) && checkIfDataNotBlank(temp_Capacity, description)) {
                     final String lobbyID = UUID.randomUUID().toString();
-                    int capacity = (Integer.parseInt(temp_Capacity));
                     final String chatlogID = UUID.randomUUID().toString();
-                    final Lobby lobby = new Lobby(lobbyID, userID, capacity, mAddressOutput, description, activity, guestList, chatlogID);
+                    final String[] output = mAddressOutput.split(",");
+                    String address = "";
+                    for (int i = 0; i < output.length - 1; i++) {
+                        address += output[i];
+                        if (i < output.length - 2) {
+                            address += ",";
+                        }
+                    }
+                    final Lobby lobby = new Lobby(lobbyID, user.getUserID(), capacity, address, description, activity, guestList, chatlogID, isPrivate);
 
                     FirebaseFirestore.getInstance().collection(Constants.LOBBY)
                             .document(lobbyID)
                             .set(lobby)
-                            .addOnSuccessListener(new OnSuccessListener() {
+                            .addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
-                                public void onSuccess(Object o) {
+                                public void onComplete(@NonNull Task<Void> task) {
                                     //create an empty chat instance
                                     Chat chat = new Chat();
 
@@ -162,25 +198,26 @@ public class CreateLobbyActivity extends AppCompatActivity implements AdapterVie
 
                                     //create the intent along and pass the relevant information
                                     Intent intent = new Intent(getApplicationContext(), LobbyActivity.class);
-                                    intent.putExtra(Constants.USER_ID, userID);
-                                    intent.putExtra(Constants.LOBBY_ID, lobbyID);
+                                    intent.putExtra(Constants.LOBBY, lobby);
                                     intent.putExtra(Constants.USER, user);
-                                    intent.putExtra(Constants.LOBBY_CHATLOG_ID, chatlogID);
                                     startActivity(intent);
+                                    finish();
+                                    button_Create.invalidate();
                                 }
-                            })
-                            .addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Log.e(TAG, "onFailure: Could not create lobby " + e);
-                                }
-                            });
+                            }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.e(TAG, "onFailure: Could not create lobby " + e);
+                        }
+                    });
                 }
                 else{
                     clearEditTest();
                     Toast.makeText(CreateLobbyActivity.this, whyError, Toast.LENGTH_SHORT).show();
                     whyError = "";
+                    button_Create.setEnabled(true);
                 }
+
             }
         });
 
@@ -188,9 +225,12 @@ public class CreateLobbyActivity extends AppCompatActivity implements AdapterVie
         button_Cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                button_Cancel.setEnabled(false);
                 Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
-                intent.putExtra(Constants.USER_ID, userID);
+                intent.putExtra(Constants.USER, user);
+                Toast.makeText(CreateLobbyActivity.this, "Lobby creation cancelled", Toast.LENGTH_SHORT).show();
                 startActivity(intent);
+                finish();
             }
         });
     }
@@ -206,6 +246,24 @@ public class CreateLobbyActivity extends AppCompatActivity implements AdapterVie
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        button_Cancel.performClick();
+    }
+
+
+    private boolean getLobbyType(){
+        boolean isPrivate = false;
+        if(radioButton_private.isChecked()){
+            isPrivate = true;
+        }
+        else if (radioButton_public.isChecked()){
+            isPrivate = false;
+        }
+        return isPrivate;
+    }
+
     private void updateValuesFromBundle(Bundle savedInstanceState) {
         if (savedInstanceState != null) {
             if (savedInstanceState.keySet().contains(ADDRESS_REQUESTED_KEY)) {
@@ -219,13 +277,12 @@ public class CreateLobbyActivity extends AppCompatActivity implements AdapterVie
     }
 
     @SuppressWarnings("unused")
-    public void fetchAddressButtonHandler(View view) {
+    public void fetchAddressButtonHandler2() {
         if (mLastLocation != null) {
             startIntentService();
             return;
         }
         mAddressRequested = true;
-        updateUIWidgets();
     }
 
     private void startIntentService() {
@@ -267,13 +324,6 @@ public class CreateLobbyActivity extends AppCompatActivity implements AdapterVie
         mLocationAddressTextView.setText(mAddressOutput);
     }
 
-    private void updateUIWidgets() {
-        if (mAddressRequested) {
-            mFetchAddressButton.setEnabled(false);
-        } else {
-            mFetchAddressButton.setEnabled(true);
-        }
-    }
 
     private void showToast(String text) {
         Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
@@ -299,7 +349,6 @@ public class CreateLobbyActivity extends AppCompatActivity implements AdapterVie
                 showToast(getString(R.string.address_found));
             }
             mAddressRequested = false;
-            updateUIWidgets();
         }
     }
 

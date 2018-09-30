@@ -58,8 +58,8 @@ public class FetchAddress_UITest {
     public void passFetchAddressUI() throws Exception {
         onView(withId(R.id.button_HomeActivity_createLobby))
                 .perform(click());
-        onView(withId(R.id.button_CreateLobbyActivity_fetch))
-                .perform(click());
+//        onView(withId(R.id.button_CreateLobbyActivity_fetch))
+//                .perform(click());
         onView(withText(R.string.toast_successFetchAddress)).inRoot(withDecorView(not(
                 fetchAddressActivityTestRule.getActivity().getWindow().getDecorView())))
                 .check(matches(isDisplayed()));
@@ -75,7 +75,7 @@ public class FetchAddress_UITest {
         onView(withId(R.id.spinnerActivities))
                 .perform(click());
         onView(isRoot()).perform(idleFor(100));
-        onData(allOf(is(instanceOf(String.class)), is("Coffee")))
+        onData(allOf(is(instanceOf(String.class)), is("coffee")))
                 .perform(click());
         onView(withId(R.id.editText_CreateLobbyActivity_capacity))
                 .perform(typeText("20"));
