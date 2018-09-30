@@ -96,7 +96,7 @@ public class LobbyActivity extends AppCompatActivity {
         establish();
 
         //assign the proper icon for the activity
-        switch (activity){
+        switch (activity) {
             case "Coffee":
                 imageView_activityIcon.setImageResource(R.drawable.ic_activity_coffee);
                 break;
@@ -148,21 +148,20 @@ public class LobbyActivity extends AppCompatActivity {
                             Log.w(TAG, "Listen failed: ", e);
                             return;
                         }
-                            if (queryDocumentSnapshots != null && !queryDocumentSnapshots.isEmpty()) {
-                                Log.d(TAG, "current data " + queryDocumentSnapshots.getDocuments());
-                                readData(lobby, new FirestoreCallback() {
-                                    @Override
-                                    public void onCallBack(Chatlog chatlog) {
-                                        try {
-                                            chatlogList = chatlog.getChatlog();
-                                            Log.d(TAG, "onCallBack real time: " + chatlogList.toString());
-                                        }
-                                        catch (NullPointerException e1){
-                                            Log.d(TAG, "null chatlog");
-                                        }
+                        if (queryDocumentSnapshots != null && !queryDocumentSnapshots.isEmpty()) {
+                            Log.d(TAG, "current data " + queryDocumentSnapshots.getDocuments());
+                            readData(lobby, new FirestoreCallback() {
+                                @Override
+                                public void onCallBack(Chatlog chatlog) {
+                                    try {
+                                        chatlogList = chatlog.getChatlog();
+                                        Log.d(TAG, "onCallBack real time: " + chatlogList.toString());
+                                    } catch (NullPointerException e1) {
+                                        Log.d(TAG, "null chatlog");
                                     }
-                                });
-                            }
+                                }
+                            });
+                        }
                         }
                 });
 
@@ -271,22 +270,21 @@ public class LobbyActivity extends AppCompatActivity {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots,
                                         @Nullable FirebaseFirestoreException e) {
-                            for (Request request : queryDocumentSnapshots.toObjects(Request.class)) {
-                                Log.d(TAG, "for in ");
-                                if (lobby.getHostID().equals(user.getUserID()) && request.getState().equals(Constants.WAITING)) {
-                                    //inflate dialog fragment
-                                    Log.d(TAG, "if - in ");
-                                    RespondRequestDialog dialog = new RespondRequestDialog();
-                                    Bundle bundle = new Bundle();
-                                    bundle.putSerializable(Constants.LOBBY_REQUEST, request);
-                                    bundle.putSerializable(Constants.LOBBY, lobby);
-                                    dialog.setArguments(bundle);
-                                    dialog.show(getFragmentManager(), "RespondRequestDialog");
-                                }
-                                else{
-                                    Log.d(TAG, "buffer");
-                                }
+                        for (Request request : queryDocumentSnapshots.toObjects(Request.class)) {
+                            Log.d(TAG, "for in ");
+                            if (lobby.getHostID().equals(user.getUserID()) && request.getState().equals(Constants.WAITING)) {
+                                //inflate dialog fragment
+                                Log.d(TAG, "if - in ");
+                                RespondRequestDialog dialog = new RespondRequestDialog();
+                                Bundle bundle = new Bundle();
+                                bundle.putSerializable(Constants.LOBBY_REQUEST, request);
+                                bundle.putSerializable(Constants.LOBBY, lobby);
+                                dialog.setArguments(bundle);
+                                dialog.show(getFragmentManager(), "RespondRequestDialog");
+                            } else {
+                                Log.d(TAG, "buffer");
                             }
+                        }
                     }
                 });
 
@@ -333,7 +331,7 @@ public class LobbyActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        if(clickIndicator == 0) {
+        if (clickIndicator == 0) {
             Intent intent = getIntent();
             final User user = (User) intent.getSerializableExtra(Constants.USER);
             final Lobby lobby = (Lobby) intent.getSerializableExtra(Constants.LOBBY);
@@ -348,7 +346,7 @@ public class LobbyActivity extends AppCompatActivity {
         Intent intent = getIntent();
         final User user = (User) intent.getSerializableExtra(Constants.USER);
         Intent restartIntent = new Intent(getApplicationContext(), HomeActivity.class);
-        restartIntent.putExtra(Constants.USER, user );
+        restartIntent.putExtra(Constants.USER, user);
         startActivity(restartIntent);
     }
 
@@ -412,7 +410,7 @@ public class LobbyActivity extends AppCompatActivity {
         intent.putExtra(Constants.USER, user);
         startActivity(intent);
     }
-    
+
     private void updateDatabase(User user, Lobby lobby) {
         FirebaseFirestore.getInstance().collection(Constants.LOBBY)
                 .document(lobby.getLobbyID())
@@ -464,7 +462,7 @@ public class LobbyActivity extends AppCompatActivity {
         isEmpty(lobby, new BooleanCallback() {
             @Override
             public void onCallBack(Boolean isEmpty) {
-                if(isEmpty){
+                if (isEmpty) {
                     deleteLobby(lobby, user);
                 }
             }
@@ -535,7 +533,7 @@ public class LobbyActivity extends AppCompatActivity {
                 });
     }
 
-    private void getGuestList(Lobby lobby, final GuestListCallback guestListCallback){
+    private void getGuestList(Lobby lobby, final GuestListCallback guestListCallback) {
         FirebaseFirestore.getInstance().collection(Constants.LOBBY)
                 .document(lobby.getLobbyID())
                 .collection(Constants.LOBBY_GUESTLIST)
@@ -562,7 +560,7 @@ public class LobbyActivity extends AppCompatActivity {
         void onCallBack(Chatlog chatlog);
     }
 
-    private interface GuestListCallback{
+    private interface GuestListCallback {
         void onCallBack(ArrayList<User> guestList);
     }
 }

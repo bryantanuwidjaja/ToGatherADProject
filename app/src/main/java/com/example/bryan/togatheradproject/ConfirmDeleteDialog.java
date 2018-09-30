@@ -27,7 +27,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 
-public class ConfirmDeleteDialog extends DialogFragment{
+public class ConfirmDeleteDialog extends DialogFragment {
     private static final String TAG = "ConfirmDeleteDialog";
 
     FragmentManager fragmentManager;
@@ -60,7 +60,7 @@ public class ConfirmDeleteDialog extends DialogFragment{
             @Override
             public void onClick(View v) {
                 String confirmText = editText_confirmation.getText().toString();
-                if(confirmText.equals("CONFIRM")){
+                if (confirmText.equals("CONFIRM")) {
                     //delete account
                     FirebaseFirestore.getInstance().collection(Constants.USER)
                             .document(user.getUserID())
@@ -73,13 +73,12 @@ public class ConfirmDeleteDialog extends DialogFragment{
                             });
                     FirebaseAuth.getInstance().getCurrentUser().delete();
                     button_delete.invalidate();
-                    Toast.makeText(getActivity(), "User Deleted" , Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "User Deleted", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(getActivity(), LoginActivity.class);
                     startActivity(intent);
-                }
-                else{
+                } else {
                     editText_confirmation.setText("");
-                    Toast.makeText(getActivity(), "Please enter the confirmation properly" , Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Please enter the confirmation properly", Toast.LENGTH_SHORT).show();
                 }
             }
         });

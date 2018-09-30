@@ -72,7 +72,7 @@ public class Chat {
         this.time = time;
     }
 
-    protected Chat rehostChat(User user){
+    protected Chat rehostChat(User user) {
         String chatMessage = " is the new host";
         Date date = new Date();
         Calendar calendar = GregorianCalendar.getInstance();

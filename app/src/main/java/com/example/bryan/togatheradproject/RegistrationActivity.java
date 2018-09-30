@@ -183,7 +183,7 @@ public class RegistrationActivity extends AppCompatActivity {
         //initialise widget
         establish();
 
-        button_Create.setOnClickListener( new View.OnClickListener() {
+        button_Create.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 button_Create.setEnabled(false);
@@ -242,20 +242,19 @@ public class RegistrationActivity extends AppCompatActivity {
         button_Cancel.invalidate();
     }
 
-    private boolean validate(String regisEmail, String regisName, String regisPassword , String regisRePassword){
+    private boolean validate(String regisEmail, String regisName, String regisPassword, String regisRePassword) {
         if (checkIfDataNotBlank(regisEmail, regisName, regisPassword, regisRePassword)
                 && checkEmailValidity(regisEmail)
                 && checkIfPasswordSame(regisPassword, regisRePassword)
                 && checkIfPasswordValid(regisPassword)
                 && checkUserValidity(regisName)) {
             return true;
-        }
-        else{
+        } else {
             return false;
         }
     }
 
-    private void addUserToDatabase(final String uid , final User newUser){
+    private void addUserToDatabase(final String uid, final User newUser) {
         FirebaseFirestore.getInstance().collection(Constants.USER).document(uid).set(newUser)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override

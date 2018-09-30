@@ -50,10 +50,9 @@ public class LobbyList extends ArrayAdapter<Lobby> {
         textView_Capacity.setText(String.valueOf(lobby.getCapacity()));
         textView_Location.setText(lobby.getLocation());
         textView_Activity.setText(lobby.getActivity());
-        if(lobby.getPrivateLobby()){
+        if (lobby.getPrivateLobby()) {
             textView_LobbyType.setText("Private");
-        }
-        else{
+        } else {
             textView_LobbyType.setText("Public");
         }
 
@@ -67,11 +66,11 @@ public class LobbyList extends ArrayAdapter<Lobby> {
         return listViewItem;
     }
 
-    private interface CapacityCallback{
+    private interface CapacityCallback {
         void onCallback(ArrayList<User> guestList);
     }
 
-    private void getCapacity(Lobby lobby, final CapacityCallback capacityCallback){
+    private void getCapacity(Lobby lobby, final CapacityCallback capacityCallback) {
         final ArrayList<User> guestList = new ArrayList<>();
         FirebaseFirestore.getInstance().collection(Constants.LOBBY)
                 .document(lobby.getLobbyID())

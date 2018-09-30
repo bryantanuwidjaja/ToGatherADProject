@@ -43,8 +43,7 @@ public class InterestActivity extends AppCompatActivity implements EditProfileDi
         Log.d(TAG, "sendInput: " + input);
         if(inputContainerSize<= 6) {
             inputContainer.add(input);
-        }
-        else{
+        } else {
             Toast.makeText(this,"Interest full", Toast.LENGTH_SHORT).show();
         }
 
@@ -89,20 +88,20 @@ public class InterestActivity extends AppCompatActivity implements EditProfileDi
             }
     }
 
-        @Override
-        protected void onStart () {
-            super.onStart();
-            Log.d(TAG, "onStart: in");
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.d(TAG, "onStart: in");
 
-            Log.d(TAG, "onStart: out");
-        }
+        Log.d(TAG, "onStart: out");
+    }
 
-        @Override
-        protected void onResume () {
-            super.onResume();
-            Log.d(TAG, "onResume: in");
-            Log.d(TAG, "onResume: out");
-        }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d(TAG, "onResume: in");
+        Log.d(TAG, "onResume: out");
+    }
 
     protected void establish() {
         button_SaveButton = findViewById(R.id.button_InterestActivity_saveButton);

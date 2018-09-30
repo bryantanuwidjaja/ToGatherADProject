@@ -62,7 +62,7 @@ public class HomeActivity extends AppCompatActivity {
                 });
 
         lobbyCleaner = FirebaseFirestore.getInstance().collection(Constants.LOBBY)
-                .whereEqualTo(Constants.LOBBY_ID ,null)
+                .whereEqualTo(Constants.LOBBY_ID, null)
                 .addSnapshotListener(this, new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots,
@@ -133,7 +133,7 @@ public class HomeActivity extends AppCompatActivity {
                 String chatlogID = lobby.getChatlogID();
 
                 //lobby type constraint
-                if(lobby.getPrivateLobby()==true){
+                if (lobby.getPrivateLobby() == true) {
                     //create a join request
                     String state = Constants.WAITING;
                     Request request = new Request(user.getUserID(), user, state);
@@ -154,7 +154,7 @@ public class HomeActivity extends AppCompatActivity {
                     dialog.show(getFragmentManager(), "RequestTimerDialog");
 
                     //listen to
-                }else if (lobby.getPrivateLobby()== false){
+                } else if (lobby.getPrivateLobby() == false) {
                     //retrieve current chat log
                     retrieveChatLog(lobbyID, chatlogID, user, lobby);
                 }
@@ -265,7 +265,7 @@ public class HomeActivity extends AppCompatActivity {
         final User user = (User) intent.getSerializableExtra(Constants.USER);
 
         backCounter++;
-        if(backCounter == 1) {
+        if (backCounter == 1) {
             Toast.makeText(getApplicationContext(), "Press back again to log out", Toast.LENGTH_SHORT).show();
         } else if (backCounter == 2) {
             //sign out
