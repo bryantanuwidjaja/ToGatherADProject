@@ -333,7 +333,7 @@ public class LobbyActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        if(clickIndicator == 0) {
+        if(clickIndicator == 0 || backCounter >= 2) {
             Intent intent = getIntent();
             final User user = (User) intent.getSerializableExtra(Constants.USER);
             final Lobby lobby = (Lobby) intent.getSerializableExtra(Constants.LOBBY);
@@ -361,7 +361,7 @@ public class LobbyActivity extends AppCompatActivity {
         backCounter++;
         if (backCounter == 1) {
             Toast.makeText(getApplicationContext(), "Press back again to leave the room", Toast.LENGTH_SHORT).show();
-        } else if (backCounter == 2) {
+        } else if (backCounter >= 2) {
             Log.d(TAG, "backCounter : " + backCounter);
             //leave room
             onStop();

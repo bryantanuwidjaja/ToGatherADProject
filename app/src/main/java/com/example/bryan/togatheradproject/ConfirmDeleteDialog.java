@@ -76,6 +76,7 @@ public class ConfirmDeleteDialog extends DialogFragment{
                     Toast.makeText(getActivity(), "User Deleted" , Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(getActivity(), LoginActivity.class);
                     startActivity(intent);
+                    getActivity().finish();
                 }
                 else{
                     editText_confirmation.setText("");
@@ -91,6 +92,7 @@ public class ConfirmDeleteDialog extends DialogFragment{
                 intent.putExtra(Constants.USER, user);
                 button_cancel.invalidate();
                 startActivity(intent);
+                getDialog().dismiss(); 
             }
         });
         return view;
