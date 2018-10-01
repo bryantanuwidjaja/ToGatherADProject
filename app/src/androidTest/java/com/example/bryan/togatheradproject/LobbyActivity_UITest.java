@@ -24,6 +24,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.isRoot;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static com.example.bryan.togatheradproject.UserLogin_UITest.idleFor;
 import static org.hamcrest.Matchers.anything;
 import static org.hamcrest.Matchers.not;
 
@@ -60,16 +61,12 @@ public class LobbyActivity_UITest {
         onView(isRoot()).perform(idleFor(3000));
     }
 
-    public void chatFunctionTest(String text) {
-        enterLobby();
-        onView(withId(R.id.editText_LobbyActivity_chatDialog)).perform(typeText(text));
-        onView(withId(R.id.button_LobbyActivity_enter)).perform(closeSoftKeyboard()).perform(click());
-        onView(isRoot()).perform(idleFor(1000));
-        onView(withId(R.id.listView_LobbyActivity_chatLog)).perform(swipeUp());
-        onView(withId(R.id.listView_LobbyActivity_chatLog)).perform(swipeUp());
-        onView(withId(R.id.listView_LobbyActivity_chatLog)).perform(swipeUp());
-        onView(isRoot()).perform(idleFor(1000));
-        onView(withId(R.id.listView_LobbyActivity_chatLog)).check(matches(isDisplayed()));
+    public void createAndEnterLobby() {
+        CreateLobby_UITest.createLobbyUI("Movies", "15", "Lobby Description");
+        onView(withId(R.id.radioButton_CreateLobbyActivity_public)).perform(click());
+        onView(withId(R.id.button_CreateLobbyActivity_create))
+                .perform(click());
+        onView(isRoot()).perform(idleFor(5000));
     }
 
 
@@ -77,9 +74,22 @@ public class LobbyActivity_UITest {
     public ActivityTestRule<LoginActivity> lobbyActivityTestRule =
             new ActivityTestRule<LoginActivity>(LoginActivity.class);
 
+
+    @Test
+    public void lobbyDetails() throws Exception {
+        createAndEnterLobby();
+        onView(withId(R.id.button_LobbyActivity_lobbyDetail)).perform(closeSoftKeyboard()).perform(click());
+        onView(isRoot()).perform(idleFor(4000));
+        onView(withId(R.id.textView_ActivityLobbyDetail_activity)).check(matches(withText("Movies")));
+        onView(withId(R.id.textView_ActivityLobbyDetail_maximumCapacity)).check(matches(withText("15")));
+        onView(withId(R.id.textView_ActivityLobbyDetail_description)).check(matches(withText("Lobby Description")));
+        onView(withId(R.id.textView_ActivityLobbyDetail_host)).check(matches(withText("suki123")));
+        onView(withId(R.id.button_ActivityLobbyDetail_returnToLobby)).check(matches(isDisplayed()));
+    }
+
     @Test
     public void checkGuestList() throws Exception {
-        enterLobby();
+        createAndEnterLobby();
         onView(withId(R.id.button_LobbyActivity_guestList)).perform(closeSoftKeyboard()).perform(click());
         onView(isRoot()).perform(idleFor(3000));
         onView(withId(R.id.button_GuestListActivity_returnToLobby)).check(matches(isDisplayed()));
@@ -87,16 +97,15 @@ public class LobbyActivity_UITest {
 
     @Test
     public void chatFunction() throws Exception {
-        chatFunctionTest("testingchat123");
+        createAndEnterLobby();
+        onView(withId(R.id.editText_LobbyActivity_chatDialog)).perform(typeText("testing"));
+        onView(withId(R.id.button_LobbyActivity_enter)).perform(closeSoftKeyboard()).perform(click());
+        onView(isRoot()).perform(idleFor(1000));
+        onView(withId(R.id.listView_LobbyActivity_chatLog)).perform(swipeUp());
+        onView(isRoot()).perform(idleFor(1000));
+        onView(withText("testing"));
     }
 
-    @Test
-    public void lobbyDetails() throws Exception {
-        enterLobby();
-        onView(withId(R.id.button_LobbyActivity_lobbyDetail)).perform(closeSoftKeyboard()).perform(click());
-        onView(isRoot()).perform(idleFor(3000));
-        onView(withId(R.id.button_ActivityLobbyDetail_returnToLobby)).check(matches(isDisplayed()));
-    }
 
     @Test
     public void guestProfile() throws Exception {
@@ -121,23 +130,30 @@ public class LobbyActivity_UITest {
 
     @Test
     public void lobbyDetailEdit() throws Exception {
-        CreateLobby_UITest.createLobbyUI("Movies", "12", "description1");
-        onView(withId(R.id.button_LobbyActivity_lobbyDetail)).perform(closeSoftKeyboard()).perform(click());
-        onView(isRoot()).perform(idleFor(2000));
-        onView(withText("Movies")).check(matches(isDisplayed()));
-        onView(withText("12")).check(matches(isDisplayed()));
-        onView(withText("description1")).check(matches(isDisplayed()));
+        lobbyDetails();
         onView(withId(R.id.button_ActivityLobbyDetail_editLobby)).perform(click());
         onView(isRoot()).perform(idleFor(2000));
         onView(withId(R.id.editText_EditLobbyActivity_description)).perform(replaceText("description2"));
-        onView(withId(R.id.editText_EditLobbyActivity_capacity)).perform(replaceText("25"));
+        onView(withId(R.id.editText_EditLobbyActivity_capacity)).perform(replaceText("10"));
+        onView(withId(R.id.radioButton_EditLobbyActivity_privateLobby)).perform(closeSoftKeyboard()).perform(click());
         onView(withId(R.id.button_EditLobbyActivity_save)).perform(closeSoftKeyboard()).perform(click());
         onView(isRoot()).perform(idleFor(2000));
         onView(withId(R.id.button_LobbyActivity_lobbyDetail)).perform(click());
-        onView(withText("25")).check(matches(isDisplayed()));
+        onView(isRoot()).perform(idleFor(2000));
+        onView(withText("10")).check(matches(isDisplayed()));
         onView(withText("description2")).check(matches(isDisplayed()));
+    }
 
+    @Test
+    public void lobbyPromotion() throws Exception{
+        createAndEnterLobby();
+        onView(withId(R.id.button_LobbyActivity_promotion)).perform(click());
+        onView(withId(R.id.imageView_PromotionLayout_promotionImage)).check(matches(isDisplayed()));
+        onView(withId(R.id.textView_PromotionActivity_promotionList)).check(matches(isDisplayed()));
+        onView(withId(R.id.button_PromotionActivity_Return)).check(matches(isDisplayed()));
 
     }
+
+
 
 }

@@ -92,7 +92,7 @@ public class LoginActivity extends AppCompatActivity {
     protected boolean checkIfDataNotBlank(String username,String password){
         boolean result = true;
         if (username.equals("") || password.equals("")) {
-            whyError = "Please fill all of the fields properly ";
+            whyError = "Please fill all of the fields properly";
             result = false;
         }
         return result;

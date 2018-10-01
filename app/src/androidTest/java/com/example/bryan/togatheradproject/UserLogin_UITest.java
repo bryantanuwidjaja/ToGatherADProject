@@ -60,7 +60,7 @@ public class UserLogin_UITest {
     @Test
     public void successLogin() throws Exception {
         loginActivityUI("sukiliong@yahoo.com", "123123");
-        onView(isRoot()).perform(idleFor(5000));
+        onView(isRoot()).perform(idleFor(10000));
         onView(withId(R.id.button_HomeActivity_createLobby))
                 .check(matches(isDisplayed()));
     }
@@ -69,7 +69,7 @@ public class UserLogin_UITest {
     public void invalidEmailLogin() throws Exception {
         loginActivityUI("suki@yahoo.com", "123123");
         onView(isRoot()).perform(idleFor(1000));
-        onView(withText(R.string.toast_invalidFieldLogin)).inRoot(withDecorView(not(
+        onView(withText(R.string.toast_loginFailed)).inRoot(withDecorView(not(
                 loginActivityTestRule.getActivity().getWindow().getDecorView())))
                 .check(matches(isDisplayed()));
     }
@@ -78,7 +78,7 @@ public class UserLogin_UITest {
     public void invalidPassLogin() throws Exception {
         loginActivityUI("sukiliong@yahoo.com", "password123");
         onView(isRoot()).perform(idleFor(1000));
-        onView(withText(R.string.toast_invalidFieldLogin)).inRoot(withDecorView(not(
+        onView(withText(R.string.toast_loginFailed)).inRoot(withDecorView(not(
                 loginActivityTestRule.getActivity().getWindow().getDecorView())))
                 .check(matches(isDisplayed()));
     }
@@ -86,7 +86,7 @@ public class UserLogin_UITest {
     @Test
     public void emptyEmailLogin() throws Exception {
         loginActivityUI("", "123123");
-        onView(isRoot()).perform(idleFor(100));
+        onView(isRoot()).perform(idleFor(500));
         onView(withText(R.string.toast_emptyFieldLogin)).inRoot(withDecorView(not(
                 loginActivityTestRule.getActivity().getWindow().getDecorView())))
                 .check(matches(isDisplayed()));
@@ -96,7 +96,7 @@ public class UserLogin_UITest {
     @Test
     public void emptyPassLogin() throws Exception {
         loginActivityUI("sukiliong@yahoo.com", "");
-        onView(isRoot()).perform(idleFor(100));
+        onView(isRoot()).perform(idleFor(1000));
         onView(withText(R.string.toast_emptyFieldLogin)).inRoot(withDecorView(not(
                 loginActivityTestRule.getActivity().getWindow().getDecorView())))
                 .check(matches(isDisplayed()));
@@ -106,7 +106,7 @@ public class UserLogin_UITest {
     public void invalidAllLogin() throws Exception {
         loginActivityUI("sukiliong@yaho.com", "asd");
         onView(isRoot()).perform(idleFor(100));
-        onView(withText(R.string.toast_invalidFieldLogin)).inRoot(withDecorView(not(
+        onView(withText(R.string.toast_loginFailed)).inRoot(withDecorView(not(
                 loginActivityTestRule.getActivity().getWindow().getDecorView())))
                 .check(matches(isDisplayed()));
     }
