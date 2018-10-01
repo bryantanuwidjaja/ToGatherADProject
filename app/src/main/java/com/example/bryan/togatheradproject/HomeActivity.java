@@ -215,7 +215,6 @@ public class HomeActivity extends AppCompatActivity {
     public void retrieveChatLog(final String lobbyID, final String chatlogID, final User user, final Lobby lobby) {
         //clear the chat log
         chatlogList.clear();
-        listView_LobbyList.invalidate();
         FirebaseFirestore.getInstance()
                 .collection(Constants.LOBBY)
                 .document(lobbyID)
@@ -253,7 +252,6 @@ public class HomeActivity extends AppCompatActivity {
                         Log.d(TAG, "userID : " + user.getUserID());
                         Log.d(TAG, "lobbyID : " + lobbyID);
                         startActivity(intent);
-                        finish();
                     }
                 });
         Log.d(TAG, "chatLoglist : 3  " + chatlogList);
