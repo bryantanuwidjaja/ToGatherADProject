@@ -3,13 +3,10 @@ package com.example.bryan.togatheradproject;
 import android.app.DialogFragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.constraint.ConstraintLayout;
-import android.support.constraint.Constraints;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -92,7 +89,7 @@ public class ConfirmDeleteDialog extends DialogFragment{
                 intent.putExtra(Constants.USER, user);
                 button_cancel.invalidate();
                 startActivity(intent);
-                getDialog().dismiss(); 
+                getDialog().dismiss();
             }
         });
         return view;
