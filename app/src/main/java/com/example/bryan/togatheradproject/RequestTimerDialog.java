@@ -157,6 +157,7 @@ public class RequestTimerDialog extends DialogFragment {
     @Override
     public void onDetach() {
         super.onDetach();
+        ((HomeActivity) getActivity()).listView_LobbyList.setEnabled(true);
         Log.d(TAG, "onDetach: in");
     }
 
@@ -206,4 +207,6 @@ public class RequestTimerDialog extends DialogFragment {
                     }
                 });
     }
+
+
 }

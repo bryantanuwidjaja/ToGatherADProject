@@ -56,6 +56,7 @@ public class LoginActivity extends AppCompatActivity {
                             Log.d(TAG, "User: " + user.getUserID());
                             Toast.makeText(getApplicationContext(), "Login Successful", Toast.LENGTH_SHORT).show();
                             startActivity(intent);
+                            finish();
                         }
                     }
                 });
@@ -78,6 +79,7 @@ public class LoginActivity extends AppCompatActivity {
                 }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
+                button_SignIn.setEnabled(true);
                 Log.e(TAG, "onFailure: Could not sign in user" + e);
                 Toast.makeText(getApplicationContext(), "Login Failed", Toast.LENGTH_SHORT).show();
             }
@@ -121,6 +123,7 @@ public class LoginActivity extends AppCompatActivity {
         button_SignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                button_SignIn.setEnabled(false);
                 try{
                 Log.d(TAG, "onClick: sign in - in ");
                 String email = editText_InsertEmail.getText().toString();
@@ -134,8 +137,10 @@ public class LoginActivity extends AppCompatActivity {
                         clearEditTest();
                         Toast.makeText(LoginActivity.this, whyError, Toast.LENGTH_SHORT).show();
                         whyError = "";
+                    button_SignIn.setEnabled(true);
                     }}
                 catch (Exception e){
+                    button_SignIn.setEnabled(true);
                     Toast.makeText(LoginActivity.this, "Login Failed", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -144,11 +149,13 @@ public class LoginActivity extends AppCompatActivity {
         button_SignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                button_SignUp.setEnabled(false);
                 Log.d(TAG, "onClick: sign up - in");
                 Intent intent = new Intent(getApplicationContext(), RegistrationActivity.class);
                 Log.d(TAG, "onClick: sign up - before intent");
                 button_SignUp.invalidate();
                 startActivity(intent);
+                finish();
             }
         });
         Log.d(TAG, "onCreate: out");
@@ -164,5 +171,11 @@ public class LoginActivity extends AppCompatActivity {
         } else {
             Log.d(TAG, "onStart: current user = " + currentUser);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
     }
 }

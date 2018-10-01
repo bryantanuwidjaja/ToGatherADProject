@@ -25,6 +25,16 @@ public class LobbyDetailActivity extends AppCompatActivity {
     private Button button_returnToLobby;
     private Button button_editLobby;
 
+    protected void establish() {
+        textView_activity = findViewById(R.id.textView_ActivityLobbyDetail_activity);
+        textView_maximumCapacity = findViewById(R.id.textView_ActivityLobbyDetail_maximumCapacity);
+        textView_host = findViewById(R.id.textView_ActivityLobbyDetail_host);
+        textView_description = findViewById(R.id.textView_ActivityLobbyDetail_description);
+        textView_location = findViewById(R.id.textView_ActivityLobbyDetail_location);
+        button_returnToLobby = findViewById(R.id.button_ActivityLobbyDetail_returnToLobby);
+        button_editLobby = findViewById(R.id.button_ActivityLobbyDetail_editLobby);
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,13 +46,7 @@ public class LobbyDetailActivity extends AppCompatActivity {
         Log.d(TAG, "userID : " + user.getUserID());
         Log.d(TAG, "lobbyID : " + lobby.getLobbyID());
 
-        textView_activity = findViewById(R.id.textView_ActivityLobbyDetail_activity);
-        textView_maximumCapacity = findViewById(R.id.textView_ActivityLobbyDetail_maximumCapacity);
-        textView_host = findViewById(R.id.textView_ActivityLobbyDetail_host);
-        textView_description = findViewById(R.id.textView_ActivityLobbyDetail_description);
-        textView_location = findViewById(R.id.textView_ActivityLobbyDetail_location);
-        button_returnToLobby = findViewById(R.id.button_ActivityLobbyDetail_returnToLobby);
-        button_editLobby = findViewById(R.id.button_ActivityLobbyDetail_editLobby);
+        establish();
 
         queryInformation(lobby.getLobbyID());
 
@@ -54,6 +58,7 @@ public class LobbyDetailActivity extends AppCompatActivity {
             button_editLobby.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    button_editLobby.setEnabled(false);
                     Intent intent = new Intent(getApplicationContext(), EditLobbyActivity.class);
                     intent.putExtra(Constants.LOBBY, lobby);
                     intent.putExtra(Constants.USER, user);
@@ -70,6 +75,7 @@ public class LobbyDetailActivity extends AppCompatActivity {
         button_returnToLobby.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                button_returnToLobby.setEnabled(false);
                 Intent intent = new Intent(getApplicationContext(), LobbyActivity.class);
                 intent.putExtra(Constants.USER, user);
                 intent.putExtra(Constants.LOBBY, lobby);
@@ -83,10 +89,6 @@ public class LobbyDetailActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         button_returnToLobby.performClick();
-        button_returnToLobby.setPressed(true);
-        button_returnToLobby.invalidate();
-        button_returnToLobby.setPressed(false);
-        button_returnToLobby.invalidate();
     }
 
     private boolean checkHost(User user, Lobby lobby){

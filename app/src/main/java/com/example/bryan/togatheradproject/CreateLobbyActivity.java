@@ -146,6 +146,7 @@ public class CreateLobbyActivity extends AppCompatActivity implements AdapterVie
         button_Create.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                button_Create.setEnabled(false);
                 String description = editText_Description.getText().toString();
                 String temp_Capacity = editText_Capacity.getText().toString();
                 int capacity = 1;
@@ -214,6 +215,7 @@ public class CreateLobbyActivity extends AppCompatActivity implements AdapterVie
                     clearEditTest();
                     Toast.makeText(CreateLobbyActivity.this, whyError, Toast.LENGTH_SHORT).show();
                     whyError = "";
+                    button_Create.setEnabled(true);
                 }
 
             }
@@ -223,10 +225,12 @@ public class CreateLobbyActivity extends AppCompatActivity implements AdapterVie
         button_Cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                button_Cancel.setEnabled(false);
                 Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
                 intent.putExtra(Constants.USER, user);
                 Toast.makeText(CreateLobbyActivity.this, "Lobby creation cancelled", Toast.LENGTH_SHORT).show();
                 startActivity(intent);
+                finish();
             }
         });
     }
@@ -246,10 +250,6 @@ public class CreateLobbyActivity extends AppCompatActivity implements AdapterVie
     public void onBackPressed() {
         super.onBackPressed();
         button_Cancel.performClick();
-        button_Cancel.setPressed(true);
-        button_Cancel.invalidate();
-        button_Cancel.setPressed(false);
-        button_Cancel.invalidate();
     }
 
 

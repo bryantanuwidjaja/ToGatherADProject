@@ -37,10 +37,15 @@ public class CreateUser_UITest {
         onView(withId(R.id.editText_RegistrationActivity_password))
                 .perform(typeText(password)).perform(ViewActions.closeSoftKeyboard());
         onView(withId(R.id.editText_RegistrationActivity_rePassword))
-                .perform(typeText(rePassword)).perform(ViewActions.closeSoftKeyboard());
+
+                .perform(ViewActions.closeSoftKeyboard())
+                .perform(typeText(rePassword));
+
         onView(withId(R.id.button_RegistrationActivity_create))
+                .perform(ViewActions.closeSoftKeyboard())
                 .perform(click());
-        onView(isRoot()).perform(idleFor(100));
+        onView(isRoot()).perform(idleFor(5000));
+        onView(withId(R.id.button_InterestActivity_saveButton)).perform(click());
     }
 
     public static ViewAction idleFor(final long millisec) {
@@ -69,8 +74,10 @@ public class CreateUser_UITest {
     @Test // User successfuly created
     public void successUserCreate() throws Exception {
         passUserRegistrationUI("naufaladi10@gmail.com", "naufalAdi", "kappa123", "kappa123");
-        onView(isRoot()).perform(idleFor(5000));
-        onView(withId(R.id.textView_InterestActivity_interest1))
+
+        onView(isRoot()).perform(idleFor(7000));
+        onView(withId(R.id.button_HomeActivity_viewProfile))
+
                 .check(matches(isDisplayed()));
         onView(withId(R.id.button2_InterestActivity_addButton)).perform(click());
         onView(withId(R.id.editText_FragmentEditProfile_interestEditText)).perform(typeText("interestblabla"));
