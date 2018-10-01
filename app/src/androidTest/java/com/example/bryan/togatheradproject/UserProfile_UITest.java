@@ -57,7 +57,7 @@ public class UserProfile_UITest {
         onView(isRoot()).perform(idleFor(5000));
         onView(withId(R.id.button_HomeActivity_viewProfile)).perform(click());
         onView(isRoot()).perform(idleFor(200));
-        onView(withText("bewwww")).check(matches(isDisplayed()));
+        onView(withText("suki123")).check(matches(isDisplayed()));
     }
 
     @Test
@@ -93,29 +93,36 @@ public class UserProfile_UITest {
     @Test
     public void saveChangedInterest() throws Exception {
         changeInterestUI(R.id.textView_ProfileScreen_interest1, "Test Interest");
-        changeInterestUI(R.id.textView_ProfileScreen_interest2, "bla bla");
         onView(withId(R.id.button_ProfileScreen_saveButton)).perform(click());
-        onView(isRoot()).perform(idleFor(1000));
+        onView(isRoot()).perform(idleFor(2000));
         onView(withId(R.id.button_HomeActivity_viewProfile)).perform(click());
+        onView(isRoot()).perform(idleFor(1000));
         onView(withId(R.id.textView_ProfileScreen_interest1)).check(matches(withText("Test Interest")));
-        onView(withId(R.id.textView_ProfileScreen_interest2)).check(matches(withText("bla bla")));
     }
 
     @Test
     public void cancelChangedInterest() throws Exception {
         changeInterestUI(R.id.textView_ProfileScreen_interest1, "Interest 1");
-        changeInterestUI(R.id.textView_ProfileScreen_interest2, "Interest 2");
         onView(withId(R.id.button_ProfileScreen_saveButton)).perform(click());
         onView(isRoot()).perform(idleFor(1000));
         onView(withId(R.id.button_HomeActivity_viewProfile)).perform(click());
-        changeInterestUI(R.id.textView_ProfileScreen_interest1, "blabla");
-        changeInterestUI(R.id.textView_ProfileScreen_interest2, "test");
+        onView(isRoot()).perform(idleFor(1000));
+        onView(withId(R.id.textView_ProfileScreen_interest1)).perform(click());
+        onView(withId(R.id.editText_FragmentEditProfile_interestEditText))
+                .perform(typeText("blabla")).perform(ViewActions.closeSoftKeyboard());
+        onView(withId(R.id.button_FragmentEditProfile_saveButton)).perform(click());
         onView(withId(R.id.button_ProfileScreen_cancelButton)).perform(click());
         onView(isRoot()).perform(idleFor(1000));
         onView(withId(R.id.button_HomeActivity_viewProfile)).perform(click());
+        onView(isRoot()).perform(idleFor(1000));
         onView(withId(R.id.textView_ProfileScreen_interest1)).check(matches(withText("Interest 1")));
-        onView(withId(R.id.textView_ProfileScreen_interest2)).check(matches(withText("Interest 1")));
+    }
 
+    @Test
+    public void deleteAccountDisplay() throws Exception{
+        changeInterestUI(R.id.textView_ProfileScreen_interest1, "Interest 1");
+        onView(withId(R.id.textView_ProfileScreen_deleteAccount)).perform(click());
+        onView(withId(R.id.editText_ConfirmDialog_confirmation)).check(matches(isDisplayed()));
 
     }
 
