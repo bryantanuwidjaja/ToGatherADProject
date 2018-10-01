@@ -21,7 +21,7 @@
         android:id="@+id/textView_CreateLobbyActivity_activity"
         android:layout_width="wrap_content"
         android:layout_height="27dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="8dp"
         android:text="Activity"
         android:textColor="@color/blackColor"
 
@@ -59,7 +59,6 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:text="Lobby type"
-        android:textColor="@color/blackColor"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="@+id/guideline2"
         app:layout_constraintTop_toBottomOf="@+id/textView_CreateLobbyActivity_address" />
@@ -67,18 +66,16 @@
     <TextView
         android:id="@+id/textView_CreateLobbyActivity_address"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:textColor="@color/blackColor"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@+id/guideline6"
+        app:layout_constraintBottom_toTopOf="@+id/button_CreateLobbyActivity_create"
         app:layout_constraintEnd_toStartOf="@+id/guideline4"
         app:layout_constraintStart_toStartOf="@+id/guideline2"
         app:layout_constraintTop_toBottomOf="@+id/editText_CreateLobbyActivity_description"
-        tools:text="Address" />
+        tools:text="address " />
 
     <EditText
         android:id="@+id/editText_CreateLobbyActivity_capacity"
@@ -101,7 +98,7 @@
         android:layout_marginTop="8dp"
         android:ems="10"
         android:hint="Describe about your activity here"
-        android:inputType="textMultiLine"
+        android:inputType="textPersonName"
         android:maxLength="180"
         android:textSize="14sp"
         app:layout_constraintEnd_toStartOf="@+id/guideline4"
@@ -121,7 +118,6 @@
         android:textColor="@color/blackColor"
         android:textSize="16sp"
         android:textStyle="bold"
-        android:textAllCaps="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline4"
         app:layout_constraintStart_toEndOf="@+id/guideline2" />
@@ -130,14 +126,13 @@
         android:id="@+id/button_CreateLobbyActivity_create"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="4dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:background="@color/colorAccent"
+        android:background="@color/buttonColor"
         android:fontFamily="sans-serif"
         android:text="Create"
-        android:textAllCaps="false"
-        android:textColor="@color/whiteColor"
+        android:textColor="@color/blackColor"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/button_CreateLobbyActivity_cancel"
@@ -163,7 +158,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.65" />
+        app:layout_constraintGuide_begin="485dp" />
 
     <RadioGroup
         android:id="@+id/radioGroup_CreateLobbyActivity_lobbyType"
@@ -183,8 +178,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Public"
-            android:textColor="@color/blackColor" />
+            android:text="Public" />
 
         <RadioButton
             android:id="@+id/radioButton_CreateLobbyActivity_private"
@@ -192,7 +186,6 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Private"
-            android:textColor="@color/blackColor"
             tools:layout_editor_absoluteX="178dp"
             tools:layout_editor_absoluteY="354dp" />
     </RadioGroup>

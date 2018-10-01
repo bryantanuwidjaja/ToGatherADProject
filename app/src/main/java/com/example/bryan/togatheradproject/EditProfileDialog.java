@@ -71,7 +71,6 @@ public class EditProfileDialog extends DialogFragment {
         button_cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                button_cancelButton.setEnabled(false);
                 Log.d(TAG, "onClick: closing dialog");
                 getDialog().dismiss();
                 destroyFragment();
@@ -82,11 +81,11 @@ public class EditProfileDialog extends DialogFragment {
         button_saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                button_saveButton.setEnabled(false);
                 Log.d(TAG, "onClick: retrieving input");
                 //retrieve information from widget
                 String newInterest = editText_interestEditText.getText().toString();
                 onInputListener.sendInput(newInterest);
+
                 Log.d(TAG, "current list after addition : " + interests);
                 button_saveButton.invalidate();
                 getDialog().dismiss();
@@ -115,11 +114,5 @@ public class EditProfileDialog extends DialogFragment {
         } catch (ClassCastException e) {
             Log.e(TAG, "onAttach: Class Cast Exception " + e.getMessage());
         }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        ((InterestActivity) getActivity()).button_AddButton.setEnabled(true);
     }
 }

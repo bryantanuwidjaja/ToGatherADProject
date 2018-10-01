@@ -104,65 +104,58 @@ public class InterestActivity extends AppCompatActivity implements EditProfileDi
             Log.d(TAG, "onResume: out");
         }
 
-    protected void establish() {
-        button_SaveButton = findViewById(R.id.button_InterestActivity_saveButton);
-        button_AddButton = findViewById(R.id.button2_InterestActivity_addButton);
-        textView_AddInterest1 = findViewById(R.id.textView_InterestActivity_interest1);
-        textView_AddInterest2 = findViewById(R.id.textView2_InterestActivity_interest2);
-        textView_AddInterest3 = findViewById(R.id.textView3_InterestActivity_interest3);
-        textView_AddInterest4 = findViewById(R.id.textView4_InterestActivity_interest4);
-        textView_AddInterest5 = findViewById(R.id.textView5_InterestActivity_interest5);
-        textView_AddInterest6 = findViewById(R.id.textView6_InterestActivity_interest6);
+        @Override
+        protected void onCreate (Bundle savedInstanceState){
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_interest);
+            Log.d(TAG, "onCreate: in");
+            Intent intent = getIntent();
+            final User user = (User) intent.getSerializableExtra(Constants.USER);
 
-        textView_AddInterest1.setText(EMPTY_INTEREST);
-        textView_AddInterest2.setText(EMPTY_INTEREST);
-        textView_AddInterest3.setText(EMPTY_INTEREST);
-        textView_AddInterest4.setText(EMPTY_INTEREST);
-        textView_AddInterest5.setText(EMPTY_INTEREST);
-        textView_AddInterest6.setText(EMPTY_INTEREST);
-    }
+            final DocumentReference userRef = FirebaseFirestore.getInstance().collection(Constants.USER).document(user.getUserID());
+            button_SaveButton = findViewById(R.id.button_InterestActivity_saveButton);
+            button_AddButton = findViewById(R.id.button2_InterestActivity_addButton);
+            textView_AddInterest1 = findViewById(R.id.textView_InterestActivity_interest1);
+            textView_AddInterest2 = findViewById(R.id.textView2_InterestActivity_interest2);
+            textView_AddInterest3 = findViewById(R.id.textView3_InterestActivity_interest3);
+            textView_AddInterest4 = findViewById(R.id.textView4_InterestActivity_interest4);
+            textView_AddInterest5 = findViewById(R.id.textView5_InterestActivity_interest5);
+            textView_AddInterest6 = findViewById(R.id.textView6_InterestActivity_interest6);
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_interest);
-        Log.d(TAG, "onCreate: in");
-        Intent intent = getIntent();
-        final User user = (User) intent.getSerializableExtra(Constants.USER);
+            textView_AddInterest1.setText(EMPTY_INTEREST);
+            textView_AddInterest2.setText(EMPTY_INTEREST);
+            textView_AddInterest3.setText(EMPTY_INTEREST);
+            textView_AddInterest4.setText(EMPTY_INTEREST);
+            textView_AddInterest5.setText(EMPTY_INTEREST);
+            textView_AddInterest6.setText(EMPTY_INTEREST);
 
-        final DocumentReference userRef = FirebaseFirestore.getInstance().collection(Constants.USER).document(user.getUserID());
+            button_AddButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.d(TAG, "onClick: opening dialog");
+                    EditProfileDialog dialog = new EditProfileDialog();
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable(Constants.USER, user);
+                    dialog.setArguments(bundle);
+                    dialog.show(getFragmentManager(), "EditProfileDialog");
+                    Log.d(TAG, "onClick: out");
+                }
+            });
 
-        establish();
-
-        button_AddButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                button_AddButton.setEnabled(false);
-                Log.d(TAG, "onClick: opening dialog");
-                EditProfileDialog dialog = new EditProfileDialog();
-                Bundle bundle = new Bundle();
-                bundle.putSerializable(Constants.USER, user);
-                dialog.setArguments(bundle);
-                dialog.show(getFragmentManager(), "EditProfileDialog");
-                Log.d(TAG, "onClick: out");
-            }
-        });
-
-        button_SaveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d(TAG, "onClick: in");
-                userRef.update(Constants.USER_INTERESTS, inputContainer);
-                Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
-                intent.putExtra(Constants.USER, user);
-                button_SaveButton.invalidate();
-                startActivity(intent);
-                Log.d(TAG, "onClick: out");
-                finish();
-            }
-        });
-        Log.d(TAG, "onCreate: out");
-    }
+            button_SaveButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.d(TAG, "onClick: in");
+                    userRef.update(Constants.USER_INTERESTS, inputContainer);
+                    Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                    intent.putExtra(Constants.USER, user);
+                    button_SaveButton.invalidate();
+                    startActivity(intent);
+                    Log.d(TAG, "onClick: out");
+                }
+            });
+            Log.d(TAG, "onCreate: out");
+        }
 
     @Override
     public void onBackPressed() {

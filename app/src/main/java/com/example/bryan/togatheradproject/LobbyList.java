@@ -3,13 +3,13 @@ package com.example.bryan.togatheradproject;
 import android.app.Activity;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+<<<<<<< HEAD
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -23,13 +23,18 @@ import com.google.firebase.firestore.QuerySnapshot;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+=======
+>>>>>>> parent of 50d4854... Merge branch 'master' of https://github.com/bryantanuwijaya/ToGatherADProject
 import java.util.List;
 
 public class LobbyList extends ArrayAdapter<Lobby> {
     private Activity context;
     private List<Lobby> lobbyList;
+<<<<<<< HEAD
     private static final String TAG = "LobbyList";
     ListenerRegistration capacityListener;
+=======
+>>>>>>> parent of 50d4854... Merge branch 'master' of https://github.com/bryantanuwijaya/ToGatherADProject
 
     public LobbyList(Activity context, List<Lobby> lobbyList) {
         super(context, R.layout.lobby_list_layout, lobbyList);
@@ -46,9 +51,7 @@ public class LobbyList extends ArrayAdapter<Lobby> {
         TextView textView_Capacity = listViewItem.findViewById(R.id.textView_LobbyListLayout_capacity);
         TextView textView_Location = listViewItem.findViewById(R.id.textView_LobbyListLayout_location);
         TextView textView_Activity = listViewItem.findViewById(R.id.textView_LobbyListLayout_activity);
-        TextView textView_LobbyType = listViewItem.findViewById(R.id.textView_LobbyListLayout_lobbyType);
-        TextView textView_seperator = listViewItem.findViewById(R.id.textView_LobbyListLayout_seperator);
-        final TextView textView_currentCapa = listViewItem.findViewById(R.id.textView_LobbyListLayout_currentSize);
+        TextView textView_Descriptions = listViewItem.findViewById(R.id.textView_LobbyListLayout_descriptions);
 
         final Lobby lobby = lobbyList.get(position);
 
@@ -78,13 +81,9 @@ public class LobbyList extends ArrayAdapter<Lobby> {
         textView_Capacity.setText(String.valueOf(lobby.getCapacity()));
         textView_Location.setText(lobby.getLocation());
         textView_Activity.setText(lobby.getActivity());
-        if(lobby.getPrivateLobby()){
-            textView_LobbyType.setText("Private");
-        }
-        else{
-            textView_LobbyType.setText("Public");
-        }
+        textView_Descriptions.setText(lobby.getLobbyDescriptions());
 
+<<<<<<< HEAD
         return listViewItem;
     }
 
@@ -109,4 +108,9 @@ public class LobbyList extends ArrayAdapter<Lobby> {
                     }
                 });
     }
+=======
+
+        return listViewItem;
+    }
+>>>>>>> parent of 50d4854... Merge branch 'master' of https://github.com/bryantanuwijaya/ToGatherADProject
 }

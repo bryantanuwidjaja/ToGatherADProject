@@ -18,7 +18,7 @@
         android:fontFamily="sans-serif"
         android:text="Sign In"
         android:textAllCaps="false"
-        android:textColor="@color/whiteColor"
+        android:textColor="#ffffff"
         android:textSize="17sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"

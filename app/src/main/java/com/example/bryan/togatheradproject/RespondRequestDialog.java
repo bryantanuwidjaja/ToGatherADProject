@@ -142,16 +142,12 @@ public class RespondRequestDialog extends DialogFragment {
                         public void onEvent(@javax.annotation.Nullable DocumentSnapshot documentSnapshot,
                                             @javax.annotation.Nullable FirebaseFirestoreException e) {
                             Request request = documentSnapshot.toObject(Request.class);
-                            try {
-                                if (request.getState().equals(Constants.CANCELLED)) {
-                                    Toast.makeText(getActivity(), "Request cancelled", Toast.LENGTH_SHORT).show();
-                                    deleteRequest(lobby, request.getUser());
-                                    getDialog().dismiss();
-                                    destroyFragment();
-                                    cancelListener.remove();
-                                }
-                            }catch (NullPointerException nullRequest){
-                                Log.d(TAG, "nullRequest : " + nullRequest.getStackTrace());
+                            if (request.getState().equals(Constants.CANCELLED)) {
+                                Toast.makeText(getActivity(), "Request cancelled", Toast.LENGTH_SHORT).show();
+                                deleteRequest(lobby, request.getUser());
+                                getDialog().dismiss();
+                                destroyFragment();
+                                cancelListener.remove();
                             }
                         }
                     });

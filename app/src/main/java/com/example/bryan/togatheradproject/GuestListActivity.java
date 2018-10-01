@@ -47,7 +47,6 @@ public class GuestListActivity extends AppCompatActivity {
         button_returnToLobby.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                button_returnToLobby.setEnabled(false);
                 Intent intent = new Intent(getApplicationContext(), LobbyActivity.class);
                 intent.putExtra(Constants.LOBBY, lobby);
                 intent.putExtra(Constants.USER, user);
@@ -60,7 +59,6 @@ public class GuestListActivity extends AppCompatActivity {
         listView_guestList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                listView_guestList.setEnabled(false);
                 User clickedUser = guestList.get(position);
                 Intent intent = new Intent(getApplicationContext(), GuestProfileActivity.class);
                 intent.putExtra(Constants.USER, user);
@@ -77,6 +75,10 @@ public class GuestListActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         button_returnToLobby.performClick();
+        button_returnToLobby.setPressed(true);
+        button_returnToLobby.invalidate();
+        button_returnToLobby.setPressed(false);
+        button_returnToLobby.invalidate();
     }
 
     private void retreiveGuestList(final Lobby lobby, final User currentuser ) {
