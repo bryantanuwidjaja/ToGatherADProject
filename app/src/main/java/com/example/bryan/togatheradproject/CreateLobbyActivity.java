@@ -187,6 +187,9 @@ public class CreateLobbyActivity extends AppCompatActivity implements AdapterVie
                                     //create an empty arraylist to contain all of the chat object
                                     ArrayList<Chat> chatlog = new ArrayList<>();
 
+                                    //set host index
+                                    user.setIndex(1);
+
                                     //generate the creation message
                                     chat = chat.createEntryChat(user);
 

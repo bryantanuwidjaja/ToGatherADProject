@@ -74,16 +74,7 @@ public class LobbyActivity extends AppCompatActivity {
         Intent intent = getIntent();
         final Lobby lobby = (Lobby) intent.getSerializableExtra(Constants.LOBBY);
         final User user = (User) intent.getSerializableExtra(Constants.USER);
-
-        //use the rating field as container for the index
-        getGuestList(lobby, new GuestListCallback() {
-            @Override
-            public void onCallBack(ArrayList<User> guestList) {
-                int index = guestList.size();
-                Log.d(TAG, "color index : " + index);
-                user.setIndex(index);
-            }
-        });
+        
         Log.d(TAG, "User: " + user.getUserID());
 
         activity = lobby.getActivity();
