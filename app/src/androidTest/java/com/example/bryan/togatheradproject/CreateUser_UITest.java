@@ -37,10 +37,8 @@ public class CreateUser_UITest {
         onView(withId(R.id.editText_RegistrationActivity_password))
                 .perform(typeText(password)).perform(ViewActions.closeSoftKeyboard());
         onView(withId(R.id.editText_RegistrationActivity_rePassword))
-
                 .perform(ViewActions.closeSoftKeyboard())
                 .perform(typeText(rePassword));
-
         onView(withId(R.id.button_RegistrationActivity_create))
                 .perform(ViewActions.closeSoftKeyboard())
                 .perform(click());

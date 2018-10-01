@@ -119,10 +119,12 @@ public class UserProfile_UITest {
     }
 
     @Test
-    public void deleteAccountDisplay() throws Exception{
+    public void deleteAccount() throws Exception{
         changeInterestUI(R.id.textView_ProfileScreen_interest1, "Interest 1");
         onView(withId(R.id.textView_ProfileScreen_deleteAccount)).perform(click());
-        onView(withId(R.id.editText_ConfirmDialog_confirmation)).check(matches(isDisplayed()));
+        onView(withId(R.id.editText_ConfirmDialog_confirmation)).perform(typeText("CONFIRM"));
+        onView(withId(R.id.button_ConfirmDialog_delete)).perform(click());
+        onView(withId(R.id.button_LoginActivity_signIn)).check(matches(isDisplayed()));
 
     }
 
