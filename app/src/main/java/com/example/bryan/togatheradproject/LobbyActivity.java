@@ -324,7 +324,7 @@ public class LobbyActivity extends AppCompatActivity {
                         int size = guestList.size();
                         if (size == 0) {
                             //delete lobby
-                            deleteLobby(lobby);
+                            deleteLobby(lobby, user);
                         }
                     }
                 });
@@ -363,12 +363,11 @@ public class LobbyActivity extends AppCompatActivity {
         } else if (backCounter == 2) {
             //leave room
             leaveRoom(user, lobby);
-            finish();
         }
     }
 
     //delete lobby function
-    private void deleteLobby(final Lobby lobby) {
+    private void deleteLobby(final Lobby lobby, User user) {
         FirebaseFirestore.getInstance().collection(Constants.LOBBY)
                 .document(lobby.getLobbyID())
                 .collection(Constants.LOBBY_CHATLOG)
@@ -408,6 +407,10 @@ public class LobbyActivity extends AppCompatActivity {
                         Log.d(TAG, "onComplete: Lobby deletion complete");
                     }
                 });
+
+        Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+        intent.putExtra(Constants.USER, user);
+        startActivity(intent);
     }
     
     private void updateDatabase(User user, Lobby lobby) {
@@ -445,7 +448,7 @@ public class LobbyActivity extends AppCompatActivity {
                 });
     }
 
-    private void leaveRoom(User user, final Lobby lobby) {
+    private void leaveRoom(final User user, final Lobby lobby) {
         Chat chat = new Chat();
         chat = chat.leaveEntryChat(user);
         chatlogList.add(chat);
@@ -462,7 +465,7 @@ public class LobbyActivity extends AppCompatActivity {
             @Override
             public void onCallBack(Boolean isEmpty) {
                 if(isEmpty){
-                    deleteLobby(lobby);
+                    deleteLobby(lobby, user);
                 }
             }
         });

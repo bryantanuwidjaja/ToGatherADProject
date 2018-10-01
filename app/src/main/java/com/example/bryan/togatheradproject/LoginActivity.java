@@ -79,6 +79,7 @@ public class LoginActivity extends AppCompatActivity {
                 }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
+                button_SignIn.setEnabled(true);
                 Log.e(TAG, "onFailure: Could not sign in user" + e);
                 Toast.makeText(getApplicationContext(), "Login Failed", Toast.LENGTH_SHORT).show();
             }
