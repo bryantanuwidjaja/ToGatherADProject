@@ -100,11 +100,8 @@ public class LobbyActivity extends AppCompatActivity {
             }
         });
 
-<<<<<<< HEAD
-        textView_lobbyID.setText(lobby.getActivity());
-=======
->>>>>>> parent of 50d4854... Merge branch 'master' of https://github.com/bryantanuwijaya/ToGatherADProject
 
+        textView_lobbyID.setText(lobby.getActivity());
         FirebaseFirestore.getInstance().collection(Constants.LOBBY)
                 .document(lobby.getLobbyID())
                 .collection(Constants.LOBBY_CHATLOG)
@@ -318,18 +315,13 @@ public class LobbyActivity extends AppCompatActivity {
         } else if (backCounter == 2) {
             Log.d(TAG, "backCounter : " + backCounter);
             //leave room
-<<<<<<< HEAD
             onStop();
-            //leaveRoom(user, lobby);
-=======
-            leaveRoom(user, lobby);
-            finish();
->>>>>>> parent of 50d4854... Merge branch 'master' of https://github.com/bryantanuwijaya/ToGatherADProject
+
         }
     }
 
     //delete lobby function
-    private void deleteLobby(Lobby lobby) {
+    private void deleteLobby(Lobby lobby, User user) {
         FirebaseFirestore.getInstance().collection(Constants.LOBBY)
                 .document(lobby.getLobbyID())
                 .collection(Constants.LOBBY_CHATLOG)
@@ -363,14 +355,11 @@ public class LobbyActivity extends AppCompatActivity {
                         Log.d(TAG, "onComplete: Lobby deletion complete");
                     }
                 });
-<<<<<<< HEAD
 
         Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
         intent.putExtra(Constants.USER, user);
         startActivity(intent);
         finish();
-=======
->>>>>>> parent of 50d4854... Merge branch 'master' of https://github.com/bryantanuwijaya/ToGatherADProject
     }
     
     private void updateDatabase(User user, Lobby lobby) {
@@ -408,18 +397,12 @@ public class LobbyActivity extends AppCompatActivity {
                 });
     }
 
-<<<<<<< HEAD
-    private void leaveRoom(final User user, final Lobby lobby) {
-=======
     private void leaveRoom(User user, final Lobby lobby) {
->>>>>>> parent of 50d4854... Merge branch 'master' of https://github.com/bryantanuwijaya/ToGatherADProject
         FirebaseFirestore.getInstance().collection(Constants.LOBBY)
                 .document(lobby.getLobbyID())
                 .collection(Constants.LOBBY_GUESTLIST)
                 .document(user.getUserID())
                 .delete();
-<<<<<<< HEAD
-
         if(inLobby) {
             Chat chat = new Chat();
             chat = chat.leaveEntryChat(user);
@@ -427,8 +410,6 @@ public class LobbyActivity extends AppCompatActivity {
             chat.updateChat(chatlogList, lobby.getLobbyID(), lobby.getChatlogID());
         }
 
-=======
->>>>>>> parent of 50d4854... Merge branch 'master' of https://github.com/bryantanuwijaya/ToGatherADProject
         hostConstraint(user, lobby);
         Chat chat = new Chat();
         chat = chat.leaveEntryChat(user);
