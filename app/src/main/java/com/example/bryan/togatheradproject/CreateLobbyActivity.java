@@ -87,7 +87,7 @@ public class CreateLobbyActivity extends AppCompatActivity implements AdapterVie
     protected boolean checkIfDataNotBlank(String capacity, String description) {
         boolean result = true;
         if (capacity.equals("") || description.equals("")) {
-            whyError = "Please fill all of the fields properly ";
+            whyError = "Please fill all of the fields properly";
             result = false;
         }
         return result;

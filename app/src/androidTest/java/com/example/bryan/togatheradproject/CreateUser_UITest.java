@@ -33,12 +33,11 @@ public class CreateUser_UITest {
         onView(withId(R.id.editText_RegistrationActivity_email))
                 .perform(typeText(email));
         onView(withId(R.id.editText_RegistrationActivity_username))
-                .perform(typeText(username));
+                .perform(typeText(username)).perform(ViewActions.closeSoftKeyboard());
         onView(withId(R.id.editText_RegistrationActivity_password))
-                .perform(typeText(password));
+                .perform(typeText(password)).perform(ViewActions.closeSoftKeyboard());
         onView(withId(R.id.editText_RegistrationActivity_rePassword))
-                .perform(typeText(rePassword))
-                .perform(ViewActions.closeSoftKeyboard());
+                .perform(typeText(rePassword)).perform(ViewActions.closeSoftKeyboard());
         onView(withId(R.id.button_RegistrationActivity_create))
                 .perform(click());
         onView(isRoot()).perform(idleFor(100));
@@ -70,41 +69,59 @@ public class CreateUser_UITest {
     @Test // User successfuly created
     public void successUserCreate() throws Exception {
         passUserRegistrationUI("naufaladi10@gmail.com", "naufalAdi", "kappa123", "kappa123");
-        onView(isRoot()).perform(idleFor(7000));
+        onView(isRoot()).perform(idleFor(5000));
         onView(withId(R.id.textView_InterestActivity_interest1))
                 .check(matches(isDisplayed()));
+        onView(withId(R.id.button2_InterestActivity_addButton)).perform(click());
+        onView(withId(R.id.editText_FragmentEditProfile_interestEditText)).perform(typeText("interestblabla"));
+        onView(withId(R.id.button_FragmentEditProfile_saveButton)).perform(click());
+        onView(withId(R.id.button_InterestActivity_saveButton)).perform(click());
+        onView(isRoot()).perform(idleFor(1000));
+        onView(withId(R.id.button_HomeActivity_viewProfile)).perform(click());
+        onView(isRoot()).perform(idleFor(1000));
+        onView(withText("naufalAdi")).check(matches(isDisplayed()));
+        onView(withText("interestblabla")).check(matches(isDisplayed()));
+
     }
 
     @Test // User inputted invalid password
     public void failInvalidPass() throws Exception {
         passUserRegistrationUI("naufaladi10@gmail.com", "naufalAdi", "fa", "fa");
-        onView(withText(R.string.toast_emptyFieldRegistration)).inRoot(withDecorView(not(
+        onView(withText(R.string.toast_invalidPassRegistration)).inRoot(withDecorView(not(
                 loginActivityTestRule.getActivity().getWindow().getDecorView())))
                 .check(matches(isDisplayed()));
+        onView(withId(R.id.button_RegistrationActivity_create)).check(matches(isDisplayed()));
+
     }
 
     @Test // User inputted invalid username
     public void failInvalidName() throws Exception {
         passUserRegistrationUI("naufaladi10@gmail.com", "p", "kappa123", "kappa123");
-        onView(withText(R.string.toast_emptyFieldRegistration)).inRoot(withDecorView(not(
+        onView(withText(R.string.toast_invalidNameRegistration)).inRoot(withDecorView(not(
                 loginActivityTestRule.getActivity().getWindow().getDecorView())))
                 .check(matches(isDisplayed()));
+        onView(withId(R.id.button_RegistrationActivity_create)).check(matches(isDisplayed()));
+
     }
 
     @Test // User inputted invalid email
     public void failInvalidEmail() throws Exception {
         passUserRegistrationUI("***)email", "naufalAdi", "kappa123", "kappa123");
-        onView(withText(R.string.toast_emptyFieldRegistration)).inRoot(withDecorView(not(
+        onView(withText(R.string.toast_invalidEmailRegistration)).inRoot(withDecorView(not(
                 loginActivityTestRule.getActivity().getWindow().getDecorView())))
                 .check(matches(isDisplayed()));
+        onView(withId(R.id.button_RegistrationActivity_create)).check(matches(isDisplayed()));
+
     }
 
     @Test // User inputted invalid RePassword
     public void failInvalidRePass() throws Exception {
         passUserRegistrationUI("naufaladi10@gmail.com", "naufalAdi", "kappa123", "kAppa123");
-        onView(withText(R.string.toast_emptyFieldRegistration)).inRoot(withDecorView(not(
+        onView(withText(R.string.toast_invalidRePassRegistration)).inRoot(withDecorView(not(
                 loginActivityTestRule.getActivity().getWindow().getDecorView())))
                 .check(matches(isDisplayed()));
+        onView(withId(R.id.button_RegistrationActivity_create)).check(matches(isDisplayed()));
+
     }
 
     @Test // User inputted empty password
@@ -113,6 +130,8 @@ public class CreateUser_UITest {
         onView(withText(R.string.toast_emptyFieldRegistration)).inRoot(withDecorView(not(
                 loginActivityTestRule.getActivity().getWindow().getDecorView())))
                 .check(matches(isDisplayed()));
+        onView(withId(R.id.button_RegistrationActivity_create)).check(matches(isDisplayed()));
+
     }
 
     @Test // User inputted empty username
@@ -121,6 +140,8 @@ public class CreateUser_UITest {
         onView(withText(R.string.toast_emptyFieldRegistration)).inRoot(withDecorView(not(
                 loginActivityTestRule.getActivity().getWindow().getDecorView())))
                 .check(matches(isDisplayed()));
+        onView(withId(R.id.button_RegistrationActivity_create)).check(matches(isDisplayed()));
+
     }
 
     @Test // User inputted empty email
@@ -129,6 +150,8 @@ public class CreateUser_UITest {
         onView(withText(R.string.toast_emptyFieldRegistration)).inRoot(withDecorView(not(
                 loginActivityTestRule.getActivity().getWindow().getDecorView())))
                 .check(matches(isDisplayed()));
+        onView(withId(R.id.button_RegistrationActivity_create)).check(matches(isDisplayed()));
+
     }
 
     @Test // User inputted empty RePassword
@@ -137,6 +160,8 @@ public class CreateUser_UITest {
         onView(withText(R.string.toast_emptyFieldRegistration)).inRoot(withDecorView(not(
                 loginActivityTestRule.getActivity().getWindow().getDecorView())))
                 .check(matches(isDisplayed()));
+        onView(withId(R.id.button_RegistrationActivity_create)).check(matches(isDisplayed()));
+
     }
 
     @Test // User cancels registration
@@ -147,6 +172,8 @@ public class CreateUser_UITest {
         onView(withText(R.string.toast_cancelRegistration)).inRoot(withDecorView(not(
                 loginActivityTestRule.getActivity().getWindow().getDecorView())))
                 .check(matches(isDisplayed()));
+        onView(withId(R.id.button_LoginActivity_signIn)).check(matches(isDisplayed()));
+
 
     }
 }
