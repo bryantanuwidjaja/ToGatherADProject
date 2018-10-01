@@ -134,9 +134,6 @@ public class LobbyActivity extends AppCompatActivity {
 
         textView_lobbyID.setText(lobby.getActivity());
 
-
-
-
         FirebaseFirestore.getInstance().collection(Constants.LOBBY)
                 .document(lobby.getLobbyID())
                 .collection(Constants.LOBBY_CHATLOG)
@@ -331,11 +328,16 @@ public class LobbyActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
+<<<<<<< HEAD
         if (clickIndicator == 0) {
+=======
+        if(clickIndicator == 0 || backCounter >= 2) {
+>>>>>>> 18ed04127502a3ed602b65080f579b4824a97d4a
             Intent intent = getIntent();
             final User user = (User) intent.getSerializableExtra(Constants.USER);
             final Lobby lobby = (Lobby) intent.getSerializableExtra(Constants.LOBBY);
             leaveRoom(user, lobby);
+            inLobby = false;
             finish();
         }
     }
@@ -358,9 +360,11 @@ public class LobbyActivity extends AppCompatActivity {
         backCounter++;
         if (backCounter == 1) {
             Toast.makeText(getApplicationContext(), "Press back again to leave the room", Toast.LENGTH_SHORT).show();
-        } else if (backCounter == 2) {
+        } else if (backCounter >= 2) {
+            Log.d(TAG, "backCounter : " + backCounter);
             //leave room
-            leaveRoom(user, lobby);
+            onStop();
+            //leaveRoom(user, lobby);
         }
     }
 
@@ -409,6 +413,7 @@ public class LobbyActivity extends AppCompatActivity {
         Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
         intent.putExtra(Constants.USER, user);
         startActivity(intent);
+        finish();
     }
 
     private void updateDatabase(User user, Lobby lobby) {
@@ -447,16 +452,18 @@ public class LobbyActivity extends AppCompatActivity {
     }
 
     private void leaveRoom(final User user, final Lobby lobby) {
-        Chat chat = new Chat();
-        chat = chat.leaveEntryChat(user);
-        chatlogList.add(chat);
-        chat.updateChat(chatlogList, lobby.getLobbyID(), lobby.getChatlogID());
-
         FirebaseFirestore.getInstance().collection(Constants.LOBBY)
                 .document(lobby.getLobbyID())
                 .collection(Constants.LOBBY_GUESTLIST)
                 .document(user.getUserID())
                 .delete();
+
+        if(inLobby) {
+            Chat chat = new Chat();
+            chat = chat.leaveEntryChat(user);
+            chatlogList.add(chat);
+            chat.updateChat(chatlogList, lobby.getLobbyID(), lobby.getChatlogID());
+        }
 
         hostConstraint(user, lobby);
         isEmpty(lobby, new BooleanCallback() {

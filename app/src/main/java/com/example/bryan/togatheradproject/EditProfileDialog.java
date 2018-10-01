@@ -120,6 +120,11 @@ public class EditProfileDialog extends DialogFragment {
     @Override
     public void onDetach() {
         super.onDetach();
-        ((InterestActivity) getActivity()).button_AddButton.setEnabled(true);
+        try {
+            ((InterestActivity) getActivity()).button_AddButton.setEnabled(true);
+        }
+        catch(ClassCastException e){
+            Log.d(TAG, "not from interest");
+        }
     }
 }
