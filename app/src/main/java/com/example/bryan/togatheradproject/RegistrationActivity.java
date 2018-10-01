@@ -186,6 +186,7 @@ public class RegistrationActivity extends AppCompatActivity {
         button_Create.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                button_Create.setEnabled(false);
                 //retrieve information from widgets
                 String regisEmail = editText_Email.getText().toString();
                 String regisName = editText_Username.getText().toString();
@@ -212,6 +213,7 @@ public class RegistrationActivity extends AppCompatActivity {
                     clearEditText();
                     Toast.makeText(getApplicationContext(), whyError, Toast.LENGTH_SHORT).show();
                     whyError = "";
+                    button_Create.setEnabled(true);
                 }
                 Log.d(TAG, "onClick: create button - out");
             }
@@ -220,9 +222,11 @@ public class RegistrationActivity extends AppCompatActivity {
         button_Cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                button_Cancel.setEnabled(false);
                 Toast.makeText(getApplicationContext(), "Registration cancelled", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
         Log.d(TAG, "onCreate: out " + TAG);
@@ -260,6 +264,7 @@ public class RegistrationActivity extends AppCompatActivity {
                         Intent intent = new Intent(getApplicationContext(), InterestActivity.class);
                         intent.putExtra(Constants.USER, newUser);
                         startActivity(intent);
+                        finish();
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {

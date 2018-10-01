@@ -47,11 +47,23 @@ public class LobbyActivity extends AppCompatActivity {
     Button button_enter;
     Button button_guestList;
     Button button_lobbyDetail;
+    private String activity;
     private int backCounter;
     private int clickIndicator = 0;
     private ArrayList<Chat> chatlogList = new ArrayList<>();
     Button button_promotion;
     boolean inLobby = true;
+
+    protected void establish() {
+        textView_lobbyID = findViewById(R.id.textView_LobbyActivity_lobbyID);
+        editView_chatDialog = findViewById(R.id.editText_LobbyActivity_chatDialog);
+        listView_chatLog = findViewById(R.id.listView_LobbyActivity_chatLog);
+        imageView_activityIcon = findViewById(R.id.imageView_LobbyActivity_activityIcon);
+        button_enter = findViewById(R.id.button_LobbyActivity_enter);
+        button_guestList = findViewById(R.id.button_LobbyActivity_guestList);
+        button_lobbyDetail = findViewById(R.id.button_LobbyActivity_lobbyDetail);
+        button_promotion = findViewById(R.id.button_LobbyActivity_promotion);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,7 +86,7 @@ public class LobbyActivity extends AppCompatActivity {
         });
         Log.d(TAG, "User: " + user.getUserID());
 
-        //joinLobby(user, lobby);
+        activity = lobby.getActivity();
 
         updateDatabase(user, lobby);
         Log.d(TAG, "color index 2 : " + user.getIndex());
@@ -82,14 +94,35 @@ public class LobbyActivity extends AppCompatActivity {
         Log.d(TAG, "userID : " + user.getUserID());
         Log.d(TAG, "lobbyID : " + lobby.getLobbyID());
 
-        textView_lobbyID = findViewById(R.id.textView_LobbyActivity_lobbyID);
-        editView_chatDialog = findViewById(R.id.editText_LobbyActivity_chatDialog);
-        listView_chatLog = findViewById(R.id.listView_LobbyActivity_chatLog);
-        imageView_activityIcon = findViewById(R.id.imageView_LobbyActivity_activityIcon);
-        button_enter = findViewById(R.id.button_LobbyActivity_enter);
-        button_guestList = findViewById(R.id.button_LobbyActivity_guestList);
-        button_lobbyDetail = findViewById(R.id.button_LobbyActivity_lobbyDetail);
-        button_promotion = findViewById(R.id.button_LobbyActivity_promotion);
+        establish();
+
+        //assign the proper icon for the activity
+        switch (activity){
+            case "Coffee":
+                imageView_activityIcon.setImageResource(R.drawable.ic_activity_coffee);
+                break;
+            case "Eat out":
+                imageView_activityIcon.setImageResource(R.drawable.ic_action_eat_out);
+                break;
+            case "Hang out":
+                imageView_activityIcon.setImageResource(R.drawable.ic_action_hang_out);
+                break;
+            case "Movies":
+                imageView_activityIcon.setImageResource(R.drawable.ic_action_movies);
+                break;
+            case "Games":
+                imageView_activityIcon.setImageResource(R.drawable.ic_action_games);
+                break;
+            case "Sports":
+                imageView_activityIcon.setImageResource(R.drawable.ic_action_sports);
+                break;
+            case "Study":
+                imageView_activityIcon.setImageResource(R.drawable.ic_action_study);
+                break;
+            case "Outdoor":
+                imageView_activityIcon.setImageResource(R.drawable.ic_action_outdoor);
+                break;
+        }
 
         //create a function to get current chat log
         readData(lobby, new FirestoreCallback() {
@@ -100,6 +133,8 @@ public class LobbyActivity extends AppCompatActivity {
             }
         });
 
+
+        textView_lobbyID.setText(lobby.getActivity());
 
         textView_lobbyID.setText(lobby.getActivity());
         FirebaseFirestore.getInstance().collection(Constants.LOBBY)
@@ -113,26 +148,38 @@ public class LobbyActivity extends AppCompatActivity {
                             Log.w(TAG, "Listen failed: ", e);
                             return;
                         }
-                        if (queryDocumentSnapshots != null && !queryDocumentSnapshots.isEmpty()) {
-                            Log.d(TAG, "current data " + queryDocumentSnapshots.getDocuments());
-                            readData(lobby, new FirestoreCallback() {
-                                @Override
-                                public void onCallBack(Chatlog chatlog) {
-                                    chatlogList = chatlog.getChatlog();
-                                    Log.d(TAG, "onCallBack real time: " + chatlogList.toString());
-                                }
-                            });
+                            if (queryDocumentSnapshots != null && !queryDocumentSnapshots.isEmpty()) {
+                                Log.d(TAG, "current data " + queryDocumentSnapshots.getDocuments());
+                                readData(lobby, new FirestoreCallback() {
+                                    @Override
+                                    public void onCallBack(Chatlog chatlog) {
+                                        try {
+                                            chatlogList = chatlog.getChatlog();
+                                            Log.d(TAG, "onCallBack real time: " + chatlogList.toString());
+                                        }
+                                        catch (NullPointerException e1){
+                                            Log.d(TAG, "null chatlog");
+                                        }
+                                    }
+                                });
+                            }
                         }
-                    }
                 });
 
         button_promotion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                clickIndicator = 1;
+                button_promotion.setEnabled(false);
+
                 Intent intent = new Intent(getApplicationContext(), PromotionActivity.class);
                 intent.putExtra(Constants.LOBBY, lobby);
                 intent.putExtra(Constants.USER, user);
                 startActivity(intent);
+
+                button_promotion.invalidate();
+
+                finish();
             }
         });
 
@@ -140,12 +187,12 @@ public class LobbyActivity extends AppCompatActivity {
         button_lobbyDetail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                button_lobbyDetail.setEnabled(false);
                 clickIndicator = 1;
                 Intent intent = new Intent(getApplicationContext(), LobbyDetailActivity.class);
                 intent.putExtra(Constants.USER, user);
                 intent.putExtra(Constants.LOBBY, lobby);
                 startActivity(intent);
-                button_lobbyDetail.invalidate();
                 finish();
             }
         });
@@ -153,12 +200,12 @@ public class LobbyActivity extends AppCompatActivity {
         button_guestList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                button_guestList.setEnabled(false);
                 clickIndicator = 1;
                 Intent intent = new Intent(getApplicationContext(), GuestListActivity.class);
                 intent.putExtra(Constants.LOBBY, lobby);
                 intent.putExtra(Constants.USER, user);
                 startActivity(intent);
-                button_guestList.invalidate();
                 finish();
             }
         });
@@ -166,6 +213,7 @@ public class LobbyActivity extends AppCompatActivity {
         button_enter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                button_enter.setEnabled(false);
                 clickIndicator = 1;
                 //Clear the list
                 //chatlogList.clear();
@@ -201,6 +249,7 @@ public class LobbyActivity extends AppCompatActivity {
 
                         //clear the edit text
                         editView_chatDialog.setText("");
+                        button_enter.setEnabled(true);
                     }
                 });
             }
@@ -275,7 +324,7 @@ public class LobbyActivity extends AppCompatActivity {
                         int size = guestList.size();
                         if (size == 0) {
                             //delete lobby
-                            deleteLobby(lobby);
+                            deleteLobby(lobby, user);
                         }
                     }
                 });
@@ -317,11 +366,16 @@ public class LobbyActivity extends AppCompatActivity {
             //leave room
             onStop();
 
+            //leaveRoom(user, lobby);
+
         }
     }
 
     //delete lobby function
-    private void deleteLobby(Lobby lobby, User user) {
+
+
+    private void deleteLobby(final Lobby lobby, User user) {
+
         FirebaseFirestore.getInstance().collection(Constants.LOBBY)
                 .document(lobby.getLobbyID())
                 .collection(Constants.LOBBY_CHATLOG)
@@ -337,12 +391,18 @@ public class LobbyActivity extends AppCompatActivity {
         FirebaseFirestore.getInstance().collection(Constants.LOBBY)
                 .document(lobby.getLobbyID())
                 .collection(Constants.LOBBY_GUESTLIST)
-                .document()
-                .delete()
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        Log.d(TAG, "onComplete: Guestlist deletion complete");
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        for (User user :
+                                task.getResult().toObjects(User.class)) {
+                            FirebaseFirestore.getInstance().collection(Constants.LOBBY)
+                                    .document(lobby.getLobbyID())
+                                    .collection(Constants.LOBBY_GUESTLIST)
+                                    .document(user.getUserID())
+                                    .delete();
+                        }
                     }
                 });
 
@@ -397,12 +457,15 @@ public class LobbyActivity extends AppCompatActivity {
                 });
     }
 
-    private void leaveRoom(User user, final Lobby lobby) {
+
+    private void leaveRoom(final User user, final Lobby lobby) {
+
         FirebaseFirestore.getInstance().collection(Constants.LOBBY)
                 .document(lobby.getLobbyID())
                 .collection(Constants.LOBBY_GUESTLIST)
                 .document(user.getUserID())
                 .delete();
+
         if(inLobby) {
             Chat chat = new Chat();
             chat = chat.leaveEntryChat(user);
@@ -411,15 +474,11 @@ public class LobbyActivity extends AppCompatActivity {
         }
 
         hostConstraint(user, lobby);
-        Chat chat = new Chat();
-        chat = chat.leaveEntryChat(user);
-        chatlogList.add(chat);
-        chat.updateChat(chatlogList, lobby.getLobbyID(), lobby.getChatlogID());
         isEmpty(lobby, new BooleanCallback() {
             @Override
             public void onCallBack(Boolean isEmpty) {
                 if(isEmpty){
-                    deleteLobby(lobby);
+                    deleteLobby(lobby, user);
                 }
             }
         });

@@ -29,6 +29,17 @@ public class EditLobbyActivity extends AppCompatActivity {
         return 2 <= a && a <= 15;
     }
 
+    protected void establish() {
+        //initialise widget
+        editText_description = findViewById(R.id.editText_EditLobbyActivity_description);
+        editText_capacity = findViewById(R.id.editText_EditLobbyActivity_capacity);
+        button_save = findViewById(R.id.button_EditLobbyActivity_save);
+        button_cancel = findViewById(R.id.button_EditLobbyActivity_cancel);
+        radioGroup_lobbyType = findViewById(R.id.radioGroup_EditLobbyActivity_lobbyType);
+        radioButton_privateLobby = findViewById(R.id.radioButton_EditLobbyActivity_privateLobby);
+        radioButton_publicLobby = findViewById(R.id.radioButton_EditLobbyActivity_public);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,14 +50,7 @@ public class EditLobbyActivity extends AppCompatActivity {
         final User user =(User) intent.getSerializableExtra(Constants.USER);
         final Lobby lobby = (Lobby) intent.getSerializableExtra(Constants.LOBBY);
 
-        //initialise widget
-        editText_description = findViewById(R.id.editText_EditLobbyActivity_description);
-        editText_capacity = findViewById(R.id.editText_EditLobbyActivity_capacity);
-        button_save = findViewById(R.id.button_EditLobbyActivity_save);
-        button_cancel = findViewById(R.id.button_EditLobbyActivity_cancel);
-        radioGroup_lobbyType = findViewById(R.id.radioGroup_EditLobbyActivity_lobbyType);
-        radioButton_privateLobby = findViewById(R.id.radioButton_EditLobbyActivity_privateLobby);
-        radioButton_publicLobby = findViewById(R.id.radioButton_EditLobbyActivity_public);
+        establish();
 
         //set current data
         editText_description.setText(lobby.getLobbyDescriptions());
@@ -57,6 +61,7 @@ public class EditLobbyActivity extends AppCompatActivity {
         button_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                button_cancel.setEnabled(false);
                 Intent intent = new Intent(getApplicationContext(), LobbyActivity.class);
                 intent.putExtra(Constants.USER, user);
                 intent.putExtra(Constants.LOBBY, lobby);
@@ -68,6 +73,7 @@ public class EditLobbyActivity extends AppCompatActivity {
         button_save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                button_save.setEnabled(false);
                 if (validate() && checkCorrectCapacity(Integer.parseInt(editText_capacity.getText().toString()))) {
                     String newDesc = editText_description.getText().toString();
                     int newCapa = Integer.parseInt(editText_capacity.getText().toString());
@@ -92,6 +98,7 @@ public class EditLobbyActivity extends AppCompatActivity {
                                 }
                             });
                 } else {
+                    button_save.setEnabled(true);
                     Toast.makeText(EditLobbyActivity.this, "Could not edit room", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -102,10 +109,7 @@ public class EditLobbyActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         button_cancel.performClick();
-        button_cancel.setPressed(true);
-        button_cancel.invalidate();
-        button_cancel.setPressed(false);
-        button_cancel.invalidate();
+
     }
 
     private boolean validate(){
