@@ -83,8 +83,8 @@ public class GuestProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 button_rateUp.setEnabled(false);
-                button_rateUp.setBackgroundColor(Color.rgb(248,103,46));
-                button_rateUp.setTextColor(Color.rgb(255,255,255));
+                button_rateUp.setBackgroundColor(Color.rgb(248, 103, 46));
+                button_rateUp.setTextColor(Color.rgb(255, 255, 255));
                 updateRating(clickedUser);
                 ratingContainer = Integer.toString(clickedUser.getUserRating());
                 Log.d(TAG, "onClick: rating container : " + ratingContainer);

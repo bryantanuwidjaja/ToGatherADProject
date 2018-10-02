@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -43,8 +44,7 @@ public class InterestActivity extends AppCompatActivity implements EditProfileDi
         Log.d(TAG, "sendInput: " + input);
         if(inputContainerSize<= 6) {
             inputContainer.add(input);
-        }
-        else{
+        } else {
             Toast.makeText(this,"Interest full", Toast.LENGTH_SHORT).show();
         }
 
@@ -89,20 +89,20 @@ public class InterestActivity extends AppCompatActivity implements EditProfileDi
             }
     }
 
-        @Override
-        protected void onStart () {
-            super.onStart();
-            Log.d(TAG, "onStart: in");
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.d(TAG, "onStart: in");
 
-            Log.d(TAG, "onStart: out");
-        }
+        Log.d(TAG, "onStart: out");
+    }
 
-        @Override
-        protected void onResume () {
-            super.onResume();
-            Log.d(TAG, "onResume: in");
-            Log.d(TAG, "onResume: out");
-        }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d(TAG, "onResume: in");
+        Log.d(TAG, "onResume: out");
+    }
 
     protected void establish() {
         button_SaveButton = findViewById(R.id.button_InterestActivity_saveButton);
@@ -152,13 +152,24 @@ public class InterestActivity extends AppCompatActivity implements EditProfileDi
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "onClick: in");
-                userRef.update(Constants.USER_INTERESTS, inputContainer);
-                Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
-                intent.putExtra(Constants.USER, user);
-                button_SaveButton.invalidate();
-                startActivity(intent);
-                Log.d(TAG, "onClick: out");
-                finish();
+                update();
+                Log.d(TAG, "inputContainer : " + inputContainer);
+                FirebaseFirestore.getInstance().collection(Constants.USER)
+                        .document(user.getUserID())
+                        .update(Constants.USER_INTERESTS, inputContainer)
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                                intent.putExtra(Constants.USER, user);
+                                button_SaveButton.invalidate();
+                                startActivity(intent);
+                                Log.d(TAG, "onClick: out");
+                                finish();
+                            }
+                        });
+                //userRef.update(Constants.USER_INTERESTS, inputContainer);
+
             }
         });
         Log.d(TAG, "onCreate: out");

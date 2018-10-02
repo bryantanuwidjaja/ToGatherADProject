@@ -40,7 +40,7 @@ public class ChatlogList extends ArrayAdapter {
         textView_time.setText(chat.getTime());
         //get index and assign color
         int color = getColor(chat.getColorindex());
-        switch (color){
+        switch (color) {
             case 0:
                 textView_username.setTextColor(Color.parseColor("#000000"));
                 textView_chatmessage.setTextColor(Color.parseColor("#000000"));
@@ -94,7 +94,7 @@ public class ChatlogList extends ArrayAdapter {
         return listViewItem;
     }
 
-    private int getColor(int colorindex){
+    private int getColor(int colorindex) {
 
         return colorindex;
     }

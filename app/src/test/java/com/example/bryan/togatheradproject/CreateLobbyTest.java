@@ -41,7 +41,7 @@ public class CreateLobbyTest {
     }
 
     @Test
-    public void registerWithBlankInformation(){
+    public void registerWithBlankInformation() {
         Assert.assertEquals(check.checkIfDataNotBlank(blank, blank), false);
     }
 

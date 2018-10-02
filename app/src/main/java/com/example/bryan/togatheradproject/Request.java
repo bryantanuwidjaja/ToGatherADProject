@@ -12,13 +12,13 @@ public class Request implements Serializable {
         this.user = user;
     }
 
-    public Request(String requestID , User user , String state){
+    public Request(String requestID, User user, String state) {
         this.requestID = requestID;
         this.user = user;
         this.state = state;
     }
 
-    public Request(){
+    public Request() {
 
     }
 

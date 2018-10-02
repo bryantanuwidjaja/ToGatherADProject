@@ -3,13 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     tools:context=".RespondRequestDialog">
 
     <ImageView
         android:id="@+id/imageView_RespondRequest_profilePic"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
@@ -24,28 +24,23 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="8dp"
+        android:textColor="@android:color/black"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView_RespondRequest_profilePic"
         tools:text="Username" />
 
     <TextView
-        android:id="@+id/textView_RespondRequest_InterestTAG"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Interests:"
-        app:layout_constraintEnd_toStartOf="@+id/guideline23"
-        app:layout_constraintTop_toBottomOf="@+id/textView_RespondRequest_username" />
-
-    <TextView
         android:id="@+id/textView_RespondRequest_interest1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
+        android:textColor="@android:color/black"
+        android:textSize="14sp"
         app:layout_constraintEnd_toStartOf="@+id/guideline23"
-        app:layout_constraintTop_toBottomOf="@+id/textView_RespondRequest_InterestTAG"
+        app:layout_constraintTop_toBottomOf="@+id/textView_RespondRequest_username"
         tools:text="Interest1" />
 
     <TextView
@@ -53,6 +48,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
+        android:textColor="@android:color/black"
+        android:textSize="14sp"
         app:layout_constraintEnd_toStartOf="@+id/guideline23"
         app:layout_constraintTop_toBottomOf="@+id/textView_RespondRequest_interest1"
         tools:text="Interest2" />
@@ -62,6 +59,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
+        android:textColor="@android:color/black"
+        android:textSize="14sp"
         app:layout_constraintEnd_toStartOf="@+id/guideline23"
         app:layout_constraintTop_toBottomOf="@+id/textView_RespondRequest_interest2"
         tools:text="Interest3" />
@@ -70,6 +69,8 @@
         android:id="@+id/textView_RespondRequest_interest4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="@android:color/black"
+        android:textSize="14sp"
         app:layout_constraintBaseline_toBaselineOf="@+id/textView_RespondRequest_interest1"
         app:layout_constraintStart_toStartOf="@+id/guideline25"
         tools:text="Interest4" />
@@ -78,6 +79,8 @@
         android:id="@+id/textView_RespondRequest_interest5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="@android:color/black"
+        android:textSize="14sp"
         app:layout_constraintBaseline_toBaselineOf="@+id/textView_RespondRequest_interest2"
         app:layout_constraintStart_toStartOf="@+id/guideline25"
         tools:text="Interest5" />
@@ -86,6 +89,8 @@
         android:id="@+id/textView_RespondRequest_interest6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="@android:color/black"
+        android:textSize="14sp"
         app:layout_constraintBaseline_toBaselineOf="@+id/textView_RespondRequest_interest3"
         app:layout_constraintStart_toStartOf="@+id/guideline25"
         tools:text="Interest6" />
@@ -96,8 +101,10 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:text="Requested to join the lobby"
+        android:textColor="@android:color/black"
+        android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@+id/guideline25"
         app:layout_constraintStart_toStartOf="@+id/guideline23"
         app:layout_constraintTop_toBottomOf="@+id/textView_RespondRequest_interest3" />
@@ -106,10 +113,13 @@
         android:id="@+id/button_RespondRequest_accept"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
+        android:paddingBottom="8dp"
         android:text="Accept"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline26"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView_RespondRequest_messageTAG" />
@@ -118,10 +128,12 @@
         android:id="@+id/button_RespondRequest_reject"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:text="Reject"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline26"
         app:layout_constraintTop_toBottomOf="@+id/textView_RespondRequest_messageTAG" />
@@ -146,4 +158,5 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.66" />
+
 </android.support.constraint.ConstraintLayout>
