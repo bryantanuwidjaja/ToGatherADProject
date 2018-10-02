@@ -91,12 +91,7 @@ public class LobbyList extends ArrayAdapter<Lobby> {
         void onCallback(ArrayList<User> guestList);
     }
 
-<<<<<<< HEAD
-    private void getCapacity(Lobby lobby, final CapacityCallback capacityCallback) {
-        final ArrayList<User> guestList = new ArrayList<>();
-=======
     private void getCapacity(Lobby lobby, final CapacityCallback capacityCallback){
->>>>>>> 18ed04127502a3ed602b65080f579b4824a97d4a
         FirebaseFirestore.getInstance().collection(Constants.LOBBY)
                 .document(lobby.getLobbyID())
                 .collection(Constants.LOBBY_GUESTLIST)

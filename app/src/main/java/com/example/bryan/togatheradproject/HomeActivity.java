@@ -128,33 +128,39 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 listView_LobbyList.setEnabled(false);
-                Lobby lobby = lobbyList.get(position);
+                final Lobby lobby = lobbyList.get(position);
                 String lobbyID = lobby.getLobbyID();
                 Log.d(TAG, "lobby ID = " + lobbyID);
-
                 //retrieve the chat log id to refer to the clicked lobby
                 String chatlogID = lobby.getChatlogID();
 
                 //lobby type constraint
                 if (lobby.getPrivateLobby() == true) {
                     //create a join request
-                    String state = Constants.WAITING;
-                    Request request = new Request(user.getUserID(), user, state);
+                    final String state = Constants.WAITING;
+                    getUser(user.getUserID(), new UserCallback() {
+                        @Override
+                        public void onCallback(User user) {
+                            User requestUser = user;
 
-                    //send request to lobby collection
-                    FirebaseFirestore.getInstance().collection(Constants.LOBBY)
-                            .document(lobby.getLobbyID())
-                            .collection(Constants.LOBBY_REQUEST)
-                            .document(user.getUserID())
-                            .set(request);
+                            Request request = new Request(requestUser.getUserID() , requestUser, state);
 
-                    //inflate timer dialog
-                    RequestTimerDialog dialog = new RequestTimerDialog();
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable(Constants.USER, user);
-                    bundle.putSerializable(Constants.LOBBY, lobby);
-                    dialog.setArguments(bundle);
-                    dialog.show(getFragmentManager(), "RequestTimerDialog");
+                            //send request to lobby collection
+                            FirebaseFirestore.getInstance().collection(Constants.LOBBY)
+                                    .document(lobby.getLobbyID())
+                                    .collection(Constants.LOBBY_REQUEST)
+                                    .document(user.getUserID())
+                                    .set(request);
+
+                            //inflate timer dialog
+                            RequestTimerDialog dialog = new RequestTimerDialog();
+                            Bundle bundle = new Bundle();
+                            bundle.putSerializable(Constants.USER, user);
+                            bundle.putSerializable(Constants.LOBBY, lobby);
+                            dialog.setArguments(bundle);
+                            dialog.show(getFragmentManager(), "RequestTimerDialog");
+                        }
+                    });
 
                     //listen to
                 } else if (lobby.getPrivateLobby() == false) {
@@ -260,6 +266,7 @@ public class HomeActivity extends AppCompatActivity {
                                 Log.d(TAG, "userID : " + user.getUserID());
                                 Log.d(TAG, "lobbyID : " + lobbyID);
                                 startActivity(intent);
+                                finish();
                             }
                         });
                     }
@@ -284,6 +291,23 @@ public class HomeActivity extends AppCompatActivity {
             startActivity(intentback);
             finish();
         }
+    }
+
+    private interface UserCallback{
+        void onCallback(User user);
+    }
+
+    private void getUser(String userID, final UserCallback userCallback){
+        FirebaseFirestore.getInstance().collection(Constants.USER)
+                .document(userID)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        User user = task.getResult().toObject(User.class);
+                        userCallback.onCallback(user);
+                    }
+                });
     }
 
     private void getGuestList(Lobby lobby, final GuestListCallback guestListCallback){

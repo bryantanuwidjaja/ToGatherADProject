@@ -47,11 +47,13 @@ public class LobbyActivity extends AppCompatActivity {
     Button button_enter;
     Button button_guestList;
     Button button_lobbyDetail;
+    Boolean notified = false;
     private String activity;
     private int backCounter;
     private int clickIndicator = 0;
     private ArrayList<Chat> chatlogList = new ArrayList<>();
     Button button_promotion;
+    boolean inLobby = true;
 
     protected void establish() {
         textView_lobbyID = findViewById(R.id.textView_LobbyActivity_lobbyID);
@@ -73,16 +75,7 @@ public class LobbyActivity extends AppCompatActivity {
         Intent intent = getIntent();
         final Lobby lobby = (Lobby) intent.getSerializableExtra(Constants.LOBBY);
         final User user = (User) intent.getSerializableExtra(Constants.USER);
-
-        //use the rating field as container for the index
-        getGuestList(lobby, new GuestListCallback() {
-            @Override
-            public void onCallBack(ArrayList<User> guestList) {
-                int index = guestList.size();
-                Log.d(TAG, "color index : " + index);
-                user.setIndex(index);
-            }
-        });
+        
         Log.d(TAG, "User: " + user.getUserID());
 
         activity = lobby.getActivity();
@@ -328,11 +321,7 @@ public class LobbyActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-<<<<<<< HEAD
-        if (clickIndicator == 0) {
-=======
         if(clickIndicator == 0 || backCounter >= 2) {
->>>>>>> 18ed04127502a3ed602b65080f579b4824a97d4a
             Intent intent = getIntent();
             final User user = (User) intent.getSerializableExtra(Constants.USER);
             final Lobby lobby = (Lobby) intent.getSerializableExtra(Constants.LOBBY);
@@ -474,6 +463,10 @@ public class LobbyActivity extends AppCompatActivity {
                 }
             }
         });
+
+        Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+        intent.putExtra(Constants.USER, user);
+        startActivity(intent);
     }
 
     //after removal
@@ -481,8 +474,9 @@ public class LobbyActivity extends AppCompatActivity {
         String hostID = lobby.getHostID();
         String userID = user.getUserID();
         //check if host
-        if (userID.equals(hostID)) {
+        if (userID.equals(hostID) && !notified ) {
             //get list of candidate(s) to host
+            notified = true;
             FirebaseFirestore.getInstance().collection(Constants.LOBBY)
                     .document(lobby.getLobbyID())
                     .collection(Constants.LOBBY_GUESTLIST)

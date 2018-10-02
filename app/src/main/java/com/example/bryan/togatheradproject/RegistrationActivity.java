@@ -186,7 +186,6 @@ public class RegistrationActivity extends AppCompatActivity {
         button_Create.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                button_Create.setEnabled(false);
                 //retrieve information from widgets
                 String regisEmail = editText_Email.getText().toString();
                 String regisName = editText_Username.getText().toString();
@@ -206,7 +205,6 @@ public class RegistrationActivity extends AppCompatActivity {
                     //create new user object
                     final User newUser = new User(regisPassword, regisName, regisEmail, 0, emptyList,uid);
 
-                    button_Create.invalidate();
                     //update the database
                     addUserToDatabase(uid, newUser);
                 } else {
@@ -264,6 +262,7 @@ public class RegistrationActivity extends AppCompatActivity {
                         intent.putExtra(Constants.USER, newUser);
                         startActivity(intent);
                         finish();
+                        button_Create.invalidate();
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
