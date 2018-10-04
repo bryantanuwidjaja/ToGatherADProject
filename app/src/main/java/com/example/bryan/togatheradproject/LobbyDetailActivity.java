@@ -53,7 +53,7 @@ public class LobbyDetailActivity extends AppCompatActivity {
         String hostID = textView_host.getText().toString();
         Log.d(TAG, "hostID : " + hostID);
 
-        if(checkHost(user, lobby)){
+        if (checkHost(user, lobby)) {
             button_editLobby.setVisibility(View.VISIBLE);
             button_editLobby.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -66,8 +66,7 @@ public class LobbyDetailActivity extends AppCompatActivity {
                     finish();
                 }
             });
-        }
-        else{
+        } else {
             button_editLobby.setVisibility(View.INVISIBLE);
             button_editLobby.setClickable(false);
         }
@@ -91,13 +90,12 @@ public class LobbyDetailActivity extends AppCompatActivity {
         button_returnToLobby.performClick();
     }
 
-    private boolean checkHost(User user, Lobby lobby){
+    private boolean checkHost(User user, Lobby lobby) {
         String hostID = lobby.getHostID();
         String userID = user.getUserID();
-        if(hostID.equals(userID)){
+        if (hostID.equals(userID)) {
             return true;
-        }
-        else{
+        } else {
             return false;
         }
     }

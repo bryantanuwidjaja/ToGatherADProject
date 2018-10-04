@@ -3,6 +3,7 @@ package com.example.bryan.togatheradproject;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,7 +14,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -62,7 +65,7 @@ public class HomeActivity extends AppCompatActivity {
                 });
 
         lobbyCleaner = FirebaseFirestore.getInstance().collection(Constants.LOBBY)
-                .whereEqualTo(Constants.LOBBY_ID ,null)
+                .whereEqualTo(Constants.LOBBY_ID, null)
                 .addSnapshotListener(this, new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots,
@@ -125,36 +128,42 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 listView_LobbyList.setEnabled(false);
-                Lobby lobby = lobbyList.get(position);
+                final Lobby lobby = lobbyList.get(position);
                 String lobbyID = lobby.getLobbyID();
                 Log.d(TAG, "lobby ID = " + lobbyID);
-
                 //retrieve the chat log id to refer to the clicked lobby
                 String chatlogID = lobby.getChatlogID();
 
                 //lobby type constraint
-                if(lobby.getPrivateLobby()==true){
+                if (lobby.getPrivateLobby() == true) {
                     //create a join request
-                    String state = Constants.WAITING;
-                    Request request = new Request(user.getUserID(), user, state);
+                    final String state = Constants.WAITING;
+                    getUser(user.getUserID(), new UserCallback() {
+                        @Override
+                        public void onCallback(User user) {
+                            User requestUser = user;
 
-                    //send request to lobby collection
-                    FirebaseFirestore.getInstance().collection(Constants.LOBBY)
-                            .document(lobby.getLobbyID())
-                            .collection(Constants.LOBBY_REQUEST)
-                            .document(user.getUserID())
-                            .set(request);
+                            Request request = new Request(requestUser.getUserID() , requestUser, state);
 
-                    //inflate timer dialog
-                    RequestTimerDialog dialog = new RequestTimerDialog();
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable(Constants.USER, user);
-                    bundle.putSerializable(Constants.LOBBY, lobby);
-                    dialog.setArguments(bundle);
-                    dialog.show(getFragmentManager(), "RequestTimerDialog");
+                            //send request to lobby collection
+                            FirebaseFirestore.getInstance().collection(Constants.LOBBY)
+                                    .document(lobby.getLobbyID())
+                                    .collection(Constants.LOBBY_REQUEST)
+                                    .document(user.getUserID())
+                                    .set(request);
+
+                            //inflate timer dialog
+                            RequestTimerDialog dialog = new RequestTimerDialog();
+                            Bundle bundle = new Bundle();
+                            bundle.putSerializable(Constants.USER, user);
+                            bundle.putSerializable(Constants.LOBBY, lobby);
+                            dialog.setArguments(bundle);
+                            dialog.show(getFragmentManager(), "RequestTimerDialog");
+                        }
+                    });
 
                     //listen to
-                }else if (lobby.getPrivateLobby()== false){
+                } else if (lobby.getPrivateLobby() == false) {
                     //retrieve current chat log
                     retrieveChatLog(lobbyID, chatlogID, user, lobby);
                 }
@@ -223,35 +232,43 @@ public class HomeActivity extends AppCompatActivity {
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
-                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                    public void onSuccess(final DocumentSnapshot documentSnapshot) {
                         Log.d(TAG, "onSuccess retrievechatlog : in ");
-                        Chatlog chatlog = documentSnapshot.toObject(Chatlog.class);
-                        ArrayList<Chat> chatArray = chatlog.getChatlog();
-                        for (Chat chat : chatArray) {
-                            Log.d(TAG, "chatmes:  retrievechatlog " + chat.getChatMessage());
-                            chatlogList.add(chat);
-                        }
-                        Log.d(TAG, "chatloglist:  retrievechatlog " + chatlogList);
-                        Chat chat = new Chat();
+                        //assign the index
+                        getGuestList(lobby, new GuestListCallback() {
+                            @Override
+                            public void onCallBack(ArrayList<User> guestList) {
+                                user.setIndex(guestList.size()+1);
 
-                        //create the entry message
-                        chat = chat.entryChat(user);
+                                Chatlog chatlog = documentSnapshot.toObject(Chatlog.class);
+                                ArrayList<Chat> chatArray = chatlog.getChatlog();
+                                for (Chat chat : chatArray) {
+                                    Log.d(TAG, "chatmes:  retrievechatlog " + chat.getChatMessage());
+                                    chatlogList.add(chat);
+                                }
+                                Log.d(TAG, "chatloglist:  retrievechatlog " + chatlogList);
+                                Chat chat = new Chat();
 
-                        //add the entry message to the array
-                        chatlogList.add(chat);
-                        Log.d(TAG, "chatloglist: 2 " + chatlogList);
+                                //create the entry message
+                                chat = chat.entryChat(user);
 
-                        //update the database
-                        chat.updateChat(chatlogList, lobbyID, chatlogID);
+                                //add the entry message to the array
+                                chatlogList.add(chat);
+                                Log.d(TAG, "chatloglist: 2 " + chatlogList);
 
-                        //create the intent along with the relevant information to be passed
-                        Intent intent = new Intent(getApplicationContext(), LobbyActivity.class);
-                        intent.putExtra(Constants.USER, user);
-                        intent.putExtra(Constants.LOBBY, lobby);
-                        Log.d(TAG, "User: " + user.getUserID());
-                        Log.d(TAG, "userID : " + user.getUserID());
-                        Log.d(TAG, "lobbyID : " + lobbyID);
-                        startActivity(intent);
+                                //update the database
+                                chat.updateChat(chatlogList, lobbyID, chatlogID);
+                                //create the intent along with the relevant information to be passed
+                                Intent intent = new Intent(getApplicationContext(), LobbyActivity.class);
+                                intent.putExtra(Constants.USER, user);
+                                intent.putExtra(Constants.LOBBY, lobby);
+                                Log.d(TAG, "User: " + user.getUserID());
+                                Log.d(TAG, "userID : " + user.getUserID());
+                                Log.d(TAG, "lobbyID : " + lobbyID);
+                                startActivity(intent);
+                                finish();
+                            }
+                        });
                     }
                 });
         Log.d(TAG, "chatLoglist : 3  " + chatlogList);
@@ -263,7 +280,7 @@ public class HomeActivity extends AppCompatActivity {
         final User user = (User) intent.getSerializableExtra(Constants.USER);
 
         backCounter++;
-        if(backCounter == 1) {
+        if (backCounter == 1) {
             Toast.makeText(getApplicationContext(), "Press back again to log out", Toast.LENGTH_SHORT).show();
         } else if (backCounter == 2) {
             //sign out
@@ -274,5 +291,45 @@ public class HomeActivity extends AppCompatActivity {
             startActivity(intentback);
             finish();
         }
+    }
+
+    private interface UserCallback{
+        void onCallback(User user);
+    }
+
+    private void getUser(String userID, final UserCallback userCallback){
+        FirebaseFirestore.getInstance().collection(Constants.USER)
+                .document(userID)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        User user = task.getResult().toObject(User.class);
+                        userCallback.onCallback(user);
+                    }
+                });
+    }
+
+    private void getGuestList(Lobby lobby, final GuestListCallback guestListCallback){
+        FirebaseFirestore.getInstance().collection(Constants.LOBBY)
+                .document(lobby.getLobbyID())
+                .collection(Constants.LOBBY_GUESTLIST)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (!task.getResult().isEmpty()) {
+                            ArrayList<User> guestList = new ArrayList<>();
+                            for (User user : task.getResult().toObjects(User.class)) {
+                                guestList.add(user);
+                            }
+                            guestListCallback.onCallBack(guestList);
+                        }
+                    }
+                });
+    }
+
+    private interface GuestListCallback{
+        void onCallBack(ArrayList<User> guestList);
     }
 }

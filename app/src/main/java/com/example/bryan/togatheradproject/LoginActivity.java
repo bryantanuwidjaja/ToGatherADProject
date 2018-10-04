@@ -130,8 +130,8 @@ public class LoginActivity extends AppCompatActivity {
                 String password = editText_InsertPassword.getText().toString();
                 Log.d(TAG, "onClick: sign in - before login");
                 if (checkIfDataNotBlank(email,password)){
-                Login(email, password);
-                button_SignIn.invalidate();
+                    Login(email, password);
+                    button_SignIn.invalidate();
                 }
                 else{
                         clearEditTest();

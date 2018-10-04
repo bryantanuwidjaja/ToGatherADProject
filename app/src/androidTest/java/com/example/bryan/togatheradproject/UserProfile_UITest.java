@@ -39,6 +39,7 @@ public class UserProfile_UITest {
         onView(withId(R.id.editText_FragmentEditProfile_interestEditText))
                 .perform(typeText(interestName)).perform(ViewActions.closeSoftKeyboard());
         onView(withId(R.id.button_FragmentEditProfile_saveButton)).perform(click());
+        onView(isRoot()).perform(idleFor(1000));
         onView(withText(interestName)).check(matches(isDisplayed()));
     }
 
@@ -125,7 +126,6 @@ public class UserProfile_UITest {
         onView(withId(R.id.editText_ConfirmDialog_confirmation)).perform(typeText("CONFIRM"));
         onView(withId(R.id.button_ConfirmDialog_delete)).perform(click());
         onView(withId(R.id.button_LoginActivity_signIn)).check(matches(isDisplayed()));
-
     }
 
 }

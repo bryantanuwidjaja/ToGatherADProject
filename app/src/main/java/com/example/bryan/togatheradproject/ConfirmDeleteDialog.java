@@ -3,13 +3,10 @@ package com.example.bryan.togatheradproject;
 import android.app.DialogFragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.constraint.ConstraintLayout;
-import android.support.constraint.Constraints;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,7 +24,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 
-public class ConfirmDeleteDialog extends DialogFragment{
+public class ConfirmDeleteDialog extends DialogFragment {
     private static final String TAG = "ConfirmDeleteDialog";
 
     FragmentManager fragmentManager;
@@ -60,7 +57,7 @@ public class ConfirmDeleteDialog extends DialogFragment{
             @Override
             public void onClick(View v) {
                 String confirmText = editText_confirmation.getText().toString();
-                if(confirmText.equals("CONFIRM")){
+                if (confirmText.equals("CONFIRM")) {
                     //delete account
                     FirebaseFirestore.getInstance().collection(Constants.USER)
                             .document(user.getUserID())
@@ -73,14 +70,14 @@ public class ConfirmDeleteDialog extends DialogFragment{
                             });
                     FirebaseAuth.getInstance().getCurrentUser().delete();
                     button_delete.invalidate();
-                    Toast.makeText(getActivity(), "User Deleted" , Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "User Deleted", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(getActivity(), LoginActivity.class);
                     startActivity(intent);
                     getActivity().finish();
                 }
                 else{
                     editText_confirmation.setText("");
-                    Toast.makeText(getActivity(), "Please enter the confirmation properly" , Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Please enter the confirmation properly", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -92,7 +89,7 @@ public class ConfirmDeleteDialog extends DialogFragment{
                 intent.putExtra(Constants.USER, user);
                 button_cancel.invalidate();
                 startActivity(intent);
-                getDialog().dismiss(); 
+                getDialog().dismiss();
             }
         });
         return view;

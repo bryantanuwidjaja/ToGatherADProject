@@ -111,7 +111,7 @@ public class Lobby implements Serializable {
         guestList.add(user);
     }
 
-    public boolean getPrivateLobby(){
+    public boolean getPrivateLobby() {
         return privateLobby;
     }
 

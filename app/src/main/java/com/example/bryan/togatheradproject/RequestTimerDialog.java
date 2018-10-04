@@ -43,7 +43,7 @@ public class RequestTimerDialog extends DialogFragment {
         View view = inflater.inflate(R.layout.activity_request_timer_dialog, container, false);
         Log.d(TAG, "lobby ID = " + lobby.getLobbyID());
         button_cancelButton = (Button) view.findViewById(R.id.button_TimerDialog_cancel);
-        textView_timer =  (TextView) view.findViewById(R.id.textView_TimerDialog_timer);
+        textView_timer = (TextView) view.findViewById(R.id.textView_TimerDialog_timer);
 
         setCancelable(false);
         setStateListener(lobby, user);
@@ -55,7 +55,7 @@ public class RequestTimerDialog extends DialogFragment {
                 button_cancelButton.invalidate();
                 stopTimer();
                 //cancel request
-                cancelRequest(lobby,user);
+                cancelRequest(lobby, user);
                 //delete request
                 //deleteRequest(lobby ,user);
                 getDialog().dismiss();
@@ -67,7 +67,7 @@ public class RequestTimerDialog extends DialogFragment {
         return view;
     }
 
-    private void cancelRequest(Lobby lobby ,User user){
+    private void cancelRequest(Lobby lobby, User user) {
         String state = Constants.CANCELLED;
         Request request = new Request(user.getUserID(), user, state);
         FirebaseFirestore.getInstance().collection(Constants.LOBBY)
@@ -83,7 +83,7 @@ public class RequestTimerDialog extends DialogFragment {
         Log.d(TAG, "destroyFragment: out");
     }
 
-    private void deleteRequest(Lobby lobby, User user){
+    private void deleteRequest(Lobby lobby, User user) {
         FirebaseFirestore.getInstance().collection(Constants.LOBBY)
                 .document(lobby.getLobbyID())
                 .collection(Constants.LOBBY_REQUEST)
@@ -91,21 +91,20 @@ public class RequestTimerDialog extends DialogFragment {
                 .delete();
     }
 
-    public void startStop(Lobby lobby, User user){
-        if(timerRunning){
+    public void startStop(Lobby lobby, User user) {
+        if (timerRunning) {
             stopTimer();
-        }
-        else{
+        } else {
             startTimer(lobby, user);
         }
     }
 
-    private void startTimer(final Lobby lobby, final User user){
+    private void startTimer(final Lobby lobby, final User user) {
         countDownTimer = new CountDownTimer(timeLeftInMilisecond, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
-               timeLeftInMilisecond = millisUntilFinished;
-               updateTimer();
+                timeLeftInMilisecond = millisUntilFinished;
+                updateTimer();
             }
 
             @Override
@@ -116,15 +115,15 @@ public class RequestTimerDialog extends DialogFragment {
         timerRunning = true;
     }
 
-    private  void stopTimer(){
+    private void stopTimer() {
         countDownTimer.cancel();
         timerRunning = false;
     }
 
-    private void updateTimer(){
+    private void updateTimer() {
         int seconds = (int) timeLeftInMilisecond / 1000;
         String timeLeftText;
-        timeLeftText = ""+seconds;
+        timeLeftText = "" + seconds;
         textView_timer.setText(timeLeftText);
         Log.d(TAG, "timeleftinmilisecond = " + timeLeftInMilisecond);
         Log.d(TAG, "current second : " + timeLeftText);
@@ -163,7 +162,7 @@ public class RequestTimerDialog extends DialogFragment {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        return new Dialog(getActivity(), getTheme()){
+        return new Dialog(getActivity(), getTheme()) {
             @Override
             public void onBackPressed() {
                 button_cancelButton.performClick();
@@ -171,7 +170,7 @@ public class RequestTimerDialog extends DialogFragment {
         };
     }
 
-    private void setStateListener(final Lobby lobby, final User user){
+    private void setStateListener(final Lobby lobby, final User user) {
         stateListener = FirebaseFirestore.getInstance().collection(Constants.LOBBY)
                 .document(lobby.getLobbyID())
                 .collection(Constants.LOBBY_REQUEST)
@@ -182,24 +181,22 @@ public class RequestTimerDialog extends DialogFragment {
                                         @javax.annotation.Nullable FirebaseFirestoreException e) {
                         Request request;
                         String state;
-                        try{
+                        try {
                             request = documentSnapshot.toObject(Request.class);
                             state = request.getState();
-                            if(state.equals(Constants.ACCEPTED)){
+                            if (state.equals(Constants.ACCEPTED)) {
                                 stateListener.remove();
                                 stopTimer();
                                 deleteRequest(lobby, user);
-                                ((HomeActivity)getActivity()).retrieveChatLog(lobby.getLobbyID(), lobby.getChatlogID(), request.getUser(), lobby);
+                                ((HomeActivity) getActivity()).retrieveChatLog(lobby.getLobbyID(), lobby.getChatlogID(), request.getUser(), lobby);
                                 getDialog().dismiss();
                                 destroyFragment();
-                            }
-                            else if(state.equals(Constants.REJECTED)){
+                            } else if (state.equals(Constants.REJECTED)) {
                                 stateListener.remove();
-                                Toast.makeText(getContext(), "Request denied" , Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(), "Request denied", Toast.LENGTH_SHORT).show();
                                 button_cancelButton.performClick();
                             }
-                        }
-                        catch (Exception e1){
+                        } catch (Exception e1) {
                             return;
                         }
 

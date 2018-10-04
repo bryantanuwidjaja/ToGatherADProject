@@ -38,7 +38,7 @@ public class CreateLobby_UITest {
                 .perform(typeText("123123")).perform(ViewActions.closeSoftKeyboard());
         onView(withId(R.id.button_LoginActivity_signIn))
                 .perform(click());
-        onView(isRoot()).perform(idleFor(10000));
+        onView(isRoot()).perform(idleFor(7000));
         onView(withId(R.id.button_HomeActivity_createLobby))
                 .perform(click());
         onView(isRoot()).perform(idleFor(1000));
@@ -51,13 +51,6 @@ public class CreateLobby_UITest {
                 .perform(typeText(capacity)).perform(ViewActions.closeSoftKeyboard());
         onView(withId(R.id.editText_CreateLobbyActivity_description))
                 .perform(typeText(description)).perform(ViewActions.closeSoftKeyboard());
-
-//        onView(withId(R.id.button_CreateLobbyActivity_fetch))
-//                .perform(click());
-        onView(isRoot()).perform(idleFor(1000));
-        onView(withId(R.id.button_CreateLobbyActivity_create))
-                .perform(click());
-        onView(isRoot()).perform(idleFor(3000));
     }
 
 

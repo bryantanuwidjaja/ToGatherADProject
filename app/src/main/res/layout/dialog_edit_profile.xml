@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/textView_container"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <TextView
         android:id="@+id/textView_FragmentEditProfile_enterYourInterest"
@@ -23,8 +23,8 @@
         android:id="@+id/editText_FragmentEditProfile_interestEditText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:ems="10"
         android:inputType="text|textPersonName"
@@ -36,11 +36,13 @@
         android:id="@+id/button_FragmentEditProfile_saveButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:text="Save"
         android:background="@color/buttonColor"
+        android:text="Save"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editText_FragmentEditProfile_interestEditText" />
@@ -49,10 +51,10 @@
         android:id="@+id/button_FragmentEditProfile_cancelButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:text="Cancel"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
         android:background="@color/buttonColor"
+        android:text="Cancel"
         app:layout_constraintBaseline_toBaselineOf="@+id/button_FragmentEditProfile_saveButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline5" />

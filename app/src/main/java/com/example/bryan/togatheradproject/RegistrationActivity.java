@@ -183,10 +183,9 @@ public class RegistrationActivity extends AppCompatActivity {
         //initialise widget
         establish();
 
-        button_Create.setOnClickListener( new View.OnClickListener() {
+        button_Create.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                button_Create.setEnabled(false);
                 //retrieve information from widgets
                 String regisEmail = editText_Email.getText().toString();
                 String regisName = editText_Username.getText().toString();
@@ -206,7 +205,6 @@ public class RegistrationActivity extends AppCompatActivity {
                     //create new user object
                     final User newUser = new User(regisPassword, regisName, regisEmail, 0, emptyList,uid);
 
-                    button_Create.invalidate();
                     //update the database
                     addUserToDatabase(uid, newUser);
                 } else {
@@ -242,20 +240,19 @@ public class RegistrationActivity extends AppCompatActivity {
         button_Cancel.invalidate();
     }
 
-    private boolean validate(String regisEmail, String regisName, String regisPassword , String regisRePassword){
+    private boolean validate(String regisEmail, String regisName, String regisPassword, String regisRePassword) {
         if (checkIfDataNotBlank(regisEmail, regisName, regisPassword, regisRePassword)
                 && checkEmailValidity(regisEmail)
                 && checkIfPasswordSame(regisPassword, regisRePassword)
                 && checkIfPasswordValid(regisPassword)
                 && checkUserValidity(regisName)) {
             return true;
-        }
-        else{
+        } else {
             return false;
         }
     }
 
-    private void addUserToDatabase(final String uid , final User newUser){
+    private void addUserToDatabase(final String uid, final User newUser) {
         FirebaseFirestore.getInstance().collection(Constants.USER).document(uid).set(newUser)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -265,6 +262,7 @@ public class RegistrationActivity extends AppCompatActivity {
                         intent.putExtra(Constants.USER, newUser);
                         startActivity(intent);
                         finish();
+                        button_Create.invalidate();
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {

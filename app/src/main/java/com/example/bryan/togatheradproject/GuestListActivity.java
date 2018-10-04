@@ -79,7 +79,7 @@ public class GuestListActivity extends AppCompatActivity {
         button_returnToLobby.performClick();
     }
 
-    private void retreiveGuestList(final Lobby lobby, final User currentuser ) {
+    private void retreiveGuestList(final Lobby lobby, final User currentuser) {
         //reset the list
         guestList.clear();
 
@@ -92,10 +92,10 @@ public class GuestListActivity extends AppCompatActivity {
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                         for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
                             User user = documentSnapshot.toObject(User.class);
-                            if(!user.getUserID().equals(currentuser.getUserID())) {
+                            if (!user.getUserID().equals(currentuser.getUserID())) {
                                 guestList.add(user);
                             }
-                    }
+                        }
                         GuestList adapter = new GuestList(GuestListActivity.this, guestList);
                         listView_guestList.setAdapter(adapter);
                     }
