@@ -56,9 +56,9 @@ public class LobbyActivity_UITest {
                 .perform(typeText("123123")).perform(ViewActions.closeSoftKeyboard());
         onView(withId(R.id.button_LoginActivity_signIn))
                 .perform(click());
-        onView(isRoot()).perform(idleFor(7000));
+        onView(isRoot()).perform(idleFor(5000));
         onView(withId(R.id.listView_HomeActivity_lobbyList)).perform(click());
-        onView(isRoot()).perform(idleFor(3000));
+        onView(isRoot()).perform(idleFor(2000));
     }
 
     public void createAndEnterLobby() {
@@ -108,23 +108,11 @@ public class LobbyActivity_UITest {
 
 
     @Test
-    public void guestProfile() throws Exception {
+    public void guestList() throws Exception {
         enterLobby();
         onView(withId(R.id.button_LobbyActivity_guestList)).perform(closeSoftKeyboard()).perform(click());
         onView(isRoot()).perform(idleFor(3000));
-        onData(anything()).inAdapterView(withId(R.id.listView_GuestListActivity_guestList)).atPosition(0).perform(click());
-        onView(isRoot()).perform(idleFor(3000));
-        onView(withId(R.id.button_GuestProfileActivity_returnToLobby)).perform(closeSoftKeyboard())
-                .check(matches(isDisplayed()));
-    }
-
-    @Test
-    public void guestProfileRate() throws Exception {
-        guestProfile();
-        onView(withId(R.id.button_GuestProfileActivity_rateUp)).perform(click());
-        onView(isRoot()).perform(idleFor(200));
-        onView(withText(R.string.toast_rateUp)).inRoot(withDecorView(not(
-                lobbyActivityTestRule.getActivity().getWindow().getDecorView())))
+        onView(withId(R.id.button_GuestListActivity_returnToLobby)).perform(closeSoftKeyboard())
                 .check(matches(isDisplayed()));
     }
 
@@ -148,12 +136,31 @@ public class LobbyActivity_UITest {
     public void lobbyPromotion() throws Exception{
         createAndEnterLobby();
         onView(withId(R.id.button_LobbyActivity_promotion)).perform(click());
-        onView(withId(R.id.imageView_PromotionLayout_promotionImage)).check(matches(isDisplayed()));
         onView(withId(R.id.textView_PromotionActivity_promotionList)).check(matches(isDisplayed()));
         onView(withId(R.id.button_PromotionActivity_Return)).check(matches(isDisplayed()));
-
     }
 
 
+//    // Test below needs multiple human interaction in order to work
+//    @Test
+//    public void guestProfile() throws Exception {
+//        enterLobby();
+//        onView(withId(R.id.button_LobbyActivity_guestList)).perform(closeSoftKeyboard()).perform(click());
+//        onView(isRoot()).perform(idleFor(3000));
+//        onData(anything()).inAdapterView(withId(R.id.listView_GuestListActivity_guestList)).atPosition(0).perform(click());
+//        onView(isRoot()).perform(idleFor(3000));
+//        onView(withId(R.id.button_GuestProfileActivity_returnToLobby)).perform(closeSoftKeyboard())
+//                .check(matches(isDisplayed()));
+//    }
+//
+//    @Test
+//    public void guestProfileRate() throws Exception {
+//        guestProfile();
+//        onView(withId(R.id.button_GuestProfileActivity_rateUp)).perform(click());
+//        onView(isRoot()).perform(idleFor(200));
+//        onView(withText(R.string.toast_rateUp)).inRoot(withDecorView(not(
+//                lobbyActivityTestRule.getActivity().getWindow().getDecorView())))
+//                .check(matches(isDisplayed()));
+//    }
 
 }
