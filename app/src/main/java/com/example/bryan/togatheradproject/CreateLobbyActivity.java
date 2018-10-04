@@ -39,7 +39,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.UUID;
 
-public class CreateLobbyActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
+public class CreateLobbyActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     private static final int REQUEST_PERMISSIONS_REQUEST_CODE = 34;
     private static final String TAG = "CreateLobbyActivity";
@@ -150,11 +150,9 @@ public class CreateLobbyActivity extends AppCompatActivity implements AdapterVie
                 String description = editText_Description.getText().toString();
                 String temp_Capacity = editText_Capacity.getText().toString();
                 int capacity = 1;
-                try{
+                try {
                     capacity = (Integer.parseInt(temp_Capacity));
-                }
-                catch (NumberFormatException e)
-                {
+                } catch (NumberFormatException e) {
                     whyError = "Please fill the fields properly";
                 }
                 String activity = spinner.getSelectedItem().toString();
@@ -186,6 +184,9 @@ public class CreateLobbyActivity extends AppCompatActivity implements AdapterVie
 
                                     //create an empty arraylist to contain all of the chat object
                                     ArrayList<Chat> chatlog = new ArrayList<>();
+
+                                    //set host index
+                                    user.setIndex(1);
 
                                     //generate the creation message
                                     chat = chat.createEntryChat(user);
@@ -253,12 +254,11 @@ public class CreateLobbyActivity extends AppCompatActivity implements AdapterVie
     }
 
 
-    private boolean getLobbyType(){
+    private boolean getLobbyType() {
         boolean isPrivate = false;
-        if(radioButton_private.isChecked()){
+        if (radioButton_private.isChecked()) {
             isPrivate = true;
-        }
-        else if (radioButton_public.isChecked()){
+        } else if (radioButton_public.isChecked()) {
             isPrivate = false;
         }
         return isPrivate;

@@ -10,8 +10,8 @@ import android.content.Intent;
 
 import java.util.ArrayList;
 
-public class PromotionActivity extends AppCompatActivity{
-    private static final String TAG ="PromotionActivity";
+public class PromotionActivity extends AppCompatActivity {
+    private static final String TAG = "PromotionActivity";
     TextView textView_promotion;
     Button button_Return;
     ListView listView_promotion;
@@ -50,8 +50,8 @@ public class PromotionActivity extends AppCompatActivity{
         Promotion sport2 = new Promotion("Save $300 for new members. SIGN UP NOW!", "sports", R.drawable.sports2);
 
         String lobbyActivity = lobby.getActivity();
-        switch(lobbyActivity){
-            case "coffee":
+        switch (lobbyActivity) {
+            case "Coffee":
                 promotionArrayList.add(coffee1);
                 promotionArrayList.add(coffee2);
                 break;
@@ -67,19 +67,19 @@ public class PromotionActivity extends AppCompatActivity{
                 promotionArrayList.add(movie1);
                 promotionArrayList.add(movie2);
                 break;
-            case "games":
+            case "Games":
                 promotionArrayList.add(games1);
                 promotionArrayList.add(games2);
                 break;
-            case "sports":
+            case "Sports":
                 promotionArrayList.add(sport1);
                 promotionArrayList.add(sport2);
                 break;
-            case "study":
+            case "Study":
                 promotionArrayList.add(study1);
                 promotionArrayList.add(study2);
                 break;
-            case "outdoor":
+            case "Outdoor":
                 promotionArrayList.add(outdoor1);
                 promotionArrayList.add(outdoot2);
                 break;

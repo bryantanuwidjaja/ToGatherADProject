@@ -47,7 +47,7 @@ public class EditLobbyActivity extends AppCompatActivity {
 
         //get intent
         Intent intent = getIntent();
-        final User user =(User) intent.getSerializableExtra(Constants.USER);
+        final User user = (User) intent.getSerializableExtra(Constants.USER);
         final Lobby lobby = (Lobby) intent.getSerializableExtra(Constants.LOBBY);
 
         establish();
@@ -112,33 +112,30 @@ public class EditLobbyActivity extends AppCompatActivity {
 
     }
 
-    private boolean validate(){
-        if(editText_capacity.getText().toString().equals("") || editText_description.getText().toString().equals("")) {
-            Toast.makeText(getApplicationContext(), "Please fill the fields properly" , Toast.LENGTH_SHORT).show();
+    private boolean validate() {
+        if (editText_capacity.getText().toString().equals("") || editText_description.getText().toString().equals("")) {
+            Toast.makeText(getApplicationContext(), "Please fill the fields properly", Toast.LENGTH_SHORT).show();
             editText_description.setText("");
             editText_capacity.setText("");
             return false;
-        }
-        else{
+        } else {
             return true;
         }
     }
 
-    private void setCurrentRadioButton(boolean isPrivate){
-        if(isPrivate){
+    private void setCurrentRadioButton(boolean isPrivate) {
+        if (isPrivate) {
             radioButton_privateLobby.setChecked(true);
-        }
-        else{
+        } else {
             radioButton_publicLobby.setChecked(true);
         }
     }
 
-    private boolean getLobbyType(){
+    private boolean getLobbyType() {
         boolean isPrivate = true;
-        if(radioButton_privateLobby.isChecked()){
+        if (radioButton_privateLobby.isChecked()) {
             isPrivate = true;
-        }
-        else if(radioButton_publicLobby.isChecked()){
+        } else if (radioButton_publicLobby.isChecked()) {
             isPrivate = false;
         }
         return isPrivate;
