@@ -80,8 +80,7 @@ public class HomeActivity extends AppCompatActivity {
                 });
     }
 
-    //add comment
-    //aaaaa
+
 
     @Override
     protected void onResume() {
